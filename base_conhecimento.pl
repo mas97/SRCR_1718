@@ -47,9 +47,14 @@ consultaUtente( P, E, I, S ) :- cuidado( _, _, P, _, _ ),
 % Invariante Estrultural:  nao permitir a insercao de conhecimento
 %                         repetido
 
-+filho( F,P ) :: (solucoes( (F,P),(filho( F,P )),S ),
++utente( IDU, N, I, M ) :: (solucoes( ( IDU, N, I, M ),(utente( IDU, N, I, M )),S ),
                   comprimento( S,N ), 
                   N == 1
+                  ).
+
++utente( IDU, _, _, _ ) :: (solucoes( IDUs,(utente( IDUs, _, _, _ )),S ),
+                  comprimento( S,N ), 
+                  N =< 1
                   ).
 
 % Invariante Referencial: nao admitir mais do que 2 progenitores
