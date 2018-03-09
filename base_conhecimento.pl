@@ -36,12 +36,25 @@ consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I,
 
 % Extensão do predicado prestador: IDPrestador, Nome, Especialidade, Instituição -> {V,F}
 prestador( 1, wilson, medico, um).
+prestador( 3, marciano, medico, hospitalbraga).
+prestador( 4, silvio, enfermeiro, hospitalbraga).
+prestador( 5, marcio, medico, centrosaudegualtar).
+prestador( 6, armando, tecnicoRaioX, hospitalbraga).
 
 consultaInstituicoes( S ) :- solucoes( Is, prestador( _, _, _, Is ), S).
 
 
 % Extensão do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
 cuidado( 2017/03/17, 1, 1, curativo, 20 ).
+cuidado( 2018/03/01, 1, 2, consulta, 25 ).
+cuidado( 2018/03/02, 7, 4, penso, 5).
+cuidado( 2018/03/03, 2, 5, consulta, 18).
+cuidado( 2018/03/04, 5, 4, penso, 8).
+cuidado( 2018/03/05, 6, 3, consulta, 19).
+cuidado( 2018/03/06, 8, 4, penso, 6).
+cuidado( 2018/03/07, 5, 1, exame, 100).
+cuidado( 2018/03/08, 8, 5, consulta, 20).
+cuidado( 2018/03/09, 6, 6, raioX, 75).
 
 consultaCuidados( I, M, D, S ) :- prestador(ID,_,_,I),
                                   solucoes( ( D, IDU, IDP, De, C ), cuidado( D, IDU, IDP, De, C ), S ).
