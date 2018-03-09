@@ -46,8 +46,7 @@ cuidado( 2017/03/17, 1, 1, curativo, 20 ).
 consultaCuidados( I, M, D, S ) :- prestador(ID,_,_,I),
                                   solucoes( ( D, IDU, IDP, De, C ), cuidado( D, IDU, IDP, De, C ), S ).
 
-consultaUtente( P, E, I, S ) :- cuidado( _, _, P, _, _ ),
-                                prestador( P, _, E, I ),
+consultaUtente( P, E, I, S ) :- prestador( P, _, E, I ),
                                 solucoes( ID, cuidado( _, ID, P, _, _ ), S ).
 
 % Invariante Estrultural:  nao permitir a insercao de conhecimento
