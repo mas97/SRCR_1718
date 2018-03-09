@@ -77,6 +77,7 @@ totalCuidados( U, E, P, D, R ) :- solucoes( C, cuidado(D, U, P, _, C), S ),
 				  N =< 2
 				  ).
 
+
 comprimento([], 0).
 comprimento([_|L], R) :- comprimento(L,T),
 	R is 1 + T.
