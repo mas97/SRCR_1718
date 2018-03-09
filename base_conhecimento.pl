@@ -54,24 +54,30 @@ consultaUtente( P, E, I, S ) :- prestador( P, _, E, I ),
 %                         repetido
 
 % não permitir a inserção de duplicados de utente
-+utente( IDU, No, I, M ) :: (solucoes( (IDU, No, I, M ),(utente( IDU, No, I, M )),S ),
-                  comprimento( S,N ), 
-                  N == 1
-
-                  ).
+%+utente( IDU, No, I, M ) :: (solucoes( (IDU, No, I, M ),(utente( IDU, No, I, M )),S ),
+%                 comprimento( S,N ), 
+%                  N == 1
+%
+%                  ).
 
 
 % não permitir a inserção de utente com um ID que já está registado na base de conhecimento
-+utente( IDU, No, I, M ) :: (solucoes( (IDU, Ns, _, _),(utente( IDU, Ns, _, _ )),S ),
++utente( IDU, No, I, M ) :: (solucoes( IDU,(utente( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
 
 % não permitir a inserção de duplicados de prestador
-+prestador( ID, N, E, I) :: (solucoes((ID, N, I, M),(prestador(ID, N, I, M)),S),
-                    comprimento( S,N ),
-                    N == 1
-                    ).
+%+prestador( ID, No, E, I) :: (solucoes((ID, No, E, I),(prestador(ID, No, E, I)),S),
+%                    comprimento( S,N ),
+%                    N == 1
+%                    ).
+
+% não permitir a inserção de prestador com um ID que já está registado na base de conhecimento
++prestador( IDU, No, E, I ) :: (solucoes( IDU,(utente( IDU, _, _, _ )),S ),
+                  comprimento( S,N ), 
+                  N == 1
+                  ).
 
 % Invariante Referencial: nao admitir mais do que 2 progenitores
 %                         para um mesmo individuo
