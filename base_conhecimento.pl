@@ -57,6 +57,7 @@ consultaUtente( P, E, I, S ) :- prestador( P, _, E, I ),
                   N == 1
                   ).
 
+% não permitir a inserção de utente com um ID que já está registado na base de conhecimento
 +utente( IDU, _, _, _ ) :: (solucoes( IDUs,(utente( IDUs, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N =< 1
