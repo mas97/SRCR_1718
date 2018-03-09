@@ -22,14 +22,20 @@
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado utente: IDUtente, Nome, Idade, Morada -> {V,F}
-utente( 1,marco, 25, braga ).
+utente( 1, marco, 25, braga).
 utente( 2, afonso, 30, braga).
+utente( 3, daniel, 20, braga).
+utente( 4, francisco, 22, felgueiras).
+utente( 5, rafael, 23, porto).
+utente( 6, bruno, 21, braga).
+utente( 7, hugo, 24, porto).
+utente( 8, luis, 35, lisboa).
 
 consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I, M ), S ).
 
 
 % Extensão do predicado prestador: IDPrestador, Nome, Especialidade, Instituição -> {V,F}
-prestador(1,wilson,medico,um).
+prestador( 1, wilson, medico, um).
 
 consultaInstituicoes( S ) :- solucoes( Is, prestador( _, _, _, Is ), S).
 
