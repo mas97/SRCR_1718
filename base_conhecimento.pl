@@ -49,6 +49,13 @@ consultaCuidados( I, M, D, S ) :- prestador(ID,_,_,I),
 consultaUtente( P, E, I, S ) :- prestador( P, _, E, I ),
                                 solucoes( ID, cuidado( _, ID, P, _, _ ), S ).
 
+somaL([],0).
+somaL([B|C],R) :- somaL(C,T),
+                  R is T + B.
+
+totalCuidados( U, E, P, D, R ) :- solucoes( C, cuidado(D, U, P, _, C), S ),
+                                  somaL(S,R).
+
 % Invariante Estrultural:  nao permitir a insercao de conhecimento
 %                         repetido
 
