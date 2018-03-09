@@ -44,6 +44,11 @@ consultaUtente( P, E, I, S ) :- cuidado( _, _, P, _, _ ),
                                 prestador( P, _, E, I ),
                                 solucoes( ID, cuidado( _, ID, P, _, _ ), S ).
 
+
+todasIP( IDU,S ) :- 
+	prestador(Ps, _, _, Is),
+	solucoes( (Ps, Is), cuidado(_, IDU, Ps, _, _), S).
+
 % Invariante Estrultural:  nao permitir a insercao de conhecimento
 %                         repetido
 
