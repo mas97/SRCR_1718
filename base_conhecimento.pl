@@ -70,6 +70,7 @@ consultaUtente( P, E, I, S ) :- prestador( P, _, E, I ),
 				  N =< 2
 				  ).
 
+
 comprimento([], 0).
 comprimento([_|L], R) :- comprimento(L,T),
 	R is 1 + T.
