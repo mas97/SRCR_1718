@@ -1,4 +1,13 @@
 %teste
+
+
+
+
+
+
+
+
+
 % SIST. REPR. CONHECIMENTO E RACIOCINIO - MiEI/3
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
