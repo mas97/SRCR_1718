@@ -73,8 +73,8 @@ todasIP( IDU,S ) :-
 % Calculo das receitas de uma determinada Instituição (extra enunciado)
 
 receitasInst( Inst, R ) :- prestador(ID, _, _, Inst),
-						solucoes( C, cuidado(_, _, ID, _, C), S),
-						somaL(S, R).
+						   solucoes( C, cuidado(_, _, ID, _, C), S),
+						   somaL(S, R).
 
 % Invariante Estrultural:  nao permitir a insercao de conhecimento
 %                         repetido
