@@ -14,8 +14,9 @@
 % SICStus PROLOG: definicoes iniciais
 
 :- op( 900,xfy,'::' ).
-:- dynamic filho/2.
-:- dynamic pai/2.
+:- dynamic utente/4.
+:- dynamic prestador/4.
+:- dynamic cuidado/5.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado utente: IDUtente, Nome, Idade, Morada -> {V,F}
@@ -79,15 +80,30 @@ receitasInst( Inst, R ) :- prestador(ID, _, _, Inst),
 % Invariante Estrultural:  nao permitir a insercao de conhecimento
 %                         repetido
 
-+utente( IDU, N, I, M ) :: (solucoes( ( IDU, N, I, M ),(utente( IDU, N, I, M )),S ),
+% não permitir a inserção de duplicados de utente
+%+utente( IDU, No, I, M ) :: (solucoes( (IDU, No, I, M ),(utente( IDU, No, I, M )),S ),
+%                 comprimento( S,N ), 
+%                  N == 1
+%
+%                  ).
+
+
+% não permitir a inserção de utente com um ID que já está registado na base de conhecimento
++utente( IDU, No, I, M ) :: (solucoes( IDU,(utente( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
 
-% não permitir a inserção de utente com um ID que já está registado na base de conhecimento
-+utente( IDU, _, _, _ ) :: (solucoes( IDUs,(utente( IDUs, _, _, _ )),S ),
+% não permitir a inserção de duplicados de prestador
+%+prestador( ID, No, E, I) :: (solucoes((ID, No, E, I),(prestador(ID, No, E, I)),S),
+%                    comprimento( S,N ),
+%                    N == 1
+%                    ).
+
+% não permitir a inserção de prestador com um ID que já está registado na base de conhecimento
++prestador( IDU, No, E, I ) :: (solucoes( IDU,(prestador( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
-                  N =< 1
+                  N == 1
                   ).
 
 % Invariante Referencial: nao admitir mais do que 2 progenitores
