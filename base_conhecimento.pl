@@ -94,6 +94,9 @@ receitasInst( Inst, R ) :- prestador(ID, _, _, Inst),
                   N == 1
                   ).
 
+% não permitir a inserção de um utente em que a sua idade seja negativa
++utente( _, _, I, _ ) :: I > 0.
+
 % não permitir a inserção de duplicados de prestador
 %+prestador( ID, No, E, I) :: (solucoes((ID, No, E, I),(prestador(ID, No, E, I)),S),
 %                    comprimento( S,N ),
