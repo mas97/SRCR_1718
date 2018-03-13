@@ -95,11 +95,16 @@ receitasInst( Inst, R ) :- prestador(ID, _, _, Inst),
                   ).
 
 
+% não permitir a inserção de um utente em que a sua idade seja negativa
++utente( _, _, I, _ ) :: I > 0.
+
+
 %não permitir a remoção de utentes com cuidados registados
 -utente(ID, _, _, _) :: (solucoes( ID,(cuidado(_, ID, _, _, _)), S),
                           comprimento(S, N),
                           N == 0
                           ).
+
 
 % não permitir a inserção de duplicados de prestador
 %+prestador( ID, No, E, I) :: (solucoes((ID, No, E, I),(prestador(ID, No, E, I)),S),
@@ -120,7 +125,6 @@ receitasInst( Inst, R ) :- prestador(ID, _, _, Inst),
                           ).
 
 %não permitir a inserção de duplicados de cuidado
-
 +cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (D, IDU, IDP, Desc, C), (cuidado(D, IDU, IDP, Desc, C)), S),
                                   comprimento( S,N),
                                   N == 1
@@ -128,7 +132,6 @@ receitasInst( Inst, R ) :- prestador(ID, _, _, Inst),
 
 % Invariante Referencial: nao admitir mais do que 2 progenitores
 %                         para um mesmo individuo
-
 +filho( F,P ) :: (solucoes( Ps ,filho( F, Ps), S),
 				  comprimento(S,N),
 				  N =< 2
