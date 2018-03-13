@@ -86,6 +86,12 @@ consultaUtente( P, E, I, S ) :- prestador( P, _, E, I ),
                   N == 1
                   ).
 
+%não permitir a remoção de prestadores com cuidados registados
+-prestador(ID, _, _, _) :: (solucoes( ID,(cuidado(_, _, ID, _, _)), S),
+                          comprimento(S, N),
+                          N == 0
+                          ).
+
 %não permitir a inserção de duplicados de cuidado
 
 +cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (D, IDU, IDP, Desc, C), (cuidado(D, IDU, IDP, Desc, C)), S),
