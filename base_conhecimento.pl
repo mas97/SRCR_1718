@@ -130,6 +130,12 @@ receitasInst( Inst, R ) :- prestador(ID, _, _, Inst),
                                   N == 1
                                   ).
 
+%não permitir a inserção de cuidados se os intervenientes não existirem na base de conhecimento
++cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (IDU, IDP), (utente(IDU, _, _, _), prestador(IDP, _, _, _)), S),
+                                  comprimento(S, N),
+                                  N == 1
+                                  ).
+
 % Invariante Referencial: nao admitir mais do que 2 progenitores
 %                         para um mesmo individuo
 +filho( F,P ) :: (solucoes( Ps ,filho( F, Ps), S),
