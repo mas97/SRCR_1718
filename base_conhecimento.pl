@@ -73,8 +73,7 @@ receitasInst( Inst, R ) :- solucoes( C, (cuidado(_, _, ID, _, C),prestador(ID, _
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Identifica cuidados por crit�rios
-consultaCuidados( I, M, D, S ) :- prestador(ID,_,_,I),
-                                  solucoes( ( D, IDU, IDP, De, C ), cuidado( D, IDU, IDP, De, C ), S ).
+consultaCuidados( I, M, D, S ) :- solucoes( ( D, IDU, IDP, De, C ), (cuidado( D, IDU, IDP, De, C ),prestador(ID,_,_,I)), S ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Calcula o valor total dos custos de um determinado utente
