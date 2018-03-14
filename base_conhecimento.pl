@@ -29,10 +29,10 @@ utente( 6, bruno, 21, braga).
 utente( 7, hugo, 24, porto).
 utente( 8, luis, 35, lisboa).
 
-consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I, M ), S ).
 
 
-% Extens√£o do predicado prestador: IDPrestador, Nome, Especialidade, Institui√ß√£o -> {V,F}
+
+% Extens„o do predicado prestador: IDPrestador, Nome, Especialidade, InstituiÁ„o -> {V,F}
 prestador( 1, wilson, medico, um).
 prestador( 3, marciano, medico, hospitalbraga).
 prestador( 4, silvio, enfermeiro, hospitalbraga).
@@ -42,7 +42,7 @@ prestador( 6, armando, tecnicoRaioX, hospitalbraga).
 consultaInstituicoes( S ) :- solucoes( Is, prestador( _, _, _, Is ), S).
 
 
-% Extens√£o do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
+% Extens„o do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
 cuidado( 2017/03/17, 1, 1, curativo, 20 ).
 cuidado( 2018/03/01, 1, 2, consulta, 25 ).
 cuidado( 2018/03/02, 7, 4, penso, 5).
@@ -54,12 +54,30 @@ cuidado( 2018/03/07, 5, 1, exame, 100).
 cuidado( 2018/03/08, 8, 5, consulta, 20).
 cuidado( 2018/03/09, 6, 6, raioX, 75).
 
-consultaCuidados( I, M, D, S ) :- prestador(ID,_,_,I),
-                                  solucoes( ( D, IDU, IDP, De, C ), cuidado( D, IDU, IDP, De, C ), S ).
 
+% Identifica utentes por critÈrios
+consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I, M ), S ).
+
+% Identifica utentes pela instituiÁ„o prestadora de cuidados
 consultaUtente( P, E, I, S ) :- prestador( P, _, E, I ),
                                 solucoes( ID, cuidado( _, ID, P, _, _ ), S ).
 
+% Enumera todas as instituilÁıes
+todasIP( IDU,S ) :- 
+	prestador(Ps, _, _, Is),
+	solucoes( (Ps, Is), cuidado(_, IDU, Ps, _, _), S).
+
+% Calculo das receitas de uma determinada InstituiÁ„o (extra enunciado)
+
+receitasInst( Inst, R ) :- prestador(ID, _, _, Inst),
+                           solucoes( C, cuidado(_, _, ID, _, C), S),
+                           somaL(S, R).
+
+% Identifica cuidados por critÈrios
+consultaCuidados( I, M, D, S ) :- prestador(ID,_,_,I),
+                                  solucoes( ( D, IDU, IDP, De, C ), cuidado( D, IDU, IDP, De, C ), S ).
+
+% Calcula o valor total dos custos de um determinado utente
 somaL([],0).
 somaL([B|C],R) :- somaL(C,T),
                   R is T + B.
@@ -67,81 +85,47 @@ somaL([B|C],R) :- somaL(C,T),
 totalCuidados( U, E, P, D, R ) :- solucoes( C, cuidado(D, U, P, _, C), S ),
                                   somaL(S,R).
 
-todasIP( IDU,S ) :- 
-	prestador(Ps, _, _, Is),
-	solucoes( (Ps, Is), cuidado(_, IDU, Ps, _, _), S).
 
-% Calculo das receitas de uma determinada Institui√ß√£o (extra enunciado)
-
-receitasInst( Inst, R ) :- prestador(ID, _, _, Inst),
-                           solucoes( C, cuidado(_, _, ID, _, C), S),
-                           somaL(S, R).
-
-% Invariante Estrultural:  nao permitir a insercao de conhecimento
-%                         repetido
-
-% n√£o permitir a inser√ß√£o de duplicados de utente
-%+utente( IDU, No, I, M ) :: (solucoes( (IDU, No, I, M ),(utente( IDU, No, I, M )),S ),
-%                 comprimento( S,N ), 
-%                  N == 1
-%
-%                  ).
-
-
-% n√£o permitir a inser√ß√£o de utente com um ID que j√° est√° registado na base de conhecimento
+% n„o permitir a inserÁ„o de utente com um ID que j· est· registado na base de conhecimento
 +utente( IDU, No, I, M ) :: (solucoes( IDU,(utente( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
 
 
-% n√£o permitir a inser√ß√£o de um utente em que a sua idade seja negativa
+% n„o permitir a inserÁ„o de um utente cuja idade seja negativa
 +utente( _, _, I, _ ) :: I > 0.
 
 
-%n√£o permitir a remo√ß√£o de utentes com cuidados registados
+%n„o permitir a remoÁ„o de utentes com cuidados registados
 -utente(ID, _, _, _) :: (solucoes( ID,(cuidado(_, ID, _, _, _)), S),
                           comprimento(S, N),
                           N == 0
                           ).
 
-
-% n√£o permitir a inser√ß√£o de duplicados de prestador
-%+prestador( ID, No, E, I) :: (solucoes((ID, No, E, I),(prestador(ID, No, E, I)),S),
-%                    comprimento( S,N ),
-%                    N == 1
-%                    ).
-
-% n√£o permitir a inser√ß√£o de prestador com um ID que j√° est√° registado na base de conhecimento
+% n„o permitir a inserÁ„o de prestador com um ID que j· est· registado na base de conhecimento
 +prestador( IDU, No, E, I ) :: (solucoes( IDU,(prestador( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
 
-%n√£o permitir a remo√ß√£o de prestadores com cuidados registados
+%n„o permitir a remoÁ„o de prestadores com cuidados registados
 -prestador(ID, _, _, _) :: (solucoes( ID,(cuidado(_, _, ID, _, _)), S),
                           comprimento(S, N),
                           N == 0
                           ).
 
-%n√£o permitir a inser√ß√£o de duplicados de cuidado
+%n„o permitir a inserÁ„o de duplicados de cuidado
 +cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (D, IDU, IDP, Desc, C), (cuidado(D, IDU, IDP, Desc, C)), S),
                                   comprimento( S,N),
                                   N == 1
                                   ).
 
-%n√£o permitir a inser√ß√£o de cuidados se os intervenientes n√£o existirem na base de conhecimento
+%n„o permitir a inserÁ„o de cuidados se os intervenientes n„o existirem na base de conhecimento
 +cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (IDU, IDP), (utente(IDU, _, _, _), prestador(IDP, _, _, _)), S),
                                   comprimento(S, N),
                                   N == 1
                                   ).
-
-% Invariante Referencial: nao admitir mais do que 2 progenitores
-%                         para um mesmo individuo
-+filho( F,P ) :: (solucoes( Ps ,filho( F, Ps), S),
-				  comprimento(S,N),
-				  N =< 2
-				  ).
 
 
 comprimento([], 0).
@@ -157,7 +141,7 @@ teste([]).
 teste([R|L]) :- R, teste(L).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extens√£o do predicado que permite a evolucao do conhecimento
+% Extens„o do predicado que permite a evolucao do conhecimento
 
 registar( Termo ) :- solucoes(Inv, +Termo :: Inv, S),
 					 insere(Termo),
@@ -169,8 +153,3 @@ remove(P) :- assert(P), !, fail.
 remover( Termo ) :- solucoes(Inv, -Termo :: Inv, S),
 					  remove(Termo),
 					  teste(S).
-
--filho( F,P ) :: (solucoes( F ,idade( F, _), S),
-				  comprimento(S,N),
-				  N == 0
-				  ).
