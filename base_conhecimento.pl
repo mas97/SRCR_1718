@@ -67,9 +67,8 @@ somaL([B|C],R) :- somaL(C,T),
 totalCuidados( U, E, P, D, R ) :- solucoes( C, cuidado(D, U, P, _, C), S ),
                                   somaL(S,R).
 
-todasIP( IDU,S ) :- 
-	prestador(Ps, _, _, Is),
-	solucoes( (Ps, Is), cuidado(_, IDU, Ps, _, _), S).
+todasInstPrest( IDU,S ) :- 
+	solucoes( (IDU, Ps, Is), (prestador(Ps, _, _, Is),cuidado(_, IDU, Ps, _, _)), S).
 
 % Calculo das receitas de uma determinada Instituição (extra enunciado)
 
