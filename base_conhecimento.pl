@@ -55,8 +55,7 @@ consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I,
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Identifica utentes pela institui��o prestadora de cuidados
-consultaUtente( P, E, I, S ) :- prestador( P, _, E, I ),
-                                solucoes( ID, cuidado( _, ID, P, _, _ ), S ).
+consultaUtente( P, E, I, S ) :- solucoes( ID, (cuidado( _, ID, P, _, _ ) , prestador( P, _, E, I )), S ).
                                 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Identificar as instituições prestadoras de cuidados de saúde                                
@@ -69,8 +68,7 @@ todasInstPrest( IDU,S ) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Calculo das receitas de uma determinada Institui��o (extra enunciado)
-receitasInst( Inst, R ) :- prestador(ID, _, _, Inst),
-                           solucoes( C, cuidado(_, _, ID, _, C), S),
+receitasInst( Inst, R ) :- solucoes( C, (cuidado(_, _, ID, _, C),prestador(ID, _, _, Inst)) , S),
                            somaL(S, R).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
