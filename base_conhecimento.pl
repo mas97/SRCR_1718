@@ -1,9 +1,6 @@
 % SIST. REPR. CONHECIMENTO E RACIOCINIO - MiEI/3
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariantes
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % SICStus PROLOG: Declaracoes iniciais
 
 :- set_prolog_flag( discontiguous_warnings,off ).
@@ -31,18 +28,16 @@ utente( 8, luis, 35, lisboa).
 
 
 
-
-% Extensão do predicado prestador: IDPrestador, Nome, Especialidade, Instituição -> {V,F}
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensï¿½o do predicado prestador: IDPrestador, Nome, Especialidade, Instituiï¿½ï¿½o -> {V,F}
 prestador( 1, wilson, medico, um).
 prestador( 3, marciano, medico, hospitalbraga).
 prestador( 4, silvio, enfermeiro, hospitalbraga).
 prestador( 5, marcio, medico, centrosaudegualtar).
 prestador( 6, armando, tecnicoRaioX, hospitalbraga).
 
-consultaInstituicoes( S ) :- solucoes( Is, prestador( _, _, _, Is ), S).
-
-
-% Extensão do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensï¿½o do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
 cuidado( 2017/03/17, 1, 1, curativo, 20 ).
 cuidado( 2018/03/01, 1, 2, consulta, 25 ).
 cuidado( 2018/03/02, 7, 4, penso, 5).
@@ -54,29 +49,36 @@ cuidado( 2018/03/07, 5, 1, exame, 100).
 cuidado( 2018/03/08, 8, 5, consulta, 20).
 cuidado( 2018/03/09, 6, 6, raioX, 75).
 
-
-% Identifica utentes por critérios
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Identifica utentes por critï¿½rios
 consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I, M ), S ).
 
-% Identifica utentes pela instituição prestadora de cuidados
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Identifica utentes pela instituiï¿½ï¿½o prestadora de cuidados
 consultaUtente( P, E, I, S ) :- prestador( P, _, E, I ),
                                 solucoes( ID, cuidado( _, ID, P, _, _ ), S ).
+                                
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Identificar as instituiÃ§Ãµes prestadoras de cuidados de saÃºde                                
+consultaInstituicoes( S ) :- solucoes( Is, prestador( _, _, _, Is ), S).
 
-% Enumera todas as instituilções
-todasIP( IDU,S ) :- 
-	prestador(Ps, _, _, Is),
-	solucoes( (Ps, Is), cuidado(_, IDU, Ps, _, _), S).
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Determinar todas as instituiÃ§Ãµes/prestadores a que um utente jÃ¡ recorreu
+todasInstPrest( IDU,S ) :- 
+  solucoes( (IDU, Ps, Is), (prestador(Ps, _, _, Is),cuidado(_, IDU, Ps, _, _)), S).
 
-% Calculo das receitas de uma determinada Instituição (extra enunciado)
-
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Calculo das receitas de uma determinada Instituiï¿½ï¿½o (extra enunciado)
 receitasInst( Inst, R ) :- prestador(ID, _, _, Inst),
                            solucoes( C, cuidado(_, _, ID, _, C), S),
                            somaL(S, R).
 
-% Identifica cuidados por critérios
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Identifica cuidados por critï¿½rios
 consultaCuidados( I, M, D, S ) :- prestador(ID,_,_,I),
                                   solucoes( ( D, IDU, IDP, De, C ), cuidado( D, IDU, IDP, De, C ), S ).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Calcula o valor total dos custos de um determinado utente
 somaL([],0).
 somaL([B|C],R) :- somaL(C,T),
@@ -86,67 +88,81 @@ totalCuidados( U, E, P, D, R ) :- solucoes( C, cuidado(D, U, P, _, C), S ),
                                   somaL(S,R).
 
 
-% não permitir a inserção de utente com um ID que já está registado na base de conhecimento
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% INVARIANTES -------------------- - - - - - - - - - -  -  -  -  -   -
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% nï¿½o permitir a inserï¿½ï¿½o de utente com um ID que jï¿½ estï¿½ registado na base de conhecimento
 +utente( IDU, No, I, M ) :: (solucoes( IDU,(utente( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
 
-
-% não permitir a inserção de um utente cuja idade seja negativa
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% nï¿½o permitir a inserï¿½ï¿½o de um utente cuja idade seja negativa
 +utente( _, _, I, _ ) :: I > 0.
 
-
-%não permitir a remoção de utentes com cuidados registados
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nï¿½o permitir a remoï¿½ï¿½o de utentes com cuidados registados
 -utente(ID, _, _, _) :: (solucoes( ID,(cuidado(_, ID, _, _, _)), S),
                           comprimento(S, N),
                           N == 0
                           ).
 
-% não permitir a inserção de prestador com um ID que já está registado na base de conhecimento
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% nï¿½o permitir a inserï¿½ï¿½o de prestador com um ID que jï¿½ estï¿½ registado na base de conhecimento
 +prestador( IDU, No, E, I ) :: (solucoes( IDU,(prestador( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
 
-%não permitir a remoção de prestadores com cuidados registados
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nï¿½o permitir a remoï¿½ï¿½o de prestadores com cuidados registados
 -prestador(ID, _, _, _) :: (solucoes( ID,(cuidado(_, _, ID, _, _)), S),
                           comprimento(S, N),
                           N == 0
                           ).
 
-%não permitir a inserção de duplicados de cuidado
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nï¿½o permitir a inserï¿½ï¿½o de duplicados de cuidado
 +cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (D, IDU, IDP, Desc, C), (cuidado(D, IDU, IDP, Desc, C)), S),
                                   comprimento( S,N),
                                   N == 1
                                   ).
 
-%não permitir a inserção de cuidados se os intervenientes não existirem na base de conhecimento
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nï¿½o permitir a inserï¿½ï¿½o de cuidados se os intervenientes nï¿½o existirem na base de conhecimento
 +cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (IDU, IDP), (utente(IDU, _, _, _), prestador(IDP, _, _, _)), S),
                                   comprimento(S, N),
                                   N == 1
                                   ).
 
-
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Calcula o comprimento de uma lista.
 comprimento([], 0).
 comprimento([_|L], R) :- comprimento(L,T),
 	R is 1 + T.
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 solucoes(X,Y,Z) :- findall(X,Y,Z).
 
-insere(P) :- assert(P).
-insere(P) :- retract(P), !, fail.
 
 teste([]).
 teste([R|L]) :- R, teste(L).
 
+
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extensão do predicado que permite a evolucao do conhecimento
+% Regista um termo na base de conhecimento
+insere(P) :- assert(P).
+insere(P) :- retract(P), !, fail.
 
 registar( Termo ) :- solucoes(Inv, +Termo :: Inv, S),
 					 insere(Termo),
 					 teste(S).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Remove um termo da base de conhecimento
 remove(P) :- retract(P).
 remove(P) :- assert(P), !, fail.
 
