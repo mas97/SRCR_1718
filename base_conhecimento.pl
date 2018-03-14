@@ -14,6 +14,7 @@
 :- dynamic utente/4.
 :- dynamic prestador/4.
 :- dynamic cuidado/5.
+:- dynamic instituicao/3.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado utente: IDUtente, Nome, Idade, Morada -> {V,F}
@@ -29,12 +30,13 @@ utente( 8, luis, 35, lisboa).
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extens�o do predicado prestador: IDPrestador, Nome, Especialidade, Institui��o -> {V,F}
-prestador( 1, wilson, medico, um).
-prestador( 3, marciano, medico, hospitalbraga).
-prestador( 4, silvio, enfermeiro, hospitalbraga).
-prestador( 5, marcio, medico, centrosaudegualtar).
-prestador( 6, armando, tecnicoRaioX, hospitalbraga).
+% Extens�o do predicado prestador: IDPrestador, Nome, Especialidade, IDInst -> {V,F}
+prestador( 1, wilson, medico, 2).
+prestador( 2, eduardo, cirurgiao, 1).
+prestador( 3, marciano, medico, 1).
+prestador( 4, silvio, enfermeiro, 4).
+prestador( 5, marcio, medico, 5).
+prestador( 6, armando, tecnicoRaioX, 3).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extens�o do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
@@ -50,6 +52,19 @@ cuidado( 2018/03/08, 8, 5, consulta, 20).
 cuidado( 2018/03/09, 6, 6, raioX, 75).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extens�o do predicado instituicao: IDInst, Nome, Cidade -> {V,F}
+instituicao(1, hospitalbraga, braga).
+instituicao(2, hospitalsaojoao, porto).
+instituicao(3, hospitalsantamaria, porto).
+instituicao(4, hospitaltrofa, porto).
+instituicao(5, centrosaudegualtar, braga).
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% 
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Identifica utentes por crit�rios
 consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I, M ), S ).
 
@@ -59,12 +74,12 @@ consultaUtente( P, E, I, S ) :- solucoes( ID, (cuidado( _, ID, P, _, _ ) , prest
                                 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Identificar as instituições prestadoras de cuidados de saúde                                
-consultaInstituicoes( S ) :- solucoes( Is, prestador( _, _, _, Is ), S).
+consultaInstituicoes( S ) :- solucoes( (Id, N), ( prestador( _, _, _, Id ), instituicao(Id, N, _) ), S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Determinar todas as instituições/prestadores a que um utente já recorreu
 todasInstPrest( IDU,S ) :- 
-  solucoes( (IDU, Ps, Is), (prestador(Ps, _, _, Is),cuidado(_, IDU, Ps, _, _)), S).
+  solucoes( (IDU, Ps, Id), (prestador(Ps, _, _, Id),cuidado(_, IDU, Ps, _, _)), S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Calculo das receitas de uma determinada Institui��o (extra enunciado)
@@ -109,7 +124,7 @@ totalCuidados( U, E, P, D, R ) :- solucoes( C, cuidado(D, U, P, _, C), S ),
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % n�o permitir a inser��o de prestador com um ID que j� est� registado na base de conhecimento
-+prestador( IDU, No, E, I ) :: (solucoes( IDU,(prestador( IDU, _, _, _ )),S ),
++prestador( IDU, _, _, _ ) :: (solucoes( IDU,(prestador( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
@@ -130,7 +145,7 @@ totalCuidados( U, E, P, D, R ) :- solucoes( C, cuidado(D, U, P, _, C), S ),
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %n�o permitir a inser��o de cuidados se os intervenientes n�o existirem na base de conhecimento
-+cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (IDU, IDP), (utente(IDU, _, _, _), prestador(IDP, _, _, _)), S),
++cuidado(_, IDU, IDP, _, _) :: (solucoes( (IDU, IDP), (utente(IDU, _, _, _), prestador(IDP, _, _, _)), S),
                                   comprimento(S, N),
                                   N == 1
                                   ).
