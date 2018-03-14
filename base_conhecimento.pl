@@ -28,6 +28,7 @@ utente( 5, rafael, 23, porto).
 utente( 6, bruno, 21, braga).
 utente( 7, hugo, 24, porto).
 utente( 8, luis, 35, lisboa).
+utente( 9, adknbfvekr, 35, lisboa).
 
 consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I, M ), S ).
 
