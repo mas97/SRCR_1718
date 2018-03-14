@@ -61,7 +61,9 @@ instituicao(5, centrosaudegualtar, braga).
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% 
+% Quantos prestadores tem uma instituicao
+quantosPrest(I, N) :- solucoes((ID, No, E, I), prestador(ID, No, E, I), S),
+                   comprimento(S, N).
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
