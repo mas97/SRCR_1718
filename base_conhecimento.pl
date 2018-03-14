@@ -28,7 +28,6 @@ utente( 5, rafael, 23, porto).
 utente( 6, bruno, 21, braga).
 utente( 7, hugo, 24, porto).
 utente( 8, luis, 35, lisboa).
-utente( 9, adknbfvekr, 35, lisboa).
 
 consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I, M ), S ).
 
@@ -68,8 +67,9 @@ somaL([B|C],R) :- somaL(C,T),
 totalCuidados( U, E, P, D, R ) :- solucoes( C, cuidado(D, U, P, _, C), S ),
                                   somaL(S,R).
 
-todasInstPrest( IDU,S ) :- 
-	solucoes( (IDU, Ps, Is), (prestador(Ps, _, _, Is),cuidado(_, IDU, Ps, _, _)), S).
+todasIP( IDU,S ) :- 
+	prestador(Ps, _, _, Is),
+	solucoes( (Ps, Is), cuidado(_, IDU, Ps, _, _), S).
 
 % Calculo das receitas de uma determinada Instituição (extra enunciado)
 
@@ -127,12 +127,6 @@ receitasInst( Inst, R ) :- prestador(ID, _, _, Inst),
 %não permitir a inserção de duplicados de cuidado
 +cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (D, IDU, IDP, Desc, C), (cuidado(D, IDU, IDP, Desc, C)), S),
                                   comprimento( S,N),
-                                  N == 1
-                                  ).
-
-%não permitir a inserção de cuidados se os intervenientes não existirem na base de conhecimento
-+cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (IDU, IDP), (utente(IDU, _, _, _), prestador(IDP, _, _, _)), S),
-                                  comprimento(S, N),
                                   N == 1
                                   ).
 
