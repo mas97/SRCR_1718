@@ -102,7 +102,7 @@ totalCuidados( U, E, P, D, R ) :- solucoes( C, (cuidado(D, U, P, _, C), prestado
 
 %cuidadosInst( IDInst , Inst , S ) :- solucoes( (IDInst, Esp) , (instituicao( IDInst , Inst, _ ) , prestador( _ , _ , Esp, IDInst )), S).
 
-cuidadosInst( IDInst , Inst , S ) :- solucoes( (IDInst, Esp, Desc) , (instituicao( IDInst , Inst, _ ) , prestador( IDPrest , _ , Esp, IDInst ), cuidado(_,_,IDPrest, Desc, _)), S).
+cuidadosInst( IDInst , S ) :- solucoes( (IDInst, Esp, Desc) , (instituicao( IDInst , _ , _ ) , prestador( IDPrest , _ , Esp, IDInst ), cuidado(_,_,IDPrest, Desc, _)), S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % INVARIANTES -------------------- - - - - - - - - - -  -  -  -  -   -
