@@ -30,7 +30,7 @@ utente( 8, luis, 35, lisboa).
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extens�o do predicado prestador: IDPrestador, Nome, Especialidade, IDInst -> {V,F}
+% Extensao do predicado prestador: IDPrestador, Nome, Especialidade, IDInst -> {V,F}
 prestador( 1, wilson, medico, 2).
 prestador( 2, eduardo, cirurgiao, 1).
 prestador( 3, marciano, medico, 1).
@@ -39,7 +39,7 @@ prestador( 5, marcio, medico, 5).
 prestador( 6, armando, tecnicoRaioX, 3).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extens�o do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
+% Extensao do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
 cuidado( 2017/03/17, 1, 1, curativo, 20 ).
 cuidado( 2018/03/01, 1, 2, consulta, 25 ).
 cuidado( 2018/03/02, 7, 4, penso, 5).
@@ -52,7 +52,7 @@ cuidado( 2018/03/08, 8, 5, consulta, 20).
 cuidado( 2018/03/09, 6, 6, raioX, 75).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extens�o do predicado instituicao: IDInst, Nome, Cidade -> {V,F}
+% Extensao do predicado instituicao: IDInst, Nome, Cidade -> {V,F}
 instituicao(1, hospitalbraga, braga).
 instituicao(2, hospitalsaojoao, porto).
 instituicao(3, hospitalsantamaria, porto).
@@ -67,11 +67,11 @@ quantosPrest(I, N) :- solucoes((ID, No, E, I), prestador(ID, No, E, I), S),
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Identifica utentes por crit�rios
+% Identifica utentes por criterios
 consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I, M ), S ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Identifica utentes pela institui��o prestadora de cuidados
+% Identifica utentes pela instituicao prestadora de cuidados
 consultaUtente( P, E, I, S ) :- solucoes( ID, (cuidado( _, ID, P, _, _ ) , prestador( P, _, E, I )), S ).
                                 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -84,12 +84,12 @@ todasInstPrest( IDU,S ) :-
   solucoes( (IDU, Ps, Id), (prestador(Ps, _, _, Id),cuidado(_, IDU, Ps, _, _)), S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Calculo das receitas de uma determinada Institui��o (extra enunciado)
+% Calculo das receitas de uma determinada Instituicao (extra enunciado)
 receitasInst( Inst, R ) :- solucoes( C, (cuidado(_, _, ID, _, C),prestador(ID, _, _, Inst)) , S),
                            somaL(S, R).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Identifica cuidados por crit�rios
+% Identifica cuidados por criterios
 consultaCuidados( I, M, D, S ) :- 
 	solucoes( ( D, IDU, IDP, De, C ), (prestador(ID,_,_,I),cuidado( D, IDU, IDP, De, C )), S ).
 
@@ -111,46 +111,46 @@ cuidadosInst( IDInst , S ) :- solucoes( (IDInst, Esp, Desc) , (instituicao( IDIn
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% n�o permitir a inser��o de utente com um ID que j� est� registado na base de conhecimento
+% nao permitir a insercao de utente com um ID que ja esta registado na base de conhecimento
 +utente( IDU, No, I, M ) :: (solucoes( IDU,(utente( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% n�o permitir a inser��o de um utente cuja idade seja negativa
+% nao permitir a insercao de um utente cuja idade seja negativa
 +utente( _, _, I, _ ) :: I > 0.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%n�o permitir a remo��o de utentes com cuidados registados
+%nao permitir a remocao de utentes com cuidados registados
 -utente(ID, _, _, _) :: (solucoes( ID,(cuidado(_, ID, _, _, _)), S),
                           comprimento(S, N),
                           N == 0
                           ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% n�o permitir a inser��o de prestador com um ID que j� est� registado na base de conhecimento
+% nao permitir a insercao de prestador com um ID que ja esta registado na base de conhecimento
 +prestador( IDU, _, _, _ ) :: (solucoes( IDU,(prestador( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%n�o permitir a remo��o de prestadores com cuidados registados
+%nao permitir a remocao de prestadores com cuidados registados
 -prestador(ID, _, _, _) :: (solucoes( ID,(cuidado(_, _, ID, _, _)), S),
                           comprimento(S, N),
                           N == 0
                           ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%n�o permitir a inser��o de duplicados de cuidado
+%nao permitir a insercao de duplicados de cuidado
 +cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (D, IDU, IDP, Desc, C), (cuidado(D, IDU, IDP, Desc, C)), S),
                                   comprimento( S,N),
                                   N == 1
                                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%n�o permitir a inser��o de cuidados se os intervenientes n�o existirem na base de conhecimento
+%nao permitir a insercao de cuidados se os intervenientes nao existirem na base de conhecimento
 +cuidado(_, IDU, IDP, _, _) :: (solucoes( (IDU, IDP), (utente(IDU, _, _, _), prestador(IDP, _, _, _)), S),
                                   comprimento(S, N),
                                   N == 1
