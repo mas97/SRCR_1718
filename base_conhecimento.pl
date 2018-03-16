@@ -102,6 +102,9 @@ somaL([B|C],R) :- somaL(C,T),
 totalCuidados( U, E, P, D, R ) :- solucoes( C, (cuidado(D, U, P, _, C), prestador(_,_,E,_)), S ),
                                   somaL(S,R).
 
+%cuidadosInst( IDInst , Inst , S ) :- solucoes( (IDInst, Esp) , (instituicao( IDInst , Inst, _ ) , prestador( _ , _ , Esp, IDInst )), S).
+
+cuidadosInst( IDInst , S ) :- solucoes( (IDInst, Esp, Desc) , (instituicao( IDInst , _ , _ ) , prestador( IDPrest , _ , Esp, IDInst ), cuidado(_,_,IDPrest, Desc, _)), S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % INVARIANTES -------------------- - - - - - - - - - -  -  -  -  -   -
