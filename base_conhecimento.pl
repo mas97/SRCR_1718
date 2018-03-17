@@ -17,6 +17,11 @@
 :- dynamic instituicao/3.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Bibliotecas
+:- use_module(library(lists)).
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado utente: IDUtente, Nome, Idade, Morada -> {V,F}
 utente( 1, marco, 25, braga).
 utente( 2, afonso, 30, braga).
@@ -26,8 +31,6 @@ utente( 5, rafael, 23, porto).
 utente( 6, bruno, 21, braga).
 utente( 7, hugo, 24, porto).
 utente( 8, luis, 35, lisboa).
-
-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado prestador: IDPrestador, Nome, Especialidade, IDInst -> {V,F}
@@ -46,10 +49,12 @@ cuidado( 2018/03/02, 7, 4, penso, 5).
 cuidado( 2018/03/03, 2, 5, consulta, 18).
 cuidado( 2018/03/04, 5, 4, penso, 8).
 cuidado( 2018/03/05, 6, 3, consulta, 19).
-cuidado( 2018/03/06, 8, 4, penso, 6).
 cuidado( 2018/03/07, 5, 1, exame, 100).
-cuidado( 2018/03/08, 8, 5, consulta, 20).
 cuidado( 2018/03/09, 6, 6, raioX, 75).
+cuidado( 2018/03/06, 8, 4, penso, 6).
+cuidado( 2018/03/08, 8, 5, consulta, 20).
+cuidado( 2018/07/25, 8, 2, exame, 40).
+cuidado( 2018/10/22, 8, 1, consulta, 20).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado instituicao: IDInst, Nome, Cidade -> {V,F}
@@ -64,7 +69,6 @@ instituicao(5, centrosaudegualtar, braga).
 % Quantos prestadores tem uma instituicao
 quantosPrest(I, N) :- solucoes((ID, No, E, I), prestador(ID, No, E, I), S),
                    comprimento(S, N).
-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Identifica utentes por criterios
@@ -105,6 +109,30 @@ totalCuidados( U, E, P, D, R ) :- solucoes( C, (cuidado(D, U, P, _, C), prestado
 %cuidadosInst( IDInst , Inst , S ) :- solucoes( (IDInst, Esp) , (instituicao( IDInst , Inst, _ ) , prestador( _ , _ , Esp, IDInst )), S).
 
 cuidadosInst( IDInst , S ) :- solucoes( (IDInst, Esp, Desc) , (instituicao( IDInst , _ , _ ) , prestador( IDPrest , _ , Esp, IDInst ), cuidado(_,_,IDPrest, Desc, _)), S).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Cuidado de saúde mais frequente para um determinado utente
+
+conta(X,[],[],0).
+conta(X, [X|L], Lr, R) :-
+	conta(X,L,Lr,S),
+	R is S + 1.
+conta(X, [H|L], [H|Lr], S) :-
+	conta(X,L,Lr,S),
+	X \= H.
+
+pairFreq([],[]).
+pairFreq([H|T],[(R3,H)|R2]) :- 
+	conta(H, T, Lr, R1),
+	R3 is R1 + 1,
+	pairFreq(Lr, R2).
+
+cuidadosUtente(IDU, Rff) :- 
+	solucoes( D, cuidado(_,IDU,_,D,_), S ),
+	pairFreq(S, R),
+	sort(R,Rf),
+	reverse(Rf,Rff).
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % INVARIANTES -------------------- - - - - - - - - - -  -  -  -  -   -
