@@ -18,7 +18,8 @@
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Bibliotecas
-:- use_module(library(pairs)).
+:- use_module(library(lists)).
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado utente: IDUtente, Nome, Idade, Morada -> {V,F}
@@ -108,50 +109,26 @@ cuidadosInst( IDInst , S ) :- solucoes( (IDInst, Esp, Desc) , (instituicao( IDIn
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Cuidado de saúde mais frequente para um determinado utente
-conta(X,[],0).
-conta(X, [X], 1).
-conta(X, [H|L], R) :-
-	X == H,
-	conta(X,L,S),
+
+conta(X,[],[],0).
+conta(X, [X|L], Lr, R) :-
+	conta(X,L,Lr,S),
 	R is S + 1.
-conta(X, [H|L], S) :-
-	conta(X,L,S).
+conta(X, [H|L], [H|Lr], S) :-
+	conta(X,L,Lr,S),
+	X \= H.
 
-pertenceP((X,_), [(X,_)]).
-pertenceP((X,N), [(H,_)|L]) :-
-	X == H,
-	pertenceP((X,N),L).
-
-pertence(X, [X|L]).
-pertence(X, [H|L]) :-
-	X \= H,
-	pertence(X,L).
-
-nao(Q) :- Q, !, fail.
-nao(Q).
-
-diferentes([],[]).
-diferentes([H|T],R) :-
-	pertence(H,T),
-	diferentes(T,R).
-diferentes([H|T],[H|R]) :-
-	nao( pertence(H,T) ),
-	diferentes(T,R).
-	
 pairFreq([],[]).
-pairFreq([H|T],[(H,R3)|R2]) :- 
-	conta(H, T, R1),
+pairFreq([H|T],[(R3,H)|R2]) :- 
+	conta(H, T, Lr, R1),
 	R3 is R1 + 1,
-	pairFreq(T, R2).
+	pairFreq(Lr, R2).
 
-cuidadosUtente(IDU, R) :- 
-	solucoes( D, cuidado(_,IDU,_,D,_), S ),!,
-	pairFreq(S, R).
-
-cuidadosUtente1(IDU, Rf) :- 
+cuidadosUtente(IDU, Rff) :- 
 	solucoes( D, cuidado(_,IDU,_,D,_), S ),
 	pairFreq(S, R),
-	diferentes(R, Rf).
+	sort(R,Rf),
+	reverse(Rf,Rff).
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
