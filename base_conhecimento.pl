@@ -88,7 +88,6 @@ receitasInst( Inst, R ) :- solucoes( C, (cuidado(_, _, ID, _, C),prestador(ID, _
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Identifica cuidados por crit�rios
-%consultaCuidados( I, M, D, S ) :- solucoes( ( D, IDU, IDP, De, C ), (prestador(ID,_,_,I),cuidado( D, IDU, IDP, De, C )), S ).
 consultaCuidados( IDI, Ci, D, S ) :- 
   solucoes( ( D, IDU, IDP, De, C ), (instituicao(IDI, _, Ci), prestador(IDP,_,_,IDI),cuidado( D, IDU, IDP, De, C )), S ).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
