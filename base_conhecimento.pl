@@ -77,6 +77,13 @@ receitasInst( Inst, R ) :- prestador(ID, _, _, Inst),
                            solucoes( C, cuidado(_, _, ID, _, C), S),
                            somaL(S, R).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -  - DONE
+% Relatório de contas de uma instituição dado o mes e o ano
+% 
+
+relatContas( Data,IDInst, S) :- solucoes( ( Data, IDUtente, IDPrestador, Especialidade, Descricao, Custo), (prestador(IDPrestador,_,Especialidade,IDInst),cuidado( Data, IDUtente, IDPrestador, Descricao, Custo )), S ).
+
+
 % Invariante Estrultural:  nao permitir a insercao de conhecimento
 %                         repetido
 
