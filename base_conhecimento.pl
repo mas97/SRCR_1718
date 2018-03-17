@@ -80,7 +80,7 @@ consultaUtente( P, E, I, S ) :- solucoes( ID, (cuidado( _, ID, P, _, _ ) , prest
                                 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Identificar as instituições prestadoras de cuidados de saúde                                
-consultaInstituicoes( S ) :- solucoes( (Id, N), ( prestador( _, _, _, Id ), instituicao(Id, N, _) ), S).
+consultaInstituicoes( S ) :- solucoes( (Id, N), instituicao(Id, N, _), S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Determinar todas as instituições/prestadores a que um utente já recorreu
