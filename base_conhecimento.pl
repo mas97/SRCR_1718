@@ -31,7 +31,7 @@ utente( 8, luis, 35, lisboa).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extens�o do predicado prestador: IDPrestador, Nome, Especialidade, IDInst -> {V,F}
-prestador( 1, wilson, medico, 2).
+prestador( 1, wilson, medico, 1).
 prestador( 2, eduardo, cirurgiao, 1).
 prestador( 3, marciano, medico, 1).
 prestador( 4, silvio, enfermeiro, 4).
@@ -45,7 +45,7 @@ cuidado( 2018/03/01, 1, 2, consulta, 25 ).
 cuidado( 2018/03/02, 7, 4, penso, 5).
 cuidado( 2018/03/03, 2, 5, consulta, 18).
 cuidado( 2018/03/04, 5, 4, penso, 8).
-cuidado( 2018/03/05, 6, 3, consulta, 19).
+cuidado( 2018/03/05, 6, 6, consulta, 19).
 cuidado( 2018/03/06, 8, 4, penso, 6).
 cuidado( 2018/03/07, 5, 1, exame, 100).
 cuidado( 2018/03/08, 8, 5, consulta, 20).
@@ -73,11 +73,11 @@ consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I,
 consultaUtente( P, E, I, S ) :- solucoes( ID, (cuidado( _, ID, P, _, _ ) , prestador( P, _, E, I )), S ).
                                 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Identificar as instituições prestadoras de cuidados de saúde                                
+% Identificar as instituições prestadoras de cuidados de saúde //repetidos?\\
 consultaInstituicoes( S ) :- solucoes( (Id, N), ( prestador( _, _, _, Id ), instituicao(Id, N, _) ), S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Determinar todas as instituições/prestadores a que um utente já recorreu
+% Determinar todas as instituições/prestadores a que um utente já recorreu //repetidos?\\
 todasInstPrest( IDU,S ) :- 
   solucoes( (IDU, Ps, Id), (prestador(Ps, _, _, Id),cuidado(_, IDU, Ps, _, _)), S).
 
@@ -99,6 +99,13 @@ somaL([B|C],R) :- somaL(C,T),
 
 totalCuidados( U, E, P, D, R ) :- solucoes( C, (cuidado(D, U, P, _, C), prestador(_,_,E,_)), S ),
                                   somaL(S,R).
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -  - DONE
+% Relatório de contas de uma instituição dado o mes e o ano
+% 
+
+relatContas( Data,IDInst, S) :- solucoes( ( Data, IDUtente, IDPrestador, Especialidade, Descricao, Custo), (prestador(IDPrestador,_,Especialidade,IDInst),cuidado( Data, IDUtente, IDPrestador, Descricao, Custo )), S ).
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
