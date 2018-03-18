@@ -200,6 +200,13 @@ relatContas( A/M,IDI, Rf) :-
                                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de duplicados de instituicao
++instituicao(IDInst, _, _) :: (solucoes( IDInst ,instituicao(IDInst, _, _), S),
+                                  comprimento( S,N),
+                                  N == 1
+                                  ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Calcula o comprimento de uma lista.
 comprimento([], 0).
 comprimento([_|L], R) :- comprimento(L,T),
