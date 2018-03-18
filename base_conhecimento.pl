@@ -40,6 +40,7 @@ prestador( 3, marciano, medico, 1).
 prestador( 4, silvio, enfermeiro, 4).
 prestador( 5, marcio, medico, 5).
 prestador( 6, armando, tecnicoRaioX, 3).
+prestador( 7, paulo, tecnicoRaioX, 6).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
@@ -63,7 +64,7 @@ instituicao(2, hospitalsaojoao, porto).
 instituicao(3, hospitalsantamaria, porto).
 instituicao(4, hospitaltrofa, porto).
 instituicao(5, centrosaudegualtar, braga).
-
+instituicao(6, hospitalaveiro, aveiro).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Quantos prestadores tem uma instituicao
@@ -79,8 +80,8 @@ consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I,
 consultaUtente( P, E, I, S ) :- solucoes( ID, (cuidado( _, ID, P, _, _ ) , prestador( P, _, E, I )), S ).
                                 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Identificar as instituições prestadoras de cuidados de saúde                                
-consultaInstituicoes( S ) :- solucoes( (Id, N), ( prestador( _, _, _, Id ), instituicao(Id, N, _) ), S).
+% Identificar as instituições prestadoras de cuidados de saúde por criterios desde que estas tenham cuidados registados
+consultaInstituicoes( Id, N, C, R ) :- solucoes( (Id, N, C), ( instituicao(Id, N, C), cuidado(_, _, IdP, _, _), prestador(IdP, _, _, Id) ), S), sort(S, R).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Determinar todas as instituições/prestadores a que um utente já recorreu
