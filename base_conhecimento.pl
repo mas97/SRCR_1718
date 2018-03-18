@@ -146,10 +146,6 @@ cuidadosUtente(IDU, Rff) :-
                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% nao permitir a insercao de um utente cuja idade seja negativa
-+utente( _, _, I, _ ) :: I > 0.
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a remocao de utentes com cuidados registados
 -utente(ID, _, _, _) :: (solucoes( ID,(cuidado(_, ID, _, _, _)), S),
                           comprimento(S, N),
