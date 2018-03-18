@@ -77,7 +77,7 @@ consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I,
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Identifica utentes pela instituicao prestadora de cuidados
-consultaUtente( P, E, I, S ) :- solucoes( ID, (cuidado( _, ID, P, _, _ ) , prestador( P, _, E, I )), S ).
+consultaUtente( P, E, I, R ) :- solucoes( (ID, N, Id, M), ( cuidado( _, ID, P, _, _ ) , prestador( P, _, E, I ), utente(ID, N, Id, M) ), S ), sort(S, R).
                                 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Identificar as instituições prestadoras de cuidados de saúde por criterios desde que estas tenham cuidados registados
