@@ -207,6 +207,13 @@ relatContas( A/M,IDI, Rf) :-
                                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a remocao de instituições com prestadores dessa mesma instituição
+-instituicao(ID, _, _) :: (solucoes( ID,(prestador(_, _, _, ID)), S),
+                          comprimento(S, N),
+                          N == 0
+                          ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Calcula o comprimento de uma lista.
 comprimento([], 0).
 comprimento([_|L], R) :- comprimento(L,T),
