@@ -134,6 +134,24 @@ cuidadosUtente(IDU, Rff) :-
 	sort(R,Rf),
 	reverse(Rf,Rff).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -  - DONE
+% Relatório de contas de uma instituição dado o mes e o ano
+
+calcTotal([], 0).
+calcTotal([(_, _, _, _, Cus)|L], T) :-
+	calcTotal(L,Tr),
+	T is Cus + Tr.
+
+addTotal(T, [], [(total -> T)]).
+addTotal(T, [H|L], [H|Lr]) :-
+	addTotal(T, L, Lr).
+
+
+relatContas( A/M,IDI, Rf) :- 
+	solucoes( ( A/M/D, IDU, Desc, Esp, Cus), (prestador(IDP,_,Esp,IDI),cuidado( A/M/D, IDU, IDP, Desc, Cus )), S ),
+	calcTotal(S, T),
+	addTotal(T, S, Rf).
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % INVARIANTES -------------------- - - - - - - - - - -  -  -  -  -   -
