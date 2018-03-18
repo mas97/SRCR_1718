@@ -94,8 +94,8 @@ receitasInst( Inst, R ) :- solucoes( C, (cuidado(_, _, ID, _, C),prestador(ID, _
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Identifica cuidados por criterios
-consultaCuidados( I, M, D, S ) :- 
-	solucoes( ( D, IDU, IDP, De, C ), (prestador(ID,_,_,I),cuidado( D, IDU, IDP, De, C )), S ).
+consultaCuidados( IDI, Ci, D, S ) :- 
+  solucoes( ( D, IDU, IDP, De, C ), (instituicao(IDI, _, Ci), prestador(IDP,_,_,IDI),cuidado( D, IDU, IDP, De, C )), S ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Calcula o valor total dos custos de um determinado utente
@@ -106,9 +106,9 @@ somaL([B|C],R) :- somaL(C,T),
 totalCuidados( U, E, P, D, R ) :- solucoes( C, (cuidado(D, U, P, _, C), prestador(_,_,E,_)), S ),
                                   somaL(S,R).
 
-%cuidadosInst( IDInst , Inst , S ) :- solucoes( (IDInst, Esp) , (instituicao( IDInst , Inst, _ ) , prestador( _ , _ , Esp, IDInst )), S).
-
-cuidadosInst( IDInst , S ) :- solucoes( (IDInst, Esp, Desc) , (instituicao( IDInst , _ , _ ) , prestador( IDPrest , _ , Esp, IDInst ), cuidado(_,_,IDPrest, Desc, _)), S).
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Identifica todos os cuidados prestados por uma determinada instituição
+cuidadosInst( IDInst , S ) :- solucoes( (IDInst, Desc) , (prestador( IDPrest , _ , _, IDInst ), cuidado(_,_,IDPrest, Desc, _)), S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Cuidado de saúde mais frequente para um determinado utente
