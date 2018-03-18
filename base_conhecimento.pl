@@ -141,7 +141,7 @@ calcTotal([(_, _, _, _, Cus)|L], T) :-
 	calcTotal(L,Tr),
 	T is Cus + Tr.
 
-addTotal(T, [], [T]).
+addTotal(T, [], [(total -> T)]).
 addTotal(T, [H|L], [H|Lr]) :-
 	addTotal(T, L, Lr).
 
