@@ -136,7 +136,7 @@ cuidadosUtente(IDU, Rff) :-
 %--------------------------------- - - - - - - - - - -  -  -  -  -  - DONE
 % Relatório de contas de uma instituição dado o mes e o ano
 %
-relatContas( D,IDI, S) :- solucoes( ( D, IDU, Desc, Esp, Cus), (prestador(IDP,_,Esp,IDI),cuidado( D, IDU, IDP, Desc, Cus )), S ).
+relatContas( A/M,IDI, S) :- solucoes( ( A/M/D, IDU, Desc, Esp, Cus), (prestador(IDP,_,Esp,IDI),cuidado( A/M/D, IDU, IDP, Desc, Cus )), S ).
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
