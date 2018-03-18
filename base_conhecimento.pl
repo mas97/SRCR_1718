@@ -108,7 +108,7 @@ totalCuidados( U, E, P, D, R ) :- solucoes( C, (cuidado(D, U, P, _, C), prestado
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Identifica todos os cuidados prestados por uma determinada instituição
-cuidadosInst( IDInst , S ) :- solucoes( (IDInst, Esp, Desc) , (prestador( IDPrest , _ , Esp, IDInst ), cuidado(_,_,IDPrest, Desc, _)), S).
+cuidadosInst( IDInst , S ) :- solucoes( (IDInst, Desc) , (prestador( IDPrest , _ , _, IDInst ), cuidado(_,_,IDPrest, Desc, _)), S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Cuidado de saúde mais frequente para um determinado utente
