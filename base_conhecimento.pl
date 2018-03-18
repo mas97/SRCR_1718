@@ -100,7 +100,7 @@ totalCuidados( U, E, P, D, R ) :- solucoes( C, (cuidado(D, U, P, _, C), prestado
                                   somaL(S,R).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Devolve todos os cuidados prestados por uma determinada instituição
+% Identifica todos os cuidados prestados por uma determinada instituição
 cuidadosInst( IDInst , S ) :- solucoes( (IDInst, Esp, Desc) , (prestador( IDPrest , _ , Esp, IDInst ), cuidado(_,_,IDPrest, Desc, _)), S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
