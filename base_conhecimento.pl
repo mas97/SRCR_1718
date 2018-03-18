@@ -86,7 +86,7 @@ consultaInstituicoes( Id, N, C, R ) :- solucoes( (Id, N, C), ( instituicao(Id, N
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Determinar todas as instituições/prestadores a que um utente já recorreu
 todasInstPrest( IDU,S ) :- 
-  solucoes( (IDU, Ps, Id), (prestador(Ps, _, _, Id),cuidado(_, IDU, Ps, _, _)), S).
+  solucoes( (Ps, Id), (prestador(Ps, _, _, Id),cuidado(_, IDU, Ps, _, _)), S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Calculo das receitas de uma determinada Instituicao (extra enunciado)
