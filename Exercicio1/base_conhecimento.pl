@@ -134,7 +134,7 @@ cuidadosUtente(IDU, Rff) :-
 	sort(R,Rf),
 	reverse(Rf,Rff).
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -  -
+%--------------------------------- - - - - - - - - - -  -  -  -  -  - 
 % Relatório de contas de uma instituição dado o mes e o ano
 
 calcTotal([], 0).
