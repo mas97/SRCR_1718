@@ -20,7 +20,22 @@
 % Bibliotecas
 :- use_module(library(lists)).
 
+-utente( IDU, N, I, M ) :-
+        nao( utente( IDU, N, I, M ) ),
+        nao( excecao( utente( IDU, N, I, M ) ) ).
 
+
+-prestador(ID, No, E, I) :-
+        nao( prestador(ID, No, E, I) ),
+        nao( excecao( prestador(ID, No, E, I) ) ).
+
+-cuidado( D, IDU, IDP, De, C ) :-
+        nao( cuidado( D, IDU, IDP, De, C ) ),
+        nao( excecao( cuidado( D, IDU, IDP, De, C ) ) ).
+
+-instituicao(Id, N, C) :-
+        nao( instituicao(Id, N, C) ),
+        nao( excecao( instituicao(Id, N, C) ) ).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado utente: IDUtente, Nome, Idade, Morada -> {V,F}
 utente( 1, marco, 25, braga).
