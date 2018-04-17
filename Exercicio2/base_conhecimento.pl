@@ -47,6 +47,15 @@ utente( 6, bruno, 21, braga).
 utente( 7, hugo, 24, porto).
 utente( 8, luis, 35, lisboa).
 
+-utente( 1,carlos, 12, guimaraes).
+-utente( 2,beatriz, 18, porto).
+-utente( 4,miguel, 34, viana).
+-utente( 7,manuel, 23, braga).
+-utente( 9,antonio, 28, braganca).
+-utente( 12,leonardo, 14, paredes).
+-utente( 15,pedro, 57, braga).
+
+
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado prestador: IDPrestador, Nome, Especialidade, IDInst -> {V,F}
 prestador( 1, wilson, medico, 2).
@@ -56,6 +65,13 @@ prestador( 4, silvio, enfermeiro, 4).
 prestador( 5, marcio, medico, 5).
 prestador( 6, armando, tecnicoRaioX, 3).
 prestador( 7, paulo, tecnicoRaioX, 6).
+
+-prestador( 2,marco, medico, 1).
+-prestador( 4,filipe, cirurgiao, 1).
+-prestador( 5,daniel, medico, 5).
+-prestador( 7,eduardo, enfermeiro, 2).
+-prestador( 9,afonso, medico, 4).
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
@@ -72,6 +88,14 @@ cuidado( 2018/03/08, 8, 5, consulta, 20).
 cuidado( 2018/07/25, 8, 2, exame, 40).
 cuidado( 2018/10/22, 8, 1, consulta, 20).
 
+-cuidado( 2018/03/02, 1, 1, consulta, 90).
+-cuidado( 2018/03/06, 3, 2, exame, 85).
+-cuidado( 2018/03/10, 5, 2, penso, 80).
+-cuidado( 2018/03/12, 6, 3, consulta, 75).
+-cuidado( 2018/03/13, 8, 5, raioX, 70).
+-cuidado( 2018/03/16, 10, 5, consulta, 75).
+
+
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado instituicao: IDInst, Nome, Cidade -> {V,F}
 instituicao(1, hospitalbraga, braga).
@@ -80,6 +104,14 @@ instituicao(3, hospitalsantamaria, porto).
 instituicao(4, hospitaltrofa, porto).
 instituicao(5, centrosaudegualtar, braga).
 instituicao(6, hospitalaveiro, aveiro).
+
+-instituicao(1, hospitalbraga, guimaraes).
+-instituicao(1, hospitalbarco, viladoconde).
+-instituicao(1, hospitalsaojoao, porto).
+-instituicao(2, hospitalmonte, vilaverde).
+-instituicao(4, hospitalazurem, guimaraes).
+-instituicao(4, hospitalporto, porto).
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Quantos prestadores tem uma instituicao
@@ -261,12 +293,30 @@ solucoes(X,Y,Z) :- findall(X,Y,Z).
 teste([]).
 teste([R|L]) :- R, teste(L).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do meta-predicado demo: Questao,Resposta -> {V,F}
+
+demo( Questao,verdadeiro ) :-
+    Questao.
+demo( Questao,falso ) :-
+    -Questao.
+demo( Questao,desconhecido ) :-
+    nao( Questao ),
+    nao( -Questao ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do meta-predicado nao: Questao -> {V,F}
+
+nao( Questao ) :-
+    Questao, !, fail.
+nao( Questao ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Regista um termo na base de conhecimento
 insere(P) :- assert(P).
 insere(P) :- retract(P), !, fail.
 
+% EVOLUÇÃO
 registar( Termo ) :- solucoes(Inv, +Termo :: Inv, S),
 					 insere(Termo),
 					 teste(S).
@@ -276,6 +326,51 @@ registar( Termo ) :- solucoes(Inv, +Termo :: Inv, S),
 remove(P) :- retract(P).
 remove(P) :- assert(P), !, fail.
 
+%INVOLUÇÃO
 remover( Termo ) :- solucoes(Inv, -Termo :: Inv, S),
 					  remove(Termo),
 					  teste(S).
+
+conjuncao( A, B, verdadeiro ) :-
+	A == verdadeiro, B == verdadeiro.
+conjuncao( A, B, falso ) :-
+	A == falso, B == falso.
+conjuncao( A, B, falso ) :-
+	A == verdadeiro, B == falso.
+conjuncao( A, B, falso ) :-
+	A == falso, B == verdadeiro.
+conjuncao( A, B, falso ) :-
+	A == falso, B == desconhecido.
+conjuncao( A, B, falso ) :-
+	A == desconhecido, B == falso.
+conjuncao( A, B, desconhecido ) :-
+	A == desconhecido, B == desconhecido.
+conjuncao( A, B, desconhecido ) :-
+	A == desconhecido, B == verdadeiro.
+conjuncao( A, B, desconhecido ) :-
+	A == verdadeiro, B == desconhecido.
+
+disjuncao( A, B, verdadeiro ) :-
+	A == verdadeiro, B == verdadeiro.
+disjuncao( A, B, falso ) :-
+	A == falso, B == falso.
+disjuncao( A, B, verdadeiro ) :-
+	A == verdadeiro, B == falso.
+disjuncao( A, B, verdadeiro ) :-
+	A == falso, B == verdadeiro.
+disjuncao( A, B, desconhecido ) :-
+	A == falso, B == desconhecido.
+disjuncao( A, B, desconhecido ) :-
+	A == desconhecido, B == falso.
+disjuncao( A, B, desconhecido ) :-
+	A == desconhecido, B == desconhecido.
+disjuncao( A, B, verdadeiro ) :-
+	A == desconhecido, B == verdadeiro.
+disjuncao( A, B, verdadeiro ) :-
+	A == verdadeiro, B == desconhecido.
+% DEMOS
+demoLista( [], verdadeiro ).
+demoLista( [ Q, LQ ], R ) :-
+	demo( Q, RQ ),
+	demoLista( LQ, RL ),
+	conjuncao( RQ, RL, R ).
