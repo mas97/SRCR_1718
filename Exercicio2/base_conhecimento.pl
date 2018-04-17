@@ -288,12 +288,30 @@ solucoes(X,Y,Z) :- findall(X,Y,Z).
 teste([]).
 teste([R|L]) :- R, teste(L).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do meta-predicado demo: Questao,Resposta -> {V,F}
+
+demo( Questao,verdadeiro ) :-
+    Questao.
+demo( Questao,falso ) :-
+    -Questao.
+demo( Questao,desconhecido ) :-
+    nao( Questao ),
+    nao( -Questao ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do meta-predicado nao: Questao -> {V,F}
+
+nao( Questao ) :-
+    Questao, !, fail.
+nao( Questao ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Regista um termo na base de conhecimento
 insere(P) :- assert(P).
 insere(P) :- retract(P), !, fail.
 
+% EVOLUÇÃO
 registar( Termo ) :- solucoes(Inv, +Termo :: Inv, S),
 					 insere(Termo),
 					 teste(S).
@@ -303,6 +321,51 @@ registar( Termo ) :- solucoes(Inv, +Termo :: Inv, S),
 remove(P) :- retract(P).
 remove(P) :- assert(P), !, fail.
 
+%INVOLUÇÃO
 remover( Termo ) :- solucoes(Inv, -Termo :: Inv, S),
 					  remove(Termo),
 					  teste(S).
+
+conjuncao( A, B, verdadeiro ) :-
+	A == verdadeiro, B == verdadeiro.
+conjuncao( A, B, falso ) :-
+	A == falso, B == falso.
+conjuncao( A, B, falso ) :-
+	A == verdadeiro, B == falso.
+conjuncao( A, B, falso ) :-
+	A == falso, B == verdadeiro.
+conjuncao( A, B, falso ) :-
+	A == falso, B == desconhecido.
+conjuncao( A, B, falso ) :-
+	A == desconhecido, B == falso.
+conjuncao( A, B, desconhecido ) :-
+	A == desconhecido, B == desconhecido.
+conjuncao( A, B, desconhecido ) :-
+	A == desconhecido, B == verdadeiro.
+conjuncao( A, B, desconhecido ) :-
+	A == verdadeiro, B == desconhecido.
+
+disjuncao( A, B, verdadeiro ) :-
+	A == verdadeiro, B == verdadeiro.
+disjuncao( A, B, falso ) :-
+	A == falso, B == falso.
+disjuncao( A, B, verdadeiro ) :-
+	A == verdadeiro, B == falso.
+disjuncao( A, B, verdadeiro ) :-
+	A == falso, B == verdadeiro.
+disjuncao( A, B, desconhecido ) :-
+	A == falso, B == desconhecido.
+disjuncao( A, B, desconhecido ) :-
+	A == desconhecido, B == falso.
+disjuncao( A, B, desconhecido ) :-
+	A == desconhecido, B == desconhecido.
+disjuncao( A, B, verdadeiro ) :-
+	A == desconhecido, B == verdadeiro.
+disjuncao( A, B, verdadeiro ) :-
+	A == verdadeiro, B == desconhecido.
+% DEMOS
+demoLista( [], verdadeiro ).
+demoLista( [ Q, LQ ], R ) :-
+	demo( Q, RQ ),
+	demoLista( LQ, RL ),
+	conjuncao( RQ, RL, R ).
