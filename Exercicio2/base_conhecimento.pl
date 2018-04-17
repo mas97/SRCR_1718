@@ -46,7 +46,7 @@ utente( 5, rafael, 23, porto).
 utente( 6, bruno, 21, braga).
 utente( 7, hugo, 24, porto).
 utente( 8, luis, 35, lisboa).
-utente( nullval1, beltrano, 53, guimaraes).
+utente( 9, beltrano, nullval1, guimaraes).
 
 -utente( 1,carlos, 12, guimaraes).
 -utente( 2,beatriz, 18, porto).
@@ -57,7 +57,7 @@ utente( nullval1, beltrano, 53, guimaraes).
 -utente( 15,pedro, 57, braga).
 
 nulo( nullval1 ).
-excecao(utente(IDU, No, I, M)) :- utente(nullval1, No, I, M).
+excecao(utente(IDU, No, I, M)) :- utente(IDU, No, nullval1, M).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado prestador: IDPrestador, Nome, Especialidade, IDInst -> {V,F}
@@ -68,7 +68,6 @@ prestador( 4, silvio, enfermeiro, 4).
 prestador( 5, marcio, medico, 5).
 prestador( 6, armando, tecnicoRaioX, 3).
 prestador( 7, paulo, tecnicoRaioX, 6).
-prestador( nullval2, tiago, pediatra, 6).
 
 -prestador( 2,marco, medico, 1).
 -prestador( 4,filipe, cirurgiao, 1).
@@ -76,8 +75,6 @@ prestador( nullval2, tiago, pediatra, 6).
 -prestador( 7,eduardo, enfermeiro, 2).
 -prestador( 9,afonso, medico, 4).
 
-nulo( nullval2 ).
-excecao(prestador(IDU, No, E, IDI)) :- prestador(nullval2, No, E, IDI).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
@@ -93,7 +90,7 @@ cuidado( 2018/03/06, 8, 4, penso, 6).
 cuidado( 2018/03/08, 8, 5, consulta, 20).
 cuidado( 2018/07/25, 8, 2, exame, 40).
 cuidado( 2018/10/22, 8, 1, consulta, 20).
-cuidado( nullval3, 3, 3, curativo, 30).
+cuidado( 2018/05/05, nullval3, 3, curativo, 30).
 
 -cuidado( 2018/03/02, 1, 1, consulta, 90).
 -cuidado( 2018/03/06, 3, 2, exame, 85).
@@ -103,7 +100,7 @@ cuidado( nullval3, 3, 3, curativo, 30).
 -cuidado( 2018/03/16, 10, 5, consulta, 75).
 
 nulo( nullval3 ).
-excecao(cuidado(D, IDU, IDP, De, C)) :- cuidado(nullval3, IDU, IDP, De, C).
+excecao(cuidado(D, IDU, IDP, De, C)) :- cuidado(D, nullval3, IDP, De, C).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado instituicao: IDInst, Nome, Cidade -> {V,F}
@@ -113,7 +110,6 @@ instituicao(3, hospitalsantamaria, porto).
 instituicao(4, hospitaltrofa, porto).
 instituicao(5, centrosaudegualtar, braga).
 instituicao(6, hospitalaveiro, aveiro).
-instituicao(nullval4, hospitalmilitar, tancos).
 
 -instituicao(1, hospitalbraga, guimaraes).
 -instituicao(1, hospitalbarco, viladoconde).
@@ -121,9 +117,6 @@ instituicao(nullval4, hospitalmilitar, tancos).
 -instituicao(2, hospitalmonte, vilaverde).
 -instituicao(4, hospitalazurem, guimaraes).
 -instituicao(4, hospitalporto, porto).
-
-nulo(nullval4).
-excecao(instituicao(IDI, No, Ci)) :- instituicao(nullval4, No, Ci).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Quantos prestadores tem uma instituicao
@@ -273,81 +266,18 @@ relatContas( A/M,IDI, Rf) :-
                           ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a remocao de utentes restritos.
--utente(IDU, _, _, _) :: (solucoes( IDU, (utente(IDU, _, _, _), nao( nulo( IDU ) ) ), S),
+%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
++utente(IDU, No, I, M) :: (solucoes( Is, (utente(9, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
                          comprimento(S, N),
                          N == 0
                          ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a remocao de prestadores restritos.
--prestador(IDP, _, _, _) :: (solucoes( IDP, (prestador(IDP, _, _, _), nao( nulo( IDP ) ) ), S),
-                         comprimento(S, N),
-                         N == 0
-                         ).
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a introducao de prestadores nos quais a instituicao é restrita.
-+prestador(_, _, _, IDI) :: (solucoes( IDI, (instituicao(IDI, _, _), nao( nulo( IDI ) ) ), S),
-                            comprimento(S, N),
-                            N == 0
-                            ).
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a remocao de prestadores nos quais a instituicao é restrita.
--prestador(_, _, _, IDI) :: (solucoes( IDI, (instituicao(IDI, _, _), nao( nulo( IDI ) ) ), S),
-                            comprimento(S, N),
-                            N == 0
-                            ).
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de cuidados em datas restritas.
-+cuidado(D, _, _, _) :: (solucoes( D, (cuidado(D, _, _, _), nao( nulo( D ) ) ), S),
+%nao permitir a insercao de cuidados com utentes restritos.
++cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(2018/05/05, IDUs, 3, curativo, 30), nao( nulo( IDUs ) ) ), S),
                         comprimento(S, N),
                         N == 0
                         ).
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a remocao de cuidados em datas restritas.
--cuidado(D, _, _, _) :: (solucoes( D, (cuidado(D, _, _, _), nao( nulo( D ) ) ), S),
-                        comprimento(S, N),
-                        N == 0
-                        ).
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a introducao de cuidados nos quais o utente é restrito.
-+cuidado(_, IDU, _, _, _) :: (solucoes( IDU, (utente(IDU, _, _, _), nao( nulo( IDU ) ) ), S),
-                             comprimento(S, N),
-                             N == 0
-                             ).
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a introducao de cuidados nos quais o utente é restrito.
--cuidado(_, IDU, _, _, _) :: (solucoes( IDU, (utente(IDU, _, _, _), nao( nulo( IDU ) ) ), S),
-                             comprimento(S, N),
-                             N == 0
-                             ).
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a introducao de cuidados nos quais o prestador é restrito.
-+cuidado(_, _, IDP, _, _) :: (solucoes( IDP, (prestador(IDP, _, _, _), nao( nulo( IDP ) ) ), S),
-                             comprimento(S, N),
-                             N == 0
-                             ).
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a introducao de cuidados nos quais o prestador é restrito.
--cuidado(_, _, IDP, _, _) :: (solucoes( IDP, (prestador(IDP, _, _, _), nao( nulo( IDP ) ) ), S),
-                             comprimento(S, N),
-                             N == 0
-                             ).
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a remocao de instituicoes restritas.
--instituicao(IDI, _, _) :: (solucoes( IDI, (instituicao(IDI, _, _), nao( nulo( IDI ) ) ), S),
-                            comprimento(S, N),
-                            N == 0
-                            ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Calcula o comprimento de uma lista.
