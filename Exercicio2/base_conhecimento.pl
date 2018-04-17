@@ -15,7 +15,6 @@
 :- dynamic prestador/4.
 :- dynamic cuidado/5.
 :- dynamic instituicao/3.
-:- dynamic filho/2.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Bibliotecas
@@ -324,10 +323,6 @@ disjuncao( A, B, verdadeiro ) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-filho( joao, maria ).
--filho( manuel, manuela ).
-filho(tone, tona).
-
 demoComp( [ (Q , e) ], R ) :- 
 	demo( Q , RQ ),
 	conjuncao( RQ, verdadeiro, R ).
@@ -338,7 +333,6 @@ demoComp( [(Q , e) | LQ], R ) :-
 	demo( Q, RQ ),
 	demoComp( LQ, RL ),
 	conjuncao( RQ, RL, R).
-
 demoComp( [(Q , ou) | LQ], R ) :-
 	demo( Q, RQ ),
 	demoComp( LQ, RL ),
