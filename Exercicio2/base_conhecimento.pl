@@ -49,7 +49,7 @@ utente( 8, luis, 35, lisboa).
 
 -utente( 1,carlos, 12, guimaraes).
 -utente( 2,beatriz, 18, porto).
--utente( 4,miguel, 34, viana).
+%-utente( 4,miguel, 34, viana).
 -utente( 7,manuel, 23, braga).
 -utente( 9,antonio, 28, braganca).
 -utente( 12,leonardo, 14, paredes).
@@ -58,7 +58,7 @@ utente( 8, luis, 35, lisboa).
 nulo(utente(1,_,_,_)).
 nulo(utente(2,_,_,_)).
 nulo(utente(3,_,_,_)).
-nulo(utente(4,_,_,_)).
+%nulo(utente(4,_,_,_)).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado prestador: IDPrestador, Nome, Especialidade, IDInst -> {V,F}
@@ -277,77 +277,77 @@ relatContas( A/M,IDI, Rf) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a remocao de utentes restritos.
--utente(IDU, _, _, _) :: (solucoes( IDU, (utente)), (utente(IDU, _, _, _), nao( nulo(utente(IDU, _, _, _))) ),
+-utente(IDU, _, _, _) :: (solucoes( IDU, (utente(IDU, _, _, _), nao( nulo( utente(IDU, _, _, _)))), S),
                          comprimento(S, N),
                          N == 0
                          ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a remocao de prestadores restritos.
--prestador(IDP, _, _, _) :: (solucoes( IDP, (prestador(IDP, _, _, _), nao( nulo(prestador(IDP, _, _, _))))),
+-prestador(IDP, _, _, _) :: (solucoes( IDP, (prestador(IDP, _, _, _), nao( nulo( prestador(IDP, _, _, _)))), S),
                          comprimento(S, N),
                          N == 0
                          ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a introducao de prestadores nos quais a instituicao é restrita.
-+prestador(_, _, _, IDI) :: (solucoes( IDI, (instituicao(IDI, _, _), nao( nulo(prestador(_, _, _, IDI)))) ),
++prestador(_, _, _, IDI) :: (solucoes( IDI, (instituicao(IDI, _, _), nao( nulo(prestador(_, _, _, IDI)))), S),
                             comprimento(S, N),
                             N == 0
                             ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a remocao de prestadores nos quais a instituicao é restrita.
--prestador(_, _, _, IDI) :: (solucoes( IDI, (instituicao(IDI, _, _), nao( nulo(prestador(_, _, _, IDI)))) ),
+-prestador(_, _, _, IDI) :: (solucoes( IDI, (instituicao(IDI, _, _), nao( nulo(prestador(_, _, _, IDI)))), S),
                             comprimento(S, N),
                             N == 0
                             ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a insercao de cuidados em datas restritas.
-+cuidado(D, _, _, _) :: (solucoes( D, (cuidado(D, _, _, _), nao( nulo(cuidado(D)))) ),
++cuidado(D, _, _, _) :: (solucoes( D, (cuidado(D, _, _, _), nao( nulo(cuidado(D, _, _ ,_)))), S),
                         comprimento(S, N),
                         N == 0
                         ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a remocao de cuidados em datas restritas.
--cuidado(D, _, _, _) :: (solucoes( D, (cuidado(D, _, _, _), nao( nulo(cuidado(D)))) ),
+-cuidado(D, _, _, _) :: (solucoes( D, (cuidado(D, _, _, _), nao( nulo(cuidado(D)))), S),
                         comprimento(S, N),
                         N == 0
                         ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a introducao de cuidados nos quais o utente é restrito.
-+cuidado(_, IDU, _, _, _) :: (solucoes( (IDU, _, _, _), (utente(IDU, _, _, _), nao(nulo(utente(IDU, _, _ , _))))),
++cuidado(_, IDU, _, _, _) :: (solucoes( IDU, (utente(IDU, _, _, _), nao( nulo(utente(IDU, _, _ , _)))), S),
                              comprimento(S, N),
                              N == 0
                              ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a introducao de cuidados nos quais o utente é restrito.
--cuidado(_, IDU, _, _, _) :: (solucoes( (IDU, _, _, _), (utente(IDU, _, _, _), nao(nulo(utente(IDU, _, _ , _))))),
+-cuidado(_, IDU, _, _, _) :: (solucoes( IDU, (utente(IDU, _, _, _), nao( nulo( utente(IDU, _, _ , _)))), S),
                              comprimento(S, N),
                              N == 0
                              ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a introducao de cuidados nos quais o prestador é restrito.
-+cuidado(_, _, IDP, _, _) :: (solucoes( (IDP, _, _, _), (prestador(IDP, _, _, _), nao( nulo(prestador(IDP, _, _, _)))) ),
++cuidado(_, _, IDP, _, _) :: (solucoes( IDP, (prestador(IDP, _, _, _), nao( nulo(prestador(IDP, _, _, _)))), S),
                              comprimento(S, N),
                              N == 0
                              ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a introducao de cuidados nos quais o prestador é restrito.
--cuidado(_, _, IDP, _, _) :: (solucoes( (IDP, _, _, _), (prestador(IDP, _, _, _), nao( nulo(prestador(IDP, _, _, _)))) ),
+-cuidado(_, _, IDP, _, _) :: (solucoes( IDP, (prestador(IDP, _, _, _), nao( nulo(prestador(IDP, _, _, _)))), S),
                              comprimento(S, N),
                              N == 0
                              ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a remocao de instituicoes restritas.
--instituicao(IDI, _, _) :: (solucoes( IDI, (instituicao(IDI, _, _), nao( nulo( instituicao(IDI, _, _))))),
+-instituicao(IDI, _, _) :: (solucoes( IDI, (instituicao(IDI, _, _), nao( nulo( instituicao(IDI, _, _)))), S),
                             comprimento(S, N),
                             N == 0
                             ).
