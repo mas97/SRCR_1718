@@ -55,6 +55,10 @@ utente( 8, luis, 35, lisboa).
 -utente( 12,leonardo, 14, paredes).
 -utente( 15,pedro, 57, braga).
 
+nulo(utente(1,_,_,_)).
+nulo(utente(2,_,_,_)).
+nulo(utente(3,_,_,_)).
+nulo(utente(4,_,_,_)).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado prestador: IDPrestador, Nome, Especialidade, IDInst -> {V,F}
@@ -72,6 +76,10 @@ prestador( 7, paulo, tecnicoRaioX, 6).
 -prestador( 7,eduardo, enfermeiro, 2).
 -prestador( 9,afonso, medico, 4).
 
+nulo(prestador(1,_,_,_)).
+nulo(prestador(2,_,_,_)).
+nulo(prestador(3,_,_,_)).
+nulo(prestador(4,_,_,_)).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
@@ -95,6 +103,9 @@ cuidado( 2018/10/22, 8, 1, consulta, 20).
 -cuidado( 2018/03/13, 8, 5, raioX, 70).
 -cuidado( 2018/03/16, 10, 5, consulta, 75).
 
+nulo(cuidado(_/01/01, _, _, _)).
+nulo(cuidado(_/12/25, _, _, _)).
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado instituicao: IDInst, Nome, Cidade -> {V,F}
@@ -112,6 +123,10 @@ instituicao(6, hospitalaveiro, aveiro).
 -instituicao(4, hospitalazurem, guimaraes).
 -instituicao(4, hospitalporto, porto).
 
+nulo(instituicao(1, _, _)).
+nulo(instituicao(2, _, _)).
+nulo(instituicao(3, _, _)).
+nulo(instituicao(4, _, _)).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Quantos prestadores tem uma instituicao
