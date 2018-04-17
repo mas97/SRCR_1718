@@ -276,15 +276,46 @@ relatContas( A/M,IDI, Rf) :-
                           ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a remocao de utentes restritos.
+-utente(IDU, _, _, _) :: (solucoes( IDU, (utente)), (utente(IDU, _, _, _), nao( nulo(utente(IDU, _, _, _))) ),
+                         comprimento(S, N),
+                         N == 0
+                         ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a remocao de prestadores restritos.
+-prestador(IDP, _, _, _) :: (solucoes( IDP, (prestador(IDP, _, _, _), nao( nulo(prestador(IDP, _, _, _))))),
+                         comprimento(S, N),
+                         N == 0
+                         ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a introducao de prestadores nos quais a instituicao é restrita.
-+prestador(_, _, _, IDI) :: (solucoes( IDI, (instituicao(IDI, _, _), nulo(prestador(_, _, _, IDI)))),
-                            comprimento(S, N)
++prestador(_, _, _, IDI) :: (solucoes( IDI, (instituicao(IDI, _, _), nao( nulo(prestador(_, _, _, IDI)))) ),
+                            comprimento(S, N),
+                            N == 0
                             ).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a remocao de prestadores nos quais a instituicao é restrita.
--prestador(_, _, _, IDI) :: (solucoes( IDI, (instituicao(IDI, _, _), nulo(prestador(_, _, _, IDI)))),
-                            comprimento(S, N)
+-prestador(_, _, _, IDI) :: (solucoes( IDI, (instituicao(IDI, _, _), nao( nulo(prestador(_, _, _, IDI)))) ),
+                            comprimento(S, N),
+                            N == 0
                             ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de cuidados em datas restritas.
++cuidado(D, _, _, _) :: (solucoes( D, (cuidado(D, _, _, _), nao( nulo(cuidado(D)))) ),
+                        comprimento(S, N),
+                        N == 0
+                        ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a remocao de cuidados em datas restritas.
+-cuidado(D, _, _, _) :: (solucoes( D, (cuidado(D, _, _, _), nao( nulo(cuidado(D)))) ),
+                        comprimento(S, N),
+                        N == 0
+                        ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a introducao de cuidados nos quais o utente é restrito.
@@ -302,17 +333,24 @@ relatContas( A/M,IDI, Rf) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a introducao de cuidados nos quais o prestador é restrito.
-+cuidado(_, _, IDP, _, _) :: (solucoes( (IDP, _, _, _), (prestador(IDP, _, _, _), nulo(prestador(IDP, _, _, _)))),
++cuidado(_, _, IDP, _, _) :: (solucoes( (IDP, _, _, _), (prestador(IDP, _, _, _), nao( nulo(prestador(IDP, _, _, _)))) ),
                              comprimento(S, N),
                              N == 0
                              ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a introducao de cuidados nos quais o prestador é restrito.
-+cuidado(_, _, IDP, _, _) :: (solucoes( (IDP, _, _, _), (prestador(IDP, _, _, _), nulo(prestador(IDP, _, _, _)))),
+-cuidado(_, _, IDP, _, _) :: (solucoes( (IDP, _, _, _), (prestador(IDP, _, _, _), nao( nulo(prestador(IDP, _, _, _)))) ),
                              comprimento(S, N),
                              N == 0
                              ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a remocao de instituicoes restritas.
+-instituicao(IDI, _, _) :: (solucoes( IDI, (instituicao(IDI, _, _), nao( nulo( instituicao(IDI, _, _))))),
+                            comprimento(S, N),
+                            N == 0
+                            ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Calcula o comprimento de uma lista.
