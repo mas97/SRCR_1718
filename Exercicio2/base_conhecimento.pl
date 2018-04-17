@@ -262,20 +262,39 @@ relatContas( A/M,IDI, Rf) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a introducao de prestadores nos quais a instituicao é restrita.
-+prestador(_, _, _, IDI) :: (solucoes( IDI, (instituicao(IDI, _, _), nulo(IDI))),
-                            comprimento(S, N),
++prestador(_, _, _, IDI) :: (solucoes( IDI, (instituicao(IDI, _, _), nulo(prestador(_, _, _, IDI)))),
+                            comprimento(S, N)
+                            ).
+
+%nao permitir a remocao de prestadores nos quais a instituicao é restrita.
+-prestador(_, _, _, IDI) :: (solucoes( IDI, (instituicao(IDI, _, _), nulo(prestador(_, _, _, IDI)))),
+                            comprimento(S, N)
                             ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a introducao de cuidados nos quais o utente é restrito.
-+cuidado(_, IDU, _, _, _) :: (solucoes( (IDU, _, _, _), (utente(IDU, _, _, _), nulo(IDU))),
++cuidado(_, IDU, _, _, _) :: (solucoes( (IDU, _, _, _), (utente(IDU, _, _, _), nao(nulo(utente(IDU, _, _ , _))))),
+                             comprimento(S, N),
+                             N == 0
+                             ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a introducao de cuidados nos quais o utente é restrito.
+-cuidado(_, IDU, _, _, _) :: (solucoes( (IDU, _, _, _), (utente(IDU, _, _, _), nao(nulo(utente(IDU, _, _ , _))))),
                              comprimento(S, N),
                              N == 0
                              ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a introducao de cuidados nos quais o prestador é restrito.
-+cuidado(_, _, IDP, _, _) :: (solucoes( (IDP, _, _, _), (prestador(IDP, _, _, _), nulo(IDP))),
++cuidado(_, _, IDP, _, _) :: (solucoes( (IDP, _, _, _), (prestador(IDP, _, _, _), nulo(prestador(IDP, _, _, _)))),
+                             comprimento(S, N),
+                             N == 0
+                             ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a introducao de cuidados nos quais o prestador é restrito.
++cuidado(_, _, IDP, _, _) :: (solucoes( (IDP, _, _, _), (prestador(IDP, _, _, _), nulo(prestador(IDP, _, _, _)))),
                              comprimento(S, N),
                              N == 0
                              ).
