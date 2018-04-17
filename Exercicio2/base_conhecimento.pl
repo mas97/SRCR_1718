@@ -326,6 +326,8 @@ remover( Termo ) :- solucoes(Inv, -Termo :: Inv, S),
 					  remove(Termo),
 					  teste(S).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
 conjuncao( A, B, verdadeiro ) :-
 	A == verdadeiro, B == verdadeiro.
 conjuncao( A, B, falso ) :-
@@ -345,6 +347,8 @@ conjuncao( A, B, desconhecido ) :-
 conjuncao( A, B, desconhecido ) :-
 	A == verdadeiro, B == desconhecido.
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
 disjuncao( A, B, verdadeiro ) :-
 	A == verdadeiro, B == verdadeiro.
 disjuncao( A, B, falso ) :-
@@ -363,9 +367,36 @@ disjuncao( A, B, verdadeiro ) :-
 	A == desconhecido, B == verdadeiro.
 disjuncao( A, B, verdadeiro ) :-
 	A == verdadeiro, B == desconhecido.
-% DEMOS
-demoLista( [], verdadeiro ).
-demoLista( [ Q, LQ ], R ) :-
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+demoComp( [ (Q , e) ], R ) :- 
+	demo( Q , RQ ),
+	conjuncao( RQ, verdadeiro, R ).
+demoComp( [ (Q , ou) ], R ) :- 
 	demo( Q, RQ ),
-	demoLista( LQ, RL ),
+	disjuncao( RQ, falso, R ).
+demoComp( [(Q , e) | LQ], R ) :-
+	demo( Q, RQ ),
+	demoComp( LQ, RL ),
+	conjuncao( RQ, RL, R).
+demoComp( [(Q , ou) | LQ], R ) :-
+	demo( Q, RQ ),
+	demoComp( LQ, RL ),
+	disjuncao( RQ, RL, R).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% DEMOS
+demoListaC( [], verdadeiro ).
+demoListaC( [ Q ], R ) :- demo( Q, R ).
+demoListaC( [ Q | LQ ], R ) :-
+	demo( Q, RQ ),
+	demoListaC( LQ, RL ),
 	conjuncao( RQ, RL, R ).
+
+demoListaD( [], verdadeiro ).
+demoListaD( [ Q ], R ) :- demo( Q, R ).
+demoListaD( [ Q | LQ ], R ) :-
+	demo( Q, RQ ),
+	demoListaD( LQ, RL ),
+	disjuncao( RQ, RL, R ).
