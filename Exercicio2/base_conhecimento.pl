@@ -349,14 +349,14 @@ relatContas( A/M,IDI, Rf) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
-+utente(IDU, No, I, M) :: (solucoes( Is, (utente(9, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
++utente(IDU, No, I, M) :: (solucoes( Is, (utente(13, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
                          comprimento(S, N),
                          N == 0
                          ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
--utente(IDU, No, I, M) :: (solucoes( Is, (utente(9, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
+-utente(IDU, No, I, M) :: (solucoes( Is, (utente(13, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
                          comprimento(S, N),
                          N == 1
                          ).
