@@ -289,7 +289,7 @@ teste([]).
 teste([R|L]) :- R, teste(L).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extensao do meta-predicado demo: Questao,Resposta -> {V,F}
+% Extensao do meta-predicado demo: Questao,Resposta -> {V,F,D}
 
 demo( Questao,verdadeiro ) :-
     Questao.
@@ -369,11 +369,12 @@ disjuncao( A, B, verdadeiro ) :-
 	A == verdadeiro, B == desconhecido.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% DEMOS
 
-demoComp( [ (Q , e) ], R ) :- 
+demoComp( [ Q ], R ) :- 
 	demo( Q , RQ ),
 	conjuncao( RQ, verdadeiro, R ).
-demoComp( [ (Q , ou) ], R ) :- 
+demoComp( [ Q ], R ) :- 
 	demo( Q, RQ ),
 	disjuncao( RQ, falso, R ).
 demoComp( [(Q , e) | LQ], R ) :-
@@ -385,8 +386,6 @@ demoComp( [(Q , ou) | LQ], R ) :-
 	demoComp( LQ, RL ),
 	disjuncao( RQ, RL, R).
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% DEMOS
 demoListaC( [], verdadeiro ).
 demoListaC( [ Q ], R ) :- demo( Q, R ).
 demoListaC( [ Q | LQ ], R ) :-
