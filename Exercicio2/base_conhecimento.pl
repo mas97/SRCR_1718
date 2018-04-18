@@ -15,6 +15,7 @@
 :- dynamic prestador/4.
 :- dynamic cuidado/5.
 :- dynamic instituicao/3.
+:- dynamic excecao/1.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Bibliotecas
@@ -57,19 +58,19 @@ utente( 13, beltrano, nullval1, guimaraes).
 
 utente( 14, inacio, imprec14, uncert9).
 
--utente( 1,carlos, 12, guimaraes).
--utente( 2,beatriz, 18, porto).
--utente( 4,miguel, 34, viana).
--utente( 7,manuel, 23, braga).
--utente( 9,antonio, 28, braganca).
--utente( 12,leonardo, 14, paredes).
--utente( 15,pedro, 57, braga).
+-utente( 1, carlos, 12, guimaraes).
+-utente( 2, beatriz, 18, porto).
+-utente( 4, miguel, 34, viana).
+-utente( 7, manuel, 23, braga).
+-utente( 9, antonio, 28, braganca).
+-utente( 12, leonardo, 14, paredes).
+-utente( 15, pedro, 57, braga).
 
 excecao( utente(IDU, No, I, M)) :- utente(IDU, No, I, uncert1).
 excecao( utente(IDU, No, I, M)) :- utente(IDU, No, I, uncert2).
 
-excecao( utente(11, bernardo, I, felgueiras)) :- I == 15.
-excecao( utente(11, bernardo, I, felgueiras)) :- I == 17.
+excecao( utente(11, bernardo, 15, felgueiras)).
+excecao( utente(11, bernardo, 17, felgueiras)).
 
 excecao( utente(12, crispim, I, porto)) :- I >= 32, I =< 36. 
 
@@ -469,6 +470,7 @@ disjuncao( A, B, verdadeiro ) :-
 	A == verdadeiro, B == desconhecido.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% DEMOS
 
 demoComp( [ (Q , e) ], R ) :- 
 	demo( Q , RQ ),
@@ -485,8 +487,6 @@ demoComp( [(Q , ou) | LQ], R ) :-
 	demoComp( LQ, RL ),
 	disjuncao( RQ, RL, R).
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% DEMOS
 demoListaC( [], verdadeiro ).
 demoListaC( [ Q ], R ) :- demo( Q, R ).
 demoListaC( [ Q | LQ ], R ) :-

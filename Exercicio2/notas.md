@@ -34,3 +34,12 @@ A elaboração do caso prático deverá ser de molde a respeitar as necessidades
 - Interdito (não se pode saber/inserir)
 	- Utente: idade
 	- Cuidado: IdUt
+
+- Identificar conhecimento impreciso: 
+	demo(excecao(Questao),R) -> R == verdadeiro
+
+- Identificar conhecimento incerto: 
+	demo(excecao(Questao),R) -> R == desconhecido.
+	temos que ver que não é interdito através do nao(nulo(VAR)). Não sabemos onde é que a variável está para fazer o teste.
+
+
