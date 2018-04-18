@@ -355,10 +355,24 @@ relatContas( A/M,IDI, Rf) :-
                          ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
+-utente(IDU, No, I, M) :: (solucoes( Is, (utente(9, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
+                         comprimento(S, N),
+                         N == 1
+                         ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %nao permitir a insercao de cuidados com utentes restritos.
 +cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(2018/05/05, IDUs, 3, curativo, 30), nao( nulo( IDUs ) ) ), S),
                         comprimento(S, N),
                         N == 0
+                        ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
+-cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(2018/05/05, IDUs, 3, curativo, 30), nao( nulo( IDUs ) ) ), S),
+                        comprimento(S, N),
+                        N == 1
                         ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
