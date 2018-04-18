@@ -110,9 +110,9 @@ excecao( prestador(11, No, medico, 4)) :- No == wilson.
 excecao( prestador(12, icaro, E, 3)) :- E == cirurgiao.
 excecao( prestador(12, icaro, E, 3)) :- E == medico.
 
-excecao( prestador(13, garcia, imprec6, 1)) :- E == tecnicoRaioX.
-excecao( prestador(13, garcia, imprec6, 1)) :- E == enfermeiro.
-excecao( prestador(13, garcia, imprec6, 1)) :- E == oftalmologista.
+excecao( prestador(13, garcia, E, 1)) :- E == tecnicoRaioX.
+excecao( prestador(13, garcia, E, 1)) :- E == enfermeiro.
+excecao( prestador(13, garcia, E, 1)) :- E == oftalmologista.
 
 excecao( prestador(14, No, E, 3)) :- No == gabriel, E == medico.
 excecao( prestador(14, No, E, 3)) :- No == gabriel, E == cirurgiao.
