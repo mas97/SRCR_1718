@@ -152,6 +152,8 @@ cuidado( 2018/imprec12/05, 1, 2, exame, 50).
 
 cuidado( 2018/05/05, nullval2, 3, curativo, 30).
 
+cuidado( imprec15, 5, 3, exame, imprec16).
+
 -cuidado( 2018/03/02, 1, 1, consulta, 90).
 -cuidado( 2018/03/06, 3, 2, exame, 85).
 -cuidado( 2018/03/10, 5, 2, penso, 80).
@@ -171,6 +173,8 @@ excecao( cuidado( 2018/D/05, IDU, IDP, De, C)) :- D >= 1, D =< 2.
 
 nulo( nullval2 ).
 excecao(cuidado(D, IDU, IDP, De, C)) :- cuidado(D, nullval2, IDP, De, C).
+
+excecao(cuidado(D, 5, 3, exame, C)) :- D == 2018/04/02, C >= 25, C =< 35.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado instituicao: IDInst, Nome, Cidade -> {V,F}
