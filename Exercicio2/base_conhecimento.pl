@@ -69,7 +69,6 @@ excecao( utente(IDU, No, I, M)) :- utente(IDU, No, I, uncert1).
 excecao( utente(IDU, No, I, M)) :- utente(IDU, No, I, uncert2).
 
 excecao( utente(11, bernardo, I, felgueiras)) :- I == 15.
-excecao( utente(11, bernardo, I, felgueiras)) :- I == 16.
 excecao( utente(11, bernardo, I, felgueiras)) :- I == 17.
 
 excecao( utente(12, crispim, I, porto)) :- I >= 32, I =< 36. 
@@ -77,7 +76,7 @@ excecao( utente(12, crispim, I, porto)) :- I >= 32, I =< 36.
 nulo( nullval1 ).
 excecao(utente(IDU, No, I, M)) :- utente(IDU, No, nullval1, M).
 
-excecao( utente(14, inacio, I, M)) :- utente(14, inacio, I, uncert9), I >= 17, I =< 20.
+excecao( utente(14, inacio, I, M)) :- I >= 17, I =< 20.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado prestador: IDPrestador, Nome, Especialidade, IDInst -> {V,F}
@@ -108,8 +107,8 @@ excecao( prestador(11, No, medico, 4)) :- No == silvio.
 excecao( prestador(11, No, medico, 4)) :- No == dionisio.
 excecao( prestador(11, No, medico, 4)) :- No == wilson.
 
-excecao( prestador(12, icaro, imprec5, 3)) :- E == cirurgiao.
-excecao( prestador(12, icaro, imprec5, 3)) :- E == medico.
+excecao( prestador(12, icaro, E, 3)) :- E == cirurgiao.
+excecao( prestador(12, icaro, E, 3)) :- E == medico.
 
 excecao( prestador(13, garcia, imprec6, 1)) :- E == tecnicoRaioX.
 excecao( prestador(13, garcia, imprec6, 1)) :- E == enfermeiro.
