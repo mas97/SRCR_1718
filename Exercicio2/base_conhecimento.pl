@@ -55,6 +55,8 @@ utente( 12, crispim, imprec2, porto).
 
 utente( 13, beltrano, nullval1, guimaraes).
 
+utente( 14, inacio, imprec14, uncert9).
+
 -utente( 1,carlos, 12, guimaraes).
 -utente( 2,beatriz, 18, porto).
 -utente( 4,miguel, 34, viana).
@@ -70,10 +72,12 @@ excecao( utente(11, bernardo, I, felgueiras)) :- I == 15.
 excecao( utente(11, bernardo, I, felgueiras)) :- I == 16.
 excecao( utente(11, bernardo, I, felgueiras)) :- I == 17.
 
-excecao( utente(12, crispim, I, porto)) :- I >= 32, I <= 36. 
+excecao( utente(12, crispim, I, porto)) :- I >= 32, I =< 36. 
 
 nulo( nullval1 ).
 excecao(utente(IDU, No, I, M)) :- utente(IDU, No, nullval1, M).
+
+excecao( utente(14, inacio, I, M)) :- utente(14, inacio, I, uncert9), I >= 17, I =< 20.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado prestador: IDPrestador, Nome, Especialidade, IDInst -> {V,F}
@@ -160,11 +164,11 @@ excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, uncert5, C).
 excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, De, uncert6).
 excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(uncert7, IDU, IDP, De, C).
 
-excecao( cuidado( 2018/02/02, 2, 6, exame, C)) :- C >= 20, C <= 30.
-excecao( cuidado( 2018/04/08, 5, 7, raioX, C)) :- C >= 60, C <= 80.
+excecao( cuidado( 2018/02/02, 2, 6, exame, C)) :- C >= 20, C =< 30.
+excecao( cuidado( 2018/04/08, 5, 7, raioX, C)) :- C >= 60, C =< 80.
 
-excecao( cuidado( 2018/03/D, IDU, IDP, De, C)) :- D >= 6, D <= 9.
-excecao( cuidado( 2018/D/05, IDU, IDP, De, C)) :- D >= 1, D <= 2.
+excecao( cuidado( 2018/03/D, IDU, IDP, De, C)) :- D >= 6, D =< 9.
+excecao( cuidado( 2018/D/05, IDU, IDP, De, C)) :- D >= 1, D =< 2.
 
 nulo( nullval2 ).
 excecao(cuidado(D, IDU, IDP, De, C)) :- cuidado(D, nullval2, IDP, De, C).
