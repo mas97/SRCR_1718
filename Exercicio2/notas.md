@@ -34,3 +34,25 @@ A elaboração do caso prático deverá ser de molde a respeitar as necessidades
 - Interdito (não se pode saber/inserir)
 	- Utente: idade
 	- Cuidado: IdUt
+
+- Identificar conhecimento impreciso: 
+	demo(excecao(Questao),R) -> R == verdadeiro
+
+- Identificar conhecimento incerto: 
+
+
+	Fora do range
+	demo(Questao,R) -> R == falso.
+	demo(excecao(Questao),R) -> R == desconhecido.
+
+	Dentro do range
+	demo(Questao,R) -> R == desconhecido.
+	demo(excecao(Questao),R) -> R == verdadeiro.
+	solucoes(Questao, S) -> Comp(S) == 0.
+
+	Incerto
+	demo(Questao,R) -> R == desconhecido.
+	demo(excecao(Questao),R) -> R == verdadeiro.
+	solucoes(Questao, S) -> Comp(S) == 1.
+
+
