@@ -16,6 +16,7 @@
 :- dynamic cuidado/5.
 :- dynamic instituicao/3.
 :- dynamic excecao/1.
+:- dynamic nulo/1.
 :- dynamic (-)/1.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -439,6 +440,19 @@ relatContas( A/M,IDI, Rf) :-
                                   N == 2
                                   ).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de duplicados de predicados nulo
++nulo(Termo) :: (solucoes(Termo, nulo(Termo), S),
+                comprimento(S, N),
+                N == 1
+                ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de duplicados de predicados excecao
++excecao(Termo) :: (solucoes(Termo, excecao(Termo), S),
+                    comprimento(S, N),
+                    N == 1
+                    ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Calcula o comprimento de uma lista.
