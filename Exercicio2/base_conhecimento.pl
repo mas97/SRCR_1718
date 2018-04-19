@@ -21,24 +21,10 @@
 % Bibliotecas
 :- use_module(library(lists)).
 
--utente( IDU, N, I, M ) :-
-        nao( utente( IDU, N, I, M ) ),
-        nao( excecao( utente( IDU, N, I, M ) ) ).
 
-
--prestador(ID, No, E, I) :-
-        nao( prestador(ID, No, E, I) ),
-        nao( excecao( prestador(ID, No, E, I) ) ).
-
--cuidado( D, IDU, IDP, De, C ) :-
-        nao( cuidado( D, IDU, IDP, De, C ) ),
-        nao( excecao( cuidado( D, IDU, IDP, De, C ) ) ).
-
--instituicao(Id, N, C) :-
-        nao( instituicao(Id, N, C) ),
-        nao( excecao( instituicao(Id, N, C) ) ).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado utente: IDUtente, Nome, Idade, Morada -> {V,F}
+% Conhecimento positivo
 utente( 1, marco, 25, braga).
 utente( 2, afonso, 30, braga).
 utente( 3, daniel, 20, braga).
@@ -48,16 +34,7 @@ utente( 6, bruno, 21, braga).
 utente( 7, hugo, 24, porto).
 utente( 8, luis, 35, lisboa).
 
-utente( 9, ana, 22, uncert1).
-utente( 10, beatriz, 43, uncert2).
-
-utente( 11, bernardo, imprec1, felgueiras).
-utente( 12, crispim, imprec2, porto).
-
-utente( 13, beltrano, nullval1, guimaraes).
-
-utente( 14, inacio, imprec14, uncert9).
-
+% Conhecimento negativo
 -utente( 1, carlos, 12, guimaraes).
 -utente( 2, beatriz, 18, porto).
 -utente( 4, miguel, 34, viana).
@@ -66,21 +43,46 @@ utente( 14, inacio, imprec14, uncert9).
 -utente( 12, leonardo, 14, paredes).
 -utente( 15, pedro, 57, braga).
 
+% Receita
+-utente( IDU, N, I, M ) :-
+        nao( utente( IDU, N, I, M ) ),
+        nao( excecao( utente( IDU, N, I, M ) ) ).
+
+% Conhecimento incerto
+utente( 9, ana, 22, uncert1).
 excecao( utente(IDU, No, I, M)) :- utente(IDU, No, I, uncert1).
+
+utente( 10, beatriz, 43, uncert2).
 excecao( utente(IDU, No, I, M)) :- utente(IDU, No, I, uncert2).
 
+% Conhecimento impreciso
 excecao( utente(11, bernardo, 15, felgueiras)).
 excecao( utente(11, bernardo, 17, felgueiras)).
-
 excecao( utente(12, crispim, I, porto)) :- I >= 32, I =< 36. 
+excecao( utente(14, inacio, I, M)) :- I >= 17, I =< 20.
 
+% Conhecimento interdito
+utente( 13, beltrano, nullval1, guimaraes).
 nulo( nullval1 ).
 excecao(utente(IDU, No, I, M)) :- utente(IDU, No, nullval1, M).
 
-excecao( utente(14, inacio, I, M)) :- I >= 17, I =< 20.
+%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
++utente(IDU, No, I, M) :: (solucoes( Is, (utente(13, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
+                         comprimento(S, N),
+                         N == 0
+                         ).
+
+%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
+-utente(IDU, No, I, M) :: (solucoes( Is, (utente(13, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
+                         comprimento(S, N),
+                         N == 1
+                         ).
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado prestador: IDPrestador, Nome, Especialidade, IDInst -> {V,F}
+
+% Conhecimento positivo
 prestador( 1, wilson, medico, 2).
 prestador( 2, eduardo, cirurgiao, 1).
 prestador( 3, marciano, medico, 1).
@@ -89,18 +91,27 @@ prestador( 5, marcio, medico, 5).
 prestador( 6, armando, tecnicoRaioX, 3).
 prestador( 7, paulo, tecnicoRaioX, 6).
 
+%Conhecimento negativo
+-prestador( 2, marco, medico, 1).
+-prestador( 4, filipe, cirurgiao, 1).
+-prestador( 5, daniel, medico, 5).
+-prestador( 7, eduardo, enfermeiro, 2).
+-prestador( 9, afonso, medico, 4).
+
+% Receita
+-prestador( ID, No, E, I) :-
+	nao( prestador( ID, No, E, I)),
+	nao( excecao( prestador( ID, No, E, I))).
+
+% Conhecimento incerto
 prestador( 8, pedro, uncert3, 5).
-prestador( 9, carolina, uncert4, 3).
-
-prestador( 10, imprec3, enfermeiro, 2).
-prestador( 11, imprec4, medico, 4).
-prestador( 12, icaro, imprec5, 3).
-prestador( 13, garcia, imprec6, 1).
-prestador( 14, imprec7, imprec8, 2).
-
 excecao( prestador(IDP, No, E, IDI)) :- prestador(IDP, No, uncert3, IDI).
+
+prestador( 9, carolina, uncert4, 3).
 excecao( prestador(IDP, No, E, IDI)) :- prestador(IDP, No, uncert4, IDI).
 
+
+% Conhecimento impreciso
 excecao( prestador(10, No, enfermeiro, 2)) :- No == rafael.
 excecao( prestador(10, No, enfermeiro, 2)) :- No == francisco.
 
@@ -120,15 +131,12 @@ excecao( prestador(14, No, E, 3)) :- No == gabriel, E == cirurgiao.
 excecao( prestador(14, No, E, 3)) :- No == maria, E == medico.
 excecao( prestador(14, No, E, 3)) :- No == maria, E == cirurgiao.
 
--prestador( 2, marco, medico, 1).
--prestador( 4, filipe, cirurgiao, 1).
--prestador( 5, daniel, medico, 5).
--prestador( 7, eduardo, enfermeiro, 2).
--prestador( 9, afonso, medico, 4).
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
+
+% Conhecimento positivo
 cuidado( 2017/03/17, 1, 1, curativo, 20 ).
 cuidado( 2018/03/01, 1, 2, consulta, 25 ).
 cuidado( 2018/03/02, 7, 4, penso, 5).
@@ -142,19 +150,7 @@ cuidado( 2018/03/08, 8, 5, consulta, 20).
 cuidado( 2018/07/25, 8, 2, exame, 40).
 cuidado( 2018/10/22, 8, 1, consulta, 20).
 
-cuidado( 2018/01/20, 7, 4, uncert5, 25).
-cuidado( 2018/04/10, 2, 3, consulta, uncert6).
-cuidado( uncert7, 5, 2, penso, 5).
-
-cuidado( 2018/02/02, 2, 6, exame, imprec9).
-cuidado( 2018/04/08, 5, 7, raioX, imprec10).
-cuidado( 2018/03/imprec11, 7, 4, consulta, 20). 
-cuidado( 2018/imprec12/05, 1, 2, exame, 50). 
-
-cuidado( 2018/05/05, nullval2, 3, curativo, 30).
-
-cuidado( imprec15, 5, 3, exame, imprec16).
-
+% Conhecimento negativo
 -cuidado( 2018/03/02, 1, 1, consulta, 90).
 -cuidado( 2018/03/06, 3, 2, exame, 85).
 -cuidado( 2018/03/10, 5, 2, penso, 80).
@@ -162,23 +158,52 @@ cuidado( imprec15, 5, 3, exame, imprec16).
 -cuidado( 2018/03/13, 8, 5, raioX, 70).
 -cuidado( 2018/03/16, 10, 5, consulta, 75).
 
+% Receita
+-cuidado( D, IDU, IDP, De, C ) :-
+        nao( cuidado( D, IDU, IDP, De, C ) ),
+        nao( excecao( cuidado( D, IDU, IDP, De, C ) ) ).
+
+
+% Conhecimento incerto
+cuidado( 2018/01/20, 7, 4, uncert5, 25).
 excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, uncert5, C).
+
+cuidado( 2018/04/10, 2, 3, consulta, uncert6).
 excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, De, uncert6).
+
+cuidado( uncert7, 5, 2, penso, 5).
 excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(uncert7, IDU, IDP, De, C).
 
+
+% Conhecimento impreciso
 excecao( cuidado( 2018/02/02, 2, 6, exame, C)) :- C >= 20, C =< 30.
 excecao( cuidado( 2018/04/08, 5, 7, raioX, C)) :- C >= 60, C =< 80.
-
 excecao( cuidado( 2018/03/D, IDU, IDP, De, C)) :- D >= 6, D =< 9.
 excecao( cuidado( 2018/D/05, IDU, IDP, De, C)) :- D >= 1, D =< 2.
+excecao(cuidado(D, 5, 3, exame, C)) :- D == 2018/04/02, C >= 25, C =< 35.
 
+% Conhecimento interdito
+cuidado( 2018/05/05, nullval2, 3, curativo, 30).
 nulo( nullval2 ).
 excecao(cuidado(D, IDU, IDP, De, C)) :- cuidado(D, nullval2, IDP, De, C).
 
-excecao(cuidado(D, 5, 3, exame, C)) :- D == 2018/04/02, C >= 25, C =< 35.
+%nao permitir a insercao de cuidados com utentes restritos.
++cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(2018/05/05, IDUs, 3, curativo, 30), nao( nulo( IDUs ) ) ), S),
+                        comprimento(S, N),
+                        N == 0
+                        ).
+
+%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
+-cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(2018/05/05, IDUs, 3, curativo, 30), nao( nulo( IDUs ) ) ), S),
+                        comprimento(S, N),
+                        N == 1
+                        ).
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado instituicao: IDInst, Nome, Cidade -> {V,F}
+
+% Conhecimento positivo
 instituicao( 1, hospitalbraga, braga).
 instituicao( 2, hospitalsaojoao, porto).
 instituicao( 3, hospitalsantamaria, porto).
@@ -186,20 +211,29 @@ instituicao( 4, hospitaltrofa, porto).
 instituicao( 5, centrosaudegualtar, braga).
 instituicao( 6, hospitalaveiro, aveiro).
 instituicao( 7, uncert8, guimaraes).
-instituicao( 8, centrosaudeguimaraes, imprec13).
 
-excecao( instituicao(IDI, No, Ci)) :- instituicao(IDI, uncert8, Ci).
-
-excecao( instituicao(8, centrosaudeguimaraes, Ci)) :- Ci == amares.
-excecao( instituicao(8, centrosaudeguimaraes, Ci)) :- Ci == penafiel.
-excecao( instituicao(8, centrosaudeguimaraes, Ci)) :- Ci == guimaraes.
-
+% Conhecimento negativo
 -instituicao(1, hospitalbraga, guimaraes).
 -instituicao(1, hospitalbarco, viladoconde).
 -instituicao(1, hospitalsaojoao, porto).
 -instituicao(2, hospitalmonte, vilaverde).
 -instituicao(4, hospitalazurem, guimaraes).
 -instituicao(4, hospitalporto, porto).
+
+% Receita
+-instituicao(Id, N, C) :-
+        nao( instituicao(Id, N, C) ),
+        nao( excecao( instituicao(Id, N, C) ) ).
+
+
+% Conhecimento incerto
+excecao( instituicao(IDI, No, Ci)) :- instituicao(IDI, uncert8, Ci).
+
+% Conhecimento impreciso
+excecao( instituicao(8, centrosaudeguimaraes, Ci)) :- Ci == amares.
+excecao( instituicao(8, centrosaudeguimaraes, Ci)) :- Ci == penafiel.
+excecao( instituicao(8, centrosaudeguimaraes, Ci)) :- Ci == guimaraes.
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Quantos prestadores tem uma instituicao
@@ -348,33 +382,7 @@ relatContas( A/M,IDI, Rf) :-
                           N == 0
                           ).
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
-+utente(IDU, No, I, M) :: (solucoes( Is, (utente(13, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
-                         comprimento(S, N),
-                         N == 0
-                         ).
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
--utente(IDU, No, I, M) :: (solucoes( Is, (utente(13, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
-                         comprimento(S, N),
-                         N == 1
-                         ).
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de cuidados com utentes restritos.
-+cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(2018/05/05, IDUs, 3, curativo, 30), nao( nulo( IDUs ) ) ), S),
-                        comprimento(S, N),
-                        N == 0
-                        ).
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
--cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(2018/05/05, IDUs, 3, curativo, 30), nao( nulo( IDUs ) ) ), S),
-                        comprimento(S, N),
-                        N == 1
-                        ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Calcula o comprimento de uma lista.

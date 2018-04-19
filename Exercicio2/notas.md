@@ -39,7 +39,20 @@ A elaboração do caso prático deverá ser de molde a respeitar as necessidades
 	demo(excecao(Questao),R) -> R == verdadeiro
 
 - Identificar conhecimento incerto: 
+
+
+	Fora do range
+	demo(Questao,R) -> R == falso.
 	demo(excecao(Questao),R) -> R == desconhecido.
-	temos que ver que não é interdito através do nao(nulo(VAR)). Não sabemos onde é que a variável está para fazer o teste.
+
+	Dentro do range
+	demo(Questao,R) -> R == desconhecido.
+	demo(excecao(Questao),R) -> R == verdadeiro.
+	solucoes(Questao, S) -> Comp(S) == 0.
+
+	Incerto
+	demo(Questao,R) -> R == desconhecido.
+	demo(excecao(Questao),R) -> R == verdadeiro.
+	solucoes(Questao, S) -> Comp(S) == 1.
 
 
