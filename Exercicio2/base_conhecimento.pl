@@ -384,33 +384,59 @@ relatContas( A/M,IDI, Rf) :-
                           ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de conhecimento negativo relativo a utentes que existem como conhecimento positivo na base de conhecimento
+%nao permitir a insercao de conhecimento negativo contraditorio relativo a utentes que existem como conhecimento positivo na base de conhecimento
 +(-utente(IDU, No, I, M)) :: (solucoes(IDU, utente(IDU, No, I, M), S),
                               comprimento(S, N),
                               N == 0
                               ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de conhecimento negativo relativo a prestadores que existem como conhecimento positivo na base de conhecimento
+%nao permitir a insercao de duplicados de conhecimento negativo relativo a utentes
++(-utente(IDU, No, I, M)) :: (solucoes(IDU, -utente(IDU, No, I, M), S),
+                              comprimento(S, N),
+                              N == 2
+                              ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de conhecimento negativo contraditorio relativo a prestadores que existem como conhecimento positivo na base de conhecimento
 +(-prestador(IDP, No, E, I)) :: (solucoes(IDP, prestador(IDP, No, E, I), S),
                                 comprimento(S, N),
                                 N == 0
                                 ).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de duplicados de conhecimento negativo relativo a prestadores
++(-prestador(IDP, No, E, I)) :: (solucoes(IDP, -prestador(IDP, No, E, I), S),
+                                comprimento(S, N),
+                                N == 2
+                                ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de conhecimento negativo relativo a cuidados que existem como conhecimento positivo na base de conhecimento
+%nao permitir a insercao de conhecimento negativo contraditorio relativo a cuidados que existem como conhecimento positivo na base de conhecimento
 +(-cuidado(D, IDU, IDP, De, C)) :: (solucoes((D, IDU, IDP, De, C), cuidado(D, IDU, IDP, De, C), S),
                                     comprimento(S, N),
                                     N == 0
                                     ).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de duplicados de conhecimento negativo relativo a cuidados
++(-cuidado(D, IDU, IDP, De, C)) :: (solucoes((D, IDU, IDP, De, C), -cuidado(D, IDU, IDP, De, C), S),
+                                    comprimento(S, N),
+                                    N == 2
+                                    ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de conhecimento negativo relativo a instituicoes que existem como conhecimento positivo na base de conhecimento
+%nao permitir a insercao de conhecimento negativo contraditorio relativo a instituicoes que existem como conhecimento positivo na base de conhecimento
 +(-instituicao(IDI, No, Ci)) :: (solucoes(IDI, instituicao(IDI, No, Ci), S),
                                   comprimento(S, N),
                                   N == 0
+                                  ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de duplicados de conhecimento negativo relativo a instituicoes
++(-instituicao(IDI, No, Ci)) :: (solucoes(IDI, -instituicao(IDI, No, Ci), S),
+                                  comprimento(S, N),
+                                  N == 2
                                   ).
 
 
@@ -454,6 +480,10 @@ insere(P) :- retract(P), !, fail.
 registar( Termo ) :- solucoes(Inv, +Termo :: Inv, S),
 					 insere(Termo),
 					 teste(S).
+
+registar( -Termo ) :- solucoes(Inv, +(-Termo) :: Inv, S),
+           insere(-Termo),
+           teste(S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Remove um termo da base de conhecimento
