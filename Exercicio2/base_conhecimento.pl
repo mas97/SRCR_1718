@@ -177,13 +177,6 @@ cuidado( incert7, 5, 2, penso, 5).
 excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(incert7, IDU, IDP, De, C).
 
 
-% Conhecimento impreciso
-excecao( cuidado( 2018/02/02, 2, 6, exame, C)) :- C >= 20, C =< 30.
-excecao( cuidado( 2018/04/08, 5, 7, raioX, C)) :- C >= 60, C =< 80.
-excecao( cuidado( 2018/03/D, IDU, IDP, De, C)) :- D >= 6, D =< 9.
-excecao( cuidado( 2018/D/05, IDU, IDP, De, C)) :- D >= 1, D =< 2.
-excecao(cuidado(D, 5, 3, exame, C)) :- D == 2018/04/02, C >= 25, C =< 35.
-
 % Conhecimento interdito
 cuidado( 2018/05/05, nullval2, 3, curativo, 30).
 nulo( nullval2 ).
