@@ -16,6 +16,9 @@
 :- dynamic cuidado/5.
 :- dynamic instituicao/3.
 :- dynamic excecao/1.
+:- dynamic (-)/1.
+:- dynamic nulo/1.
+:- dynamic (::)/1.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Bibliotecas
@@ -210,7 +213,6 @@ instituicao( 3, hospitalsantamaria, porto).
 instituicao( 4, hospitaltrofa, porto).
 instituicao( 5, centrosaudegualtar, braga).
 instituicao( 6, hospitalaveiro, aveiro).
-instituicao( 7, uncert8, guimaraes).
 
 % Conhecimento negativo
 -instituicao(1, hospitalbraga, guimaraes).
@@ -227,6 +229,7 @@ instituicao( 7, uncert8, guimaraes).
 
 
 % Conhecimento incerto
+instituicao( 7, uncert8, guimaraes).
 excecao( instituicao(IDI, No, Ci)) :- instituicao(IDI, uncert8, Ci).
 
 % Conhecimento impreciso
@@ -420,10 +423,138 @@ nao( Questao ).
 insere(P) :- assert(P).
 insere(P) :- retract(P), !, fail.
 
+
 % EVOLUÇÃO
-registar( Termo ) :- solucoes(Inv, +Termo :: Inv, S),
-					 insere(Termo),
-					 teste(S).
+
+% Conhecimento perfeito
+registar( Termo ) :- 
+	solucoes(Inv, +Termo :: Inv, S),
+	insere(Termo),
+	teste(S).
+
+% Conhecimento imperfeito utente - impreciso (Idade)
+registar( utente(IDU, No, I, M), Tipo ) :- 
+	Tipo == impreciso,
+	solucoes(Inv, +excecao(utente(IDU, No, I, M)) :: Inv, S),
+	insere(excecao(utente(IDU, No, I, M))),
+	teste(S).
+
+% Conhecimento imperfeito utente - impreciso (Idade)
+registar( utente(IDU, No, I, M), Menor, Maior ) :-
+	solucoes(Inv, +utente(IDU, No, I, M) :: Inv, S),
+	insere((excecao(utente(IDU, No, Idade, M)) :- Idade >= Menor, Idade =< Maior)),
+	teste(S).
+
+
+% Conhecimento imperfeito utente - interdito (idade)
+registar( utente(IDU, No, I, M), Tipo ) :-
+	Tipo == interdito,
+	solucoes(Inv, +utente(IDU, No, I, M) :: Inv, S),
+	insere(utente(IDU, No, I, M)),
+	teste(S),
+	insere(nulo(I)),
+	insere((excecao(utente(IDUtente, Nome, Idade, Morada)) :- utente(IDUtente, Nome, I, Morada))).
+
+
+% Conhecimento imperfeito utente - incerto (Morada)
+registar( utente(IDU, No, I, M), Tipo ) :-
+	Tipo == incerto,
+	solucoes(Inv, +utente(IDU, No, I, M) :: Inv, S),
+	insere(utente(IDU, No, I, M)),
+	teste(S),
+	assert((excecao(utente(IDUtente, Nome, Idade, Morada)) :- utente(IDUtente, Nome, Idade, M))).
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+
+% Conhecimento imperfeito prestador - impreciso (Nome e Especialidade)
+registar( prestador(IDP, No, E, IDI), Tipo ) :- 
+	Tipo == impreciso,
+	solucoes(Inv, +excecao(prestador(IDP, No, E, IDI)) :: Inv, S),
+	insere(excecao(prestador(IDP, No, E, IDI))),
+	teste(S).
+
+
+
+% Conhecimento imperfeito prestador - incerto (Especialidade)
+registar( prestador(IDP, No, E, IDI), Tipo ) :-
+	Tipo == incerto,
+	solucoes(Inv, +prestador(IDP, No, E, IDI) :: Inv, S),
+	insere(prestador(IDP, No, E, IDI)),
+	teste(S),
+	insere((excecao(prestador(IDPrestador, Nome, Especialidade, IDInstituicao)) :- prestador(IDPrestador, Nome, E, IDInstituicao))).
+
+	
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% CUIDADO E INSTITUICAO NÃO ESTAO TESTADOS!!!!!!!!!!!!!!!!!!!!
+
+% Conhecimento imperfeito cuidado - impreciso (Custo)
+registar( cuidado(D, IDU, IDP, De, C), Menor, Maior, Parametro ) :-
+	Parametro == custo,
+	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+	insere((excecao(cuidado(D, IDU, IDP, De, Custo)) :- Custo >= Menor, Custo =< Maior)),
+	teste(S).
+
+
+% Conhecimento imperfeito cuidado - interdito (IDUtente)
+registar( cuidado(D, IDU, IDP, De, C), Tipo ) :-
+	Tipo == interdito,
+	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+	insere(cuidado(D, IDU, IDP, De, C)),
+	teste(S),
+	insere(nulo(IDU)),
+	insere((excecao(prestador(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDU, IDPrestador, Descricao, Custo))).
+
+
+% Conhecimento imperfeito cuidado - incerto (Descrição)
+registar( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
+	Tipo == incerto,
+	Parametro == descricao,
+	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+	insere(cuidado(D, IDU, IDP, De, C)),
+	teste(S),
+	assert((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDUtente, IDPrestador, De, Custo))).
+
+% Conhecimento imperfeito cuidado - incerto (Custo)
+registar( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
+	Tipo == incerto,
+	Parametro == custo,
+	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+	insere(cuidado(D, IDU, IDP, De, C)),
+	teste(S),
+	assert((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDUtente, IDPrestador, Descricao, C))).
+
+% Conhecimento imperfeito cuidado - incerto (Data)
+registar( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
+	Tipo == incerto,
+	Parametro == data,
+	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+	insere(cuidado(D, IDU, IDP, De, C)),
+	teste(S),
+	assert((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(D, IDUtente, IDPrestador, Descricao, Custo))).
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+
+% Conhecimento imperfeito instituicao - impreciso (Cidade)
+registar( instituicao(ID, N, C), Tipo ) :- 
+	Tipo == impreciso,
+	solucoes(Inv, +excecao(instituicao(ID, N, C)) :: Inv, S),
+	insere(excecao(instituicao(ID, N, C))),
+	teste(S).
+
+% Conhecimento imperfeito prestador - incerto (Nome)
+registar( instituicao(ID, N, C), Tipo ) :- 
+	Tipo == incerto,
+	solucoes(Inv, +instituicao(ID, N, C) :: Inv, S),
+	insere(instituicao(ID, N, C)),
+	teste(S),
+	insere((excecao(instituicao(Identificador, Nome, Cidade)) :- instituicao(Identificador, N, Cidade))).
+
+
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Remove um termo da base de conhecimento
@@ -508,3 +639,5 @@ demoListaD( [ Q | LQ ], R ) :-
 	demo( Q, RQ ),
 	demoListaD( LQ, RL ),
 	disjuncao( RQ, RL, R ).
+
+
