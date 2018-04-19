@@ -66,16 +66,16 @@ utente( 13, beltrano, nullval1, guimaraes).
 nulo( nullval1 ).
 excecao(utente(IDU, No, I, M)) :- utente(IDU, No, nullval1, M).
 
-%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
-+utente(IDU, No, I, M) :: (solucoes( Is, (utente(13, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
-                         comprimento(S, N),
-                         N == 0
-                         ).
-
-%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
--utente(IDU, No, I, M) :: (solucoes( Is, (utente(13, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
+%nao permitir a insercao de utentes com informacao considerada interdita na base de Conhecimento.
++utente(IDU, No, I, M) :: (solucoes( Is, (utente(IDU, No, Is, M), nao( nulo( Is ) ) ), S),
                          comprimento(S, N),
                          N == 1
+                         ).
+
+%nao permitir a remocao de utentes com informacao intedita.
+-utente(IDU, No, I, M) :: (solucoes( Is, (utente(IDU, No, Is, M), nao( nulo( Is ) ) ), S),
+                         comprimento(S, N),
+                         N == 0
                          ).
 
 
@@ -187,16 +187,16 @@ cuidado( 2018/05/05, nullval2, 3, curativo, 30).
 nulo( nullval2 ).
 excecao(cuidado(D, IDU, IDP, De, C)) :- cuidado(D, nullval2, IDP, De, C).
 
-%nao permitir a insercao de cuidados com utentes restritos.
-+cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(2018/05/05, IDUs, 3, curativo, 30), nao( nulo( IDUs ) ) ), S),
-                        comprimento(S, N),
-                        N == 0
-                        ).
-
-%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
--cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(2018/05/05, IDUs, 3, curativo, 30), nao( nulo( IDUs ) ) ), S),
+%nao permitir a insercao de cuidados com informacao considerada interdita na base de conhecimento.
++cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(D, IDUs, IDP, De, C), nao( nulo( IDUs ) ) ), S),
                         comprimento(S, N),
                         N == 1
+                        ).
+
+%nao permitir a remocao de cuidados com informacao interdita.
+-cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(D, IDUs, IDP, De, C), nao( nulo( IDUs ) ) ), S),
+                        comprimento(S, N),
+                        N == 0
                         ).
 
 
