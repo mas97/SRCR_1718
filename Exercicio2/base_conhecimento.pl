@@ -172,11 +172,6 @@ cuidado( 2018/10/22, 8, 1, consulta, 20).
 cuidado( 2018/01/20, 7, 4, incert5, 25).
 excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, incert5, C).
 
-cuidado( 2018/04/10, 2, 3, consulta, incert6).
-excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, De, incert6).
-
-cuidado( incert7, 5, 2, penso, 5).
-excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(incert7, IDU, IDP, De, C).
 
 
 % Representação de conhecimento impreciso
@@ -708,36 +703,15 @@ remover( cuidado(D, IDU, IDP, De, C), Menor, Maior, Tipo ) :-
 	remove((excecao(cuidado(D, IDU, IDP, De, Custo)) :- Custo >= Menor, Custo =< Maior)),
 	teste(S).
 
+
 % Predicado a utilizar para a remoção de conhecimento imperfeito
 % 	do tipo incerto para um cuidado relativamente à sua descricao
-remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
+remover( cuidado(D, IDU, IDP, De, C), Tipo ) :-
 	Tipo == incerto,
-	Parametro == descricao,
 	solucoes(Inv, -cuidado(D, IDU, IDP, De, C) :: Inv, S),
 	remove(cuidado(D, IDU, IDP, De, C)),
 	teste(S),
 	retract((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDUtente, IDPrestador, De, Custo))).
-
-% Predicado a utilizar para a remoção de conhecimento imperfeito
-% 	do tipo incerto para um cuidado relativamente ao seu custo
-remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
-	Tipo == incerto,
-	Parametro == custo,
-	solucoes(Inv, -cuidado(D, IDU, IDP, De, C) :: Inv, S),
-	remove(cuidado(D, IDU, IDP, De, C)),
-	teste(S),
-	retract((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDUtente, IDPrestador, Descricao, C))).
-
-% Predicado a utilizar para a remoção de conhecimento imperfeito
-% 	do tipo incerto para um cuidado relativamente à sua data
-remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
-	Tipo == incerto,
-	Parametro == data,
-	solucoes(Inv, -cuidado(D, IDU, IDP, De, C) :: Inv, S),
-	remove(cuidado(D, IDU, IDP, De, C)),
-	teste(S),
-	retract((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(D, IDUtente, IDPrestador, Descricao, Custo))).
-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
