@@ -18,7 +18,6 @@
 :- dynamic excecao/1.
 :- dynamic (-)/1.
 :- dynamic nulo/1.
-:- dynamic (::)/1.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Bibliotecas
@@ -545,7 +544,7 @@ registar( instituicao(ID, N, C), Tipo ) :-
 	insere(excecao(instituicao(ID, N, C))),
 	teste(S).
 
-% Conhecimento imperfeito prestador - incerto (Nome)
+% Conhecimento imperfeito instituicao - incerto (Nome)
 registar( instituicao(ID, N, C), Tipo ) :- 
 	Tipo == incerto,
 	solucoes(Inv, +instituicao(ID, N, C) :: Inv, S),
@@ -578,16 +577,6 @@ remover( utente(IDU, No, I, M), Menor, Maior ) :-
 	solucoes(Inv, -excecao(utente(IDU, No, I, M)) :: Inv, S),
 	remove((excecao(utente(IDU, No, Idade, M)) :- Idade >= Menor, Idade =< Maior)),
 	teste(S).
-
-
-% Conhecimento imperfeito utente - interdito (idade)
-remover( utente(IDU, No, I, M), Tipo ) :-
-	Tipo == interdito,
-	solucoes(Inv, -utente(IDU, No, I, M) :: Inv, S),
-	remove(utente(IDU, No, I, M)),
-	teste(S),
-	retract(nulo(I)),
-	retract((excecao(utente(IDUtente, Nome, Idade, Morada)) :- utente(IDUtente, Nome, I, Morada))).
 
 
 % Conhecimento imperfeito utente - incerto (Morada)
