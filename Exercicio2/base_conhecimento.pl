@@ -24,7 +24,7 @@
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado utente: IDUtente, Nome, Idade, Morada -> {V,F}
-% Conhecimento positivo
+% Representação de conhecimento positivo
 utente( 1, marco, 25, braga).
 utente( 2, afonso, 30, braga).
 utente( 3, daniel, 20, braga).
@@ -34,7 +34,7 @@ utente( 6, bruno, 21, braga).
 utente( 7, hugo, 24, porto).
 utente( 8, luis, 35, lisboa).
 
-% Conhecimento negativo
+% Representação de conhecimento negativo
 -utente( 1, carlos, 12, guimaraes).
 -utente( 2, beatriz, 18, porto).
 -utente( 4, miguel, 34, viana).
@@ -48,20 +48,20 @@ utente( 8, luis, 35, lisboa).
         nao( utente( IDU, N, I, M ) ),
         nao( excecao( utente( IDU, N, I, M ) ) ).
 
-% Conhecimento incerto
+% Representação de conhecimento incerto 
 utente( 9, ana, 22, uncert1).
 excecao( utente(IDU, No, I, M)) :- utente(IDU, No, I, uncert1).
 
 utente( 10, beatriz, 43, uncert2).
 excecao( utente(IDU, No, I, M)) :- utente(IDU, No, I, uncert2).
 
-% Conhecimento impreciso
+% Representação de conhecimento impreciso
 excecao( utente(11, bernardo, 15, felgueiras)).
 excecao( utente(11, bernardo, 17, felgueiras)).
 excecao( utente(12, crispim, I, porto)) :- I >= 32, I =< 36. 
 excecao( utente(14, inacio, I, M)) :- I >= 17, I =< 20.
 
-% Conhecimento interdito
+% Representação de conhecimento interdito
 utente( 13, beltrano, nullval1, guimaraes).
 nulo( nullval1 ).
 excecao(utente(IDU, No, I, M)) :- utente(IDU, No, nullval1, M).
