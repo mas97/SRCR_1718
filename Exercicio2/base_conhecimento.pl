@@ -487,10 +487,10 @@ solucoes(X,Y,Z) :- findall(X,Y,Z).
 solucoesAlt(T,Q,S) :- Q, assert(tmp(T)), fail.
 solucoesAlt(T,Q,S) :- construir(S, []).
 
-construir(S1, S2) :- 
-	retract(tmp(X)),
+construir(Lf, Li) :- 
+	retract(tmp(T)),
         !,
-        construir(S1, [X|S2]).
+        construir(Lf, [T|Li]).
 construir(S, S).
 
 
