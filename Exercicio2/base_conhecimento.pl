@@ -167,7 +167,6 @@ cuidado( 2018/10/22, 8, 1, consulta, 20).
         nao( cuidado( D, IDU, IDP, De, C ) ),
         nao( excecao( cuidado( D, IDU, IDP, De, C ) ) ).
 
-
 % Representação de conhecimento incerto
 cuidado( 2018/01/20, 7, 4, incert5, 25).
 excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, incert5, C).
@@ -329,7 +328,7 @@ relatContas( A/M,IDI, Rf) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Invariante estrutural : nao permitir a insercao de utente com um ID que ja esta registado na base de conhecimento
-+utente( IDU, No, I, M ) :: (solucoes( IDU,(utente( IDU, _, _, _ )),S ),
++utente( IDU, _, _, _ ) :: (solucoes( IDU,(utente( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
@@ -343,7 +342,7 @@ relatContas( A/M,IDI, Rf) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Invariante estrutural : nao permitir a insercao de prestador com um ID que ja esta registado na base de conhecimento
-+prestador( IDU, _, _, _ ) :: (solucoes( IDU,(prestador( IDU, _, _, _ )),S ),
++prestador( IDP, _, _, _ ) :: (solucoes( IDP,(prestador( IDP, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
@@ -452,6 +451,27 @@ relatContas( A/M,IDI, Rf) :-
                     comprimento(S, N),
                     N == 1
                     ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% nao permitir a insercao de utente com um ID que ja esta registado na base de conhecimento como conhecimento imperfeito
++utente( IDU, _, _, _ ) :: (solucoes( IDU, excecao(utente( IDU, _, _, _ )),S ),
+                  comprimento( S,N ), 
+                  N == 1
+                  ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% nao permitir a insercao de prestador com um ID que ja esta registado na base de conhecimento como conhecimento imperfeito
++prestador( IDP, _, _, _ ) :: (solucoes( IDP,excecao(prestador( IDU, _, _, _ )),S ),
+                  comprimento( S,N ), 
+                  N == 1
+                  ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de duplicados de instituicao
++instituicao(IDInst, _, _) :: (solucoes( IDInst ,excecao(instituicao(IDInst, _, _)), S),
+                                  comprimento( S,N),
+                                  N == 1
+                                  ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Predicado que calcula o comprimento de uma lista.
