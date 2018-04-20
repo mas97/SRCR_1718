@@ -483,6 +483,17 @@ comprimento([_|L], R) :- comprimento(L,T),
 % Predicado que define o soluções como o predicado já existente findall
 solucoes(X,Y,Z) :- findall(X,Y,Z).
 
+
+solucoesAlt(T,Q,S) :- Q, assert(tmp(T)), fail.
+solucoesAlt(T,Q,S) :- construir(S, []).
+
+construir(S1, S2) :- 
+	retract(tmp(X)),
+        !,
+        construir(S1, [X|S2]).
+construir(S, S).
+
+
 teste([]).
 teste([R|L]) :- R, teste(L).
 
