@@ -69,14 +69,14 @@ nulo( nullval1 ).
 excecao(utente(IDU, No, I, M)) :- utente(IDU, No, nullval1, M).
 
 % Invariante referencial: impede a inserção de utentes com informacao 
-% 			  considerada interdita na Base de Conhecimento
+% 			  			  considerada interdita na Base de Conhecimento
 +utente(IDU, No, I, M) :: (solucoes( Is, (utente(IDU, No, Is, M), nao( nulo( Is ) ) ), S),
                          comprimento(S, N),
                          N == 1
                          ).
 
-%Invariante ... : impede a remoção de utentes com informacao intedita
-%		  na Base de Conhecimento.
+%Invariante referencial : impede a remoção de utentes com informacao intedita
+%		  	   			  na Base de Conhecimento.
 -utente(IDU, No, I, M) :: (solucoes( Is, (utente(IDU, No, Is, M), nao( nulo( Is ) ) ), S),
                          comprimento(S, N),
                          N == 0
@@ -167,16 +167,10 @@ cuidado( 2018/10/22, 8, 1, consulta, 20).
         nao( cuidado( D, IDU, IDP, De, C ) ),
         nao( excecao( cuidado( D, IDU, IDP, De, C ) ) ).
 
-<<<<<<< HEAD
 
 % Representação de conhecimento incerto
 cuidado( 2018/01/20, 7, 4, incert5, 25).
 excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, incert5, C).
-=======
-% Conhecimento incerto
-%cuidado( 2018/01/20, 7, 4, incert5, 25).
-%excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, incert5, C).
->>>>>>> 661c1285c510721e2b473728d2e4dd779c01207b
 
 cuidado( 2018/04/10, 2, 3, consulta, incert6).
 excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, De, incert6).
@@ -339,126 +333,126 @@ relatContas( A/M,IDI, Rf) :-
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de utente com um ID que ja esta registado na base de conhecimento
+% Invariante estrutural : nao permitir a insercao de utente com um ID que ja esta registado na base de conhecimento
 +utente( IDU, No, I, M ) :: (solucoes( IDU,(utente( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a remocao de utentes com cuidados registados
+% Invariante referencial : nao permitir a remocao de utentes com cuidados registados
 -utente(ID, _, _, _) :: (solucoes( ID,(cuidado(_, ID, _, _, _)), S),
                           comprimento(S, N),
                           N == 0
                           ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de prestador com um ID que ja esta registado na base de conhecimento
+% Invariante estrutural : nao permitir a insercao de prestador com um ID que ja esta registado na base de conhecimento
 +prestador( IDU, _, _, _ ) :: (solucoes( IDU,(prestador( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a remocao de prestadores com cuidados registados
+% Invariante referencial : nao permitir a remocao de prestadores com cuidados registados
 -prestador(ID, _, _, _) :: (solucoes( ID,(cuidado(_, _, ID, _, _)), S),
                           comprimento(S, N),
                           N == 0
                           ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de duplicados de cuidado
+% Invariante estrutural : nao permitir a insercao de duplicados de cuidado
 +cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (D, IDU, IDP, Desc, C), (cuidado(D, IDU, IDP, Desc, C)), S),
                                   comprimento( S,N),
                                   N == 1
                                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de cuidados se os intervenientes nao existirem na base de conhecimento
+% Invariante referencial : nao permitir a insercao de cuidados se os intervenientes nao existirem na base de conhecimento
 +cuidado(_, IDU, IDP, _, _) :: (solucoes( (IDU, IDP), (utente(IDU, _, _, _), prestador(IDP, _, _, _)), S),
                                   comprimento(S, N),
                                   N == 1
                                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de duplicados de instituicao
+% Invariante estrutural : nao permitir a insercao de duplicados de instituicao
 +instituicao(IDInst, _, _) :: (solucoes( IDInst ,instituicao(IDInst, _, _), S),
                                   comprimento( S,N),
                                   N == 1
                                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a remocao de instituições com prestadores dessa mesma instituição
+% Invariante referencial : nao permitir a remocao de instituições com prestadores dessa mesma instituição
 -instituicao(ID, _, _) :: (solucoes( ID,(prestador(_, _, _, ID)), S),
                           comprimento(S, N),
                           N == 0
                           ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de conhecimento negativo contraditorio relativo a utentes que existem como conhecimento positivo na base de conhecimento
+% Invariante estrutural : nao permitir a insercao de conhecimento negativo contraditorio relativo a utentes que existem como conhecimento positivo na base de conhecimento
 +(-utente(IDU, No, I, M)) :: (solucoes(IDU, utente(IDU, No, I, M), S),
                               comprimento(S, N),
                               N == 0
                               ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de duplicados de conhecimento negativo relativo a utentes
+% Invariante estrutural : nao permitir a insercao de duplicados de conhecimento negativo relativo a utentes
 +(-utente(IDU, No, I, M)) :: (solucoes(IDU, -utente(IDU, No, I, M), S),
                               comprimento(S, N),
                               N == 2
                               ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de conhecimento negativo contraditorio relativo a prestadores que existem como conhecimento positivo na base de conhecimento
+% Invariante estrutural : nao permitir a insercao de conhecimento negativo contraditorio relativo a prestadores que existem como conhecimento positivo na base de conhecimento
 +(-prestador(IDP, No, E, I)) :: (solucoes(IDP, prestador(IDP, No, E, I), S),
                                 comprimento(S, N),
                                 N == 0
                                 ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de duplicados de conhecimento negativo relativo a prestadores
+% Invariante estrutural : nao permitir a insercao de duplicados de conhecimento negativo relativo a prestadores
 +(-prestador(IDP, No, E, I)) :: (solucoes(IDP, -prestador(IDP, No, E, I), S),
                                 comprimento(S, N),
                                 N == 2
                                 ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de conhecimento negativo contraditorio relativo a cuidados que existem como conhecimento positivo na base de conhecimento
+% Invariante estrutural : nao permitir a insercao de conhecimento negativo contraditorio relativo a cuidados que existem como conhecimento positivo na base de conhecimento
 +(-cuidado(D, IDU, IDP, De, C)) :: (solucoes((D, IDU, IDP, De, C), cuidado(D, IDU, IDP, De, C), S),
                                     comprimento(S, N),
                                     N == 0
                                     ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de duplicados de conhecimento negativo relativo a cuidados
+% Invariante estrutural : nao permitir a insercao de duplicados de conhecimento negativo relativo a cuidados
 +(-cuidado(D, IDU, IDP, De, C)) :: (solucoes((D, IDU, IDP, De, C), -cuidado(D, IDU, IDP, De, C), S),
                                     comprimento(S, N),
                                     N == 2
                                     ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de conhecimento negativo contraditorio relativo a instituicoes que existem como conhecimento positivo na base de conhecimento
+% Invariante estrutural : nao permitir a insercao de conhecimento negativo contraditorio relativo a instituicoes que existem como conhecimento positivo na base de conhecimento
 +(-instituicao(IDI, No, Ci)) :: (solucoes(IDI, instituicao(IDI, No, Ci), S),
                                   comprimento(S, N),
                                   N == 0
                                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de duplicados de conhecimento negativo relativo a instituicoes
+% Invariante estrutural : nao permitir a insercao de duplicados de conhecimento negativo relativo a instituicoes
 +(-instituicao(IDI, No, Ci)) :: (solucoes(IDI, -instituicao(IDI, No, Ci), S),
                                   comprimento(S, N),
                                   N == 2
                                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de duplicados de predicados nulo
+% Invariante estrutural : nao permitir a insercao de duplicados de predicados nulo
 +nulo(Termo) :: (solucoes(Termo, nulo(Termo), S),
                 comprimento(S, N),
                 N == 1
                 ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Invariante ... :nao permitir a insercao de duplicados de predicados excecao
+% Invariante estrutural : nao permitir a insercao de duplicados do predicado excecao
 +excecao(Termo) :: (solucoes(Termo, excecao(Termo), S),
                     comprimento(S, N),
                     N == 1
@@ -473,7 +467,6 @@ comprimento([_|L], R) :- comprimento(L,T),
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Predicado que define o soluções como o predicado já existente findall
 solucoes(X,Y,Z) :- findall(X,Y,Z).
-
 
 teste([]).
 teste([R|L]) :- R, teste(L).
@@ -504,26 +497,29 @@ insere(P) :- retract(P), !, fail.
 
 % EVOLUÇÃO
 
-% Conhecimento perfeito
+% Predicado a utilizar para a inserção de conhecimento positivo
 registar( Termo ) :- 
 	solucoes(Inv, +Termo :: Inv, S),
 	insere(Termo),
 	teste(S).
 
-% Conhecimento imperfeito utente - impreciso (Idade)
+% Predicado a utilizar para a inserção de conhecimento imperfeito
+% 	do tipo impreciso para um utente relativamente à sua idade
 registar( utente(IDU, No, I, M), Tipo ) :- 
 	Tipo == impreciso,
 	solucoes(Inv, +excecao(utente(IDU, No, I, M)) :: Inv, S),
 	insere(excecao(utente(IDU, No, I, M))),
 	teste(S).
 
-% Conhecimento imperfeito utente - impreciso (Idade)
+% Predicado a utilizar para a inserção de conhecimento imperfeito
+% 	do tipo impreciso para um utente relativamente à sua idade
 registar( utente(IDU, No, I, M), Menor, Maior ) :-
 	solucoes(Inv, +excecao(utente(IDU, No, I, M)) :: Inv, S),
 	insere((excecao(utente(IDU, No, Idade, M)) :- Idade >= Menor, Idade =< Maior)),
 	teste(S).
 
-
+% Predicado a utilizar para a inserção de conhecimento imperfeito
+% 	do tipo interdito para um utente relativamente à sua idade
 % Conhecimento imperfeito utente - interdito (idade)
 registar( utente(IDU, No, I, M), Tipo ) :-
 	Tipo == interdito,
@@ -533,8 +529,8 @@ registar( utente(IDU, No, I, M), Tipo ) :-
 	insere(nulo(I)),
 	insere((excecao(utente(IDUtente, Nome, Idade, Morada)) :- utente(IDUtente, Nome, I, Morada))).
 
-
-% Conhecimento imperfeito utente - incerto (Morada)
+% Predicado a utilizar para a inserção de conhecimento imperfeito
+% 	do tipo incerto para um utente relativamente à sua morada
 registar( utente(IDU, No, I, M), Tipo ) :-
 	Tipo == incerto,
 	solucoes(Inv, +utente(IDU, No, I, M) :: Inv, S),
@@ -545,8 +541,8 @@ registar( utente(IDU, No, I, M), Tipo ) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-
-% Conhecimento imperfeito prestador - impreciso (Nome e Especialidade)
+% Predicado a utilizar para a inserção de conhecimento imperfeito
+% 	do tipo impreciso para um prestador relativamente ao seu nome e especialidade
 registar( prestador(IDP, No, E, IDI), Tipo ) :- 
 	Tipo == impreciso,
 	solucoes(Inv, +excecao(prestador(IDP, No, E, IDI)) :: Inv, S),
@@ -554,8 +550,8 @@ registar( prestador(IDP, No, E, IDI), Tipo ) :-
 	teste(S).
 
 
-
-% Conhecimento imperfeito prestador - incerto (Especialidade)
+% Predicado a utilizar para a inserção de conhecimento imperfeito
+% 	do tipo impreciso para um prestador relativamente ao seu nome e especialidade
 registar( prestador(IDP, No, E, IDI), Tipo ) :-
 	Tipo == incerto,
 	solucoes(Inv, +prestador(IDP, No, E, IDI) :: Inv, S),
@@ -566,6 +562,8 @@ registar( prestador(IDP, No, E, IDI), Tipo ) :-
 	
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
+% Predicado a utilizar para a inserção de conhecimento imperfeito
+% 	do tipo impreciso para um cuidado relativamente ao seu custo
 % Conhecimento imperfeito cuidado - impreciso (Custo)
 registar( cuidado(D, IDU, IDP, De, C), Menor, Maior, Parametro ) :-
 	Parametro == custo,
@@ -574,7 +572,8 @@ registar( cuidado(D, IDU, IDP, De, C), Menor, Maior, Parametro ) :-
 	teste(S).
 
 
-% Conhecimento imperfeito cuidado - interdito (IDUtente)
+% Predicado a utilizar para a inserção de conhecimento imperfeito
+% 	do tipo interdito para um cuidado relativamente ao IDUtente
 registar( cuidado(D, IDU, IDP, De, C), Tipo ) :-
 	Tipo == interdito,
 	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
@@ -584,7 +583,8 @@ registar( cuidado(D, IDU, IDP, De, C), Tipo ) :-
 	insere((excecao(prestador(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDU, IDPrestador, Descricao, Custo))).
 
 
-% Conhecimento imperfeito cuidado - incerto (Descrição)
+% Predicado a utilizar para a inserção de conhecimento imperfeito
+% 	do tipo incerto para um cuidado relativamente à sua Descrição
 registar( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 	Tipo == incerto,
 	Parametro == descricao,
@@ -593,7 +593,9 @@ registar( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 	teste(S),
 	assert((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDUtente, IDPrestador, De, Custo))).
 
-% Conhecimento imperfeito cuidado - incerto (Custo)
+
+% Predicado a utilizar para a inserção de conhecimento imperfeito
+% 	do tipo incerto para um cuidado relativamente ao seu custo
 registar( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 	Tipo == incerto,
 	Parametro == custo,
@@ -602,7 +604,9 @@ registar( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 	teste(S),
 	assert((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDUtente, IDPrestador, Descricao, C))).
 
-% Conhecimento imperfeito cuidado - incerto (Data)
+
+% Predicado a utilizar para a inserção de conhecimento imperfeito
+% 	do tipo incerto para um cuidado relativamente à sua Data
 registar( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 	Tipo == incerto,
 	Parametro == data,
@@ -615,14 +619,17 @@ registar( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 
-% Conhecimento imperfeito instituicao - impreciso (Cidade)
+% Predicado a utilizar para a inserção de conhecimento imperfeito
+% 	do tipo impreciso para uma instituição relativamente à cidade
 registar( instituicao(ID, N, C), Tipo ) :- 
 	Tipo == impreciso,
 	solucoes(Inv, +excecao(instituicao(ID, N, C)) :: Inv, S),
 	insere(excecao(instituicao(ID, N, C))),
 	teste(S).
 
-% Conhecimento imperfeito instituicao - incerto (Nome)
+
+% Predicado a utilizar para a inserção de conhecimento imperfeito
+% 	do tipo incerto para uma instituição relativamente ao seu nome
 registar( instituicao(ID, N, C), Tipo ) :- 
 	Tipo == incerto,
 	solucoes(Inv, +instituicao(ID, N, C) :: Inv, S),
@@ -631,8 +638,7 @@ registar( instituicao(ID, N, C), Tipo ) :-
 	insere((excecao(instituicao(Identificador, Nome, Cidade)) :- instituicao(Identificador, N, Cidade))).
 
 
-
-
+% Predicado a utilizar para a inserção de conhecimento negativo
 registar( -Termo ) :- solucoes(Inv, +(-Termo) :: Inv, S),
            insere(-Termo),
            teste(S).
@@ -647,21 +653,23 @@ remover( Termo ) :- solucoes(Inv, -Termo :: Inv, S),
 					  remove(Termo),
 					  teste(S).
 
-% Conhecimento imperfeito utente - impreciso (Idade)
+% Predicado a utilizar para a remoção de conhecimento imperfeito
+% 	do tipo impreciso para um utente relativamente à sua idade
 remover( utente(IDU, No, I, M), Tipo ) :- 
 	Tipo == impreciso,
 	solucoes(Inv, -excecao(utente(IDU, No, I, M)) :: Inv, S),
 	remove(excecao(utente(IDU, No, I, M))),
 	teste(S).
 
-% Conhecimento imperfeito utente - impreciso (Idade)
+% Predicado a utilizar para a remoção de conhecimento imperfeito
+% 	do tipo impreciso para um utente relativamente à sua idade
 remover( utente(IDU, No, I, M), Menor, Maior ) :-
 	solucoes(Inv, -excecao(utente(IDU, No, I, M)) :: Inv, S),
 	remove((excecao(utente(IDU, No, Idade, M)) :- Idade >= Menor, Idade =< Maior)),
 	teste(S).
 
-
-% Conhecimento imperfeito utente - incerto (Morada)
+% Predicado a utilizar para a remoção de conhecimento imperfeito
+% 	do tipo incerto para um utente relativamente à sua morada
 remover( utente(IDU, No, I, M), Tipo ) :-
 	Tipo == incerto,
 	solucoes(Inv, -utente(IDU, No, I, M) :: Inv, S),
@@ -672,17 +680,16 @@ remover( utente(IDU, No, I, M), Tipo ) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-
-% Conhecimento imperfeito prestador - impreciso (Nome e Especialidade)
+% Predicado a utilizar para a remoção de conhecimento imperfeito
+% 	do tipo impreciso para um prestador relativamente ao seu nome e especialidade
 remover( prestador(IDP, No, E, IDI), Tipo ) :- 
 	Tipo == impreciso,
 	solucoes(Inv, -excecao(prestador(IDP, No, E, IDI)) :: Inv, S),
 	remove(excecao(prestador(IDP, No, E, IDI))),
 	teste(S).
 
-
-
-% Conhecimento imperfeito prestador - incerto (Especialidade)
+% Predicado a utilizar para a remoção de conhecimento imperfeito
+% 	do tipo incerto para um prestador relativamente à sua especialidade
 remover( prestador(IDP, No, E, IDI), Tipo ) :-
 	Tipo == incerto,
 	solucoes(Inv, -prestador(IDP, No, E, IDI) :: Inv, S),
@@ -693,15 +700,16 @@ remover( prestador(IDP, No, E, IDI), Tipo ) :-
 	
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-% Conhecimento imperfeito cuidado - impreciso (Custo)
+% Predicado a utilizar para a remoção de conhecimento imperfeito
+% 	do tipo impreciso para um cuidado relativamente ao seu custo
 remover( cuidado(D, IDU, IDP, De, C), Menor, Maior, Tipo ) :-
 	Tipo == impreciso,
 	solucoes(Inv, -excecao(cuidado(D, IDU, IDP, De, C)) :: Inv, S),
 	remove((excecao(cuidado(D, IDU, IDP, De, Custo)) :- Custo >= Menor, Custo =< Maior)),
 	teste(S).
 
-
-% Conhecimento imperfeito cuidado - incerto (Descrição)
+% Predicado a utilizar para a remoção de conhecimento imperfeito
+% 	do tipo incerto para um cuidado relativamente à sua descricao
 remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 	Tipo == incerto,
 	Parametro == descricao,
@@ -710,7 +718,8 @@ remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 	teste(S),
 	retract((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDUtente, IDPrestador, De, Custo))).
 
-% Conhecimento imperfeito cuidado - incerto (Custo)
+% Predicado a utilizar para a remoção de conhecimento imperfeito
+% 	do tipo incerto para um cuidado relativamente ao seu custo
 remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 	Tipo == incerto,
 	Parametro == custo,
@@ -719,7 +728,8 @@ remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 	teste(S),
 	retract((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDUtente, IDPrestador, Descricao, C))).
 
-% Conhecimento imperfeito cuidado - incerto (Data)
+% Predicado a utilizar para a remoção de conhecimento imperfeito
+% 	do tipo incerto para um cuidado relativamente à sua data
 remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 	Tipo == incerto,
 	Parametro == data,
@@ -731,15 +741,16 @@ remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-
-% Conhecimento imperfeito instituicao - impreciso (Cidade)
+% Predicado a utilizar para a remoção de conhecimento imperfeito
+% 	do tipo impreciso para uma instituição relativamente à sua cidade
 remover( instituicao(ID, N, C), Tipo ) :- 
 	Tipo == impreciso,
 	solucoes(Inv, -excecao(instituicao(ID, N, C)) :: Inv, S),
 	remove(excecao(instituicao(ID, N, C))),
 	teste(S).
 
-% Conhecimento imperfeito prestador - incerto (Nome)
+% Predicado a utilizar para a remoção de conhecimento imperfeito
+% 	do tipo incerto para um cuidado relativamente ao seu nome
 remover( instituicao(ID, N, C), Tipo ) :- 
 	Tipo == incerto,
 	solucoes(Inv, -instituicao(ID, N, C) :: Inv, S),
@@ -749,6 +760,8 @@ remover( instituicao(ID, N, C), Tipo ) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
+% Predicado conjunção responsável pelo cálculo de predicados
+% 	tomando agora o novo tipo de conhecimento, desconhecido
 conjuncao( A, B, verdadeiro ) :-
 	A == verdadeiro, B == verdadeiro.
 conjuncao( A, B, falso ) :-
@@ -770,6 +783,8 @@ conjuncao( A, B, desconhecido ) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
+% Predicado disjunção responsável pelo cálculo de predicados
+% 	tomando agora o novo tipo de conhecimento, desconhecido
 disjuncao( A, B, verdadeiro ) :-
 	A == verdadeiro, B == verdadeiro.
 disjuncao( A, B, falso ) :-
@@ -792,6 +807,8 @@ disjuncao( A, B, verdadeiro ) :-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % DEMOS
 
+% Predicado que possibilita a demonstração de uma lista de questões,
+% 	sendo esta constituida por conjunções e disjunções
 demoComp( [ Q ], R ) :- 
 	demo( Q , RQ ),
 	conjuncao( RQ, verdadeiro, R ).
@@ -807,6 +824,8 @@ demoComp( [(Q , ou) | LQ], R ) :-
 	demoComp( LQ, RL ),
 	disjuncao( RQ, RL, R).
 
+% Predicado que possibilita a demonstração de uma lista de questões
+% 	apenas constituida por conjunções
 demoListaC( [], verdadeiro ).
 demoListaC( [ Q ], R ) :- demo( Q, R ).
 demoListaC( [ Q | LQ ], R ) :-
@@ -814,6 +833,8 @@ demoListaC( [ Q | LQ ], R ) :-
 	demoListaC( LQ, RL ),
 	conjuncao( RQ, RL, R ).
 
+% Predicado que possibilita a demonstração de uma lista de questões
+% 	apenas constituida por disjunções
 demoListaD( [], verdadeiro ).
 demoListaD( [ Q ], R ) :- demo( Q, R ).
 demoListaD( [ Q | LQ ], R ) :-
