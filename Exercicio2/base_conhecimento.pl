@@ -16,8 +16,8 @@
 :- dynamic cuidado/5.
 :- dynamic instituicao/3.
 :- dynamic excecao/1.
-:- dynamic (-)/1.
 :- dynamic nulo/1.
+:- dynamic (-)/1.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Bibliotecas
@@ -51,11 +51,11 @@ utente( 8, luis, 35, lisboa).
         nao( excecao( utente( IDU, N, I, M ) ) ).
 
 % Conhecimento incerto
-utente( 9, ana, 22, uncert1).
-excecao( utente(IDU, No, I, M)) :- utente(IDU, No, I, uncert1).
+utente( 9, ana, 22, incert1).
+excecao( utente(IDU, No, I, M)) :- utente(IDU, No, I, incert1).
 
-utente( 10, beatriz, 43, uncert2).
-excecao( utente(IDU, No, I, M)) :- utente(IDU, No, I, uncert2).
+utente( 10, beatriz, 43, incert2).
+excecao( utente(IDU, No, I, M)) :- utente(IDU, No, I, incert2).
 
 % Conhecimento impreciso
 excecao( utente(11, bernardo, 15, felgueiras)).
@@ -68,16 +68,16 @@ utente( 13, beltrano, nullval1, guimaraes).
 nulo( nullval1 ).
 excecao(utente(IDU, No, I, M)) :- utente(IDU, No, nullval1, M).
 
-%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
-+utente(IDU, No, I, M) :: (solucoes( Is, (utente(13, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
-                         comprimento(S, N),
-                         N == 0
-                         ).
-
-%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
--utente(IDU, No, I, M) :: (solucoes( Is, (utente(13, beltrano, Is, guimaraes), nao( nulo( Is ) ) ), S),
+%nao permitir a insercao de utentes com informacao considerada interdita na base de Conhecimento.
++utente(IDU, No, I, M) :: (solucoes( Is, (utente(IDU, No, Is, M), nao( nulo( Is ) ) ), S),
                          comprimento(S, N),
                          N == 1
+                         ).
+
+%nao permitir a remocao de utentes com informacao intedita.
+-utente(IDU, No, I, M) :: (solucoes( Is, (utente(IDU, No, Is, M), nao( nulo( Is ) ) ), S),
+                         comprimento(S, N),
+                         N == 0
                          ).
 
 
@@ -106,32 +106,32 @@ prestador( 7, paulo, tecnicoRaioX, 6).
 	nao( excecao( prestador( ID, No, E, I))).
 
 % Conhecimento incerto
-prestador( 8, pedro, uncert3, 5).
-excecao( prestador(IDP, No, E, IDI)) :- prestador(IDP, No, uncert3, IDI).
+prestador( 8, pedro, incert3, 5).
+excecao( prestador(IDP, No, E, IDI)) :- prestador(IDP, No, incert3, IDI).
 
-prestador( 9, carolina, uncert4, 3).
-excecao( prestador(IDP, No, E, IDI)) :- prestador(IDP, No, uncert4, IDI).
+prestador( 9, carolina, incert4, 3).
+excecao( prestador(IDP, No, E, IDI)) :- prestador(IDP, No, incert4, IDI).
 
 
 % Conhecimento impreciso
-excecao( prestador(10, No, enfermeiro, 2)) :- No == rafael.
-excecao( prestador(10, No, enfermeiro, 2)) :- No == francisco.
+excecao( prestador(10, rafael, enfermeiro, 2)).
+excecao( prestador(10, francisco, enfermeiro, 2)).
 
-excecao( prestador(11, No, medico, 4)) :- No == silvio.
-excecao( prestador(11, No, medico, 4)) :- No == dionisio.
-excecao( prestador(11, No, medico, 4)) :- No == wilson.
+excecao( prestador(11, silvio, medico, 4)).
+excecao( prestador(11, dionisio, medico, 4)).
+excecao( prestador(11, wilson, medico, 4)).
 
-excecao( prestador(12, icaro, E, 3)) :- E == cirurgiao.
-excecao( prestador(12, icaro, E, 3)) :- E == medico.
+excecao( prestador(12, icaro, cirurgiao, 3)).
+excecao( prestador(12, icaro, medico, 3)).
 
-excecao( prestador(13, garcia, E, 1)) :- E == tecnicoRaioX.
-excecao( prestador(13, garcia, E, 1)) :- E == enfermeiro.
-excecao( prestador(13, garcia, E, 1)) :- E == oftalmologista.
+excecao( prestador(13, garcia, tecnicoRaioX, 1)).
+excecao( prestador(13, garcia, enfermeiro, 1)).
+excecao( prestador(13, garcia, oftalmologista, 1)).
 
-excecao( prestador(14, No, E, 3)) :- No == gabriel, E == medico.
-excecao( prestador(14, No, E, 3)) :- No == gabriel, E == cirurgiao.
-excecao( prestador(14, No, E, 3)) :- No == maria, E == medico.
-excecao( prestador(14, No, E, 3)) :- No == maria, E == cirurgiao.
+excecao( prestador(14, gabriel, medico, 3)).
+excecao( prestador(14, gabriel, cirurgiao, 3)).
+excecao( prestador(14, maria, medico, 3)).
+excecao( prestador(14, maria, cirurgiao, 3)).
 
 
 
@@ -165,40 +165,37 @@ cuidado( 2018/10/22, 8, 1, consulta, 20).
         nao( cuidado( D, IDU, IDP, De, C ) ),
         nao( excecao( cuidado( D, IDU, IDP, De, C ) ) ).
 
-
 % Conhecimento incerto
-cuidado( 2018/01/20, 7, 4, uncert5, 25).
-excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, uncert5, C).
+%cuidado( 2018/01/20, 7, 4, incert5, 25).
+%excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, incert5, C).
 
-cuidado( 2018/04/10, 2, 3, consulta, uncert6).
-excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, De, uncert6).
+cuidado( 2018/04/10, 2, 3, consulta, incert6).
+excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, De, incert6).
 
-cuidado( uncert7, 5, 2, penso, 5).
-excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(uncert7, IDU, IDP, De, C).
+cuidado( incert7, 5, 2, penso, 5).
+excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(incert7, IDU, IDP, De, C).
 
 
 % Conhecimento impreciso
-excecao( cuidado( 2018/02/02, 2, 6, exame, C)) :- C >= 20, C =< 30.
-excecao( cuidado( 2018/04/08, 5, 7, raioX, C)) :- C >= 60, C =< 80.
-excecao( cuidado( 2018/03/D, IDU, IDP, De, C)) :- D >= 6, D =< 9.
-excecao( cuidado( 2018/D/05, IDU, IDP, De, C)) :- D >= 1, D =< 2.
-excecao(cuidado(D, 5, 3, exame, C)) :- D == 2018/04/02, C >= 25, C =< 35.
+excecao(cuidado(2018/02/02, 2, 6, exame, C)) :- C >= 20, C =< 30.
+excecao(cuidado(2018/04/08, 5, 7, raioX, C)) :- C >= 60, C =< 80.
+
 
 % Conhecimento interdito
 cuidado( 2018/05/05, nullval2, 3, curativo, 30).
 nulo( nullval2 ).
 excecao(cuidado(D, IDU, IDP, De, C)) :- cuidado(D, nullval2, IDP, De, C).
 
-%nao permitir a insercao de cuidados com utentes restritos.
-+cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(2018/05/05, IDUs, 3, curativo, 30), nao( nulo( IDUs ) ) ), S),
-                        comprimento(S, N),
-                        N == 0
-                        ).
-
-%nao permitir a insercao de utentes EXPLICARRRRRRRRRRRRRRRRRRRRRR.
--cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(2018/05/05, IDUs, 3, curativo, 30), nao( nulo( IDUs ) ) ), S),
+%nao permitir a insercao de cuidados com informacao considerada interdita na base de conhecimento.
++cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(D, IDUs, IDP, De, C), nao( nulo( IDUs ) ) ), S),
                         comprimento(S, N),
                         N == 1
+                        ).
+
+%nao permitir a remocao de cuidados com informacao interdita.
+-cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(D, IDUs, IDP, De, C), nao( nulo( IDUs ) ) ), S),
+                        comprimento(S, N),
+                        N == 0
                         ).
 
 
@@ -228,13 +225,14 @@ instituicao( 6, hospitalaveiro, aveiro).
 
 
 % Conhecimento incerto
-instituicao( 7, uncert8, guimaraes).
-excecao( instituicao(IDI, No, Ci)) :- instituicao(IDI, uncert8, Ci).
+instituicao( 7, incert8, guimaraes).
+excecao( instituicao(IDI, No, Ci)) :- instituicao(IDI, incert8, Ci).
+
 
 % Conhecimento impreciso
-excecao( instituicao(8, centrosaudeguimaraes, Ci)) :- Ci == amares.
-excecao( instituicao(8, centrosaudeguimaraes, Ci)) :- Ci == penafiel.
-excecao( instituicao(8, centrosaudeguimaraes, Ci)) :- Ci == guimaraes.
+excecao( instituicao(8, centrosaudeguimaraes, amares)).
+excecao( instituicao(8, centrosaudeguimaraes, penafiel)).
+excecao( instituicao(8, centrosaudeguimaraes, guimaraes)).
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -384,7 +382,75 @@ relatContas( A/M,IDI, Rf) :-
                           N == 0
                           ).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de conhecimento negativo contraditorio relativo a utentes que existem como conhecimento positivo na base de conhecimento
++(-utente(IDU, No, I, M)) :: (solucoes(IDU, utente(IDU, No, I, M), S),
+                              comprimento(S, N),
+                              N == 0
+                              ).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de duplicados de conhecimento negativo relativo a utentes
++(-utente(IDU, No, I, M)) :: (solucoes(IDU, -utente(IDU, No, I, M), S),
+                              comprimento(S, N),
+                              N == 2
+                              ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de conhecimento negativo contraditorio relativo a prestadores que existem como conhecimento positivo na base de conhecimento
++(-prestador(IDP, No, E, I)) :: (solucoes(IDP, prestador(IDP, No, E, I), S),
+                                comprimento(S, N),
+                                N == 0
+                                ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de duplicados de conhecimento negativo relativo a prestadores
++(-prestador(IDP, No, E, I)) :: (solucoes(IDP, -prestador(IDP, No, E, I), S),
+                                comprimento(S, N),
+                                N == 2
+                                ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de conhecimento negativo contraditorio relativo a cuidados que existem como conhecimento positivo na base de conhecimento
++(-cuidado(D, IDU, IDP, De, C)) :: (solucoes((D, IDU, IDP, De, C), cuidado(D, IDU, IDP, De, C), S),
+                                    comprimento(S, N),
+                                    N == 0
+                                    ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de duplicados de conhecimento negativo relativo a cuidados
++(-cuidado(D, IDU, IDP, De, C)) :: (solucoes((D, IDU, IDP, De, C), -cuidado(D, IDU, IDP, De, C), S),
+                                    comprimento(S, N),
+                                    N == 2
+                                    ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de conhecimento negativo contraditorio relativo a instituicoes que existem como conhecimento positivo na base de conhecimento
++(-instituicao(IDI, No, Ci)) :: (solucoes(IDI, instituicao(IDI, No, Ci), S),
+                                  comprimento(S, N),
+                                  N == 0
+                                  ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de duplicados de conhecimento negativo relativo a instituicoes
++(-instituicao(IDI, No, Ci)) :: (solucoes(IDI, -instituicao(IDI, No, Ci), S),
+                                  comprimento(S, N),
+                                  N == 2
+                                  ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de duplicados de predicados nulo
++nulo(Termo) :: (solucoes(Termo, nulo(Termo), S),
+                comprimento(S, N),
+                N == 1
+                ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%nao permitir a insercao de duplicados de predicados excecao
++excecao(Termo) :: (solucoes(Termo, excecao(Termo), S),
+                    comprimento(S, N),
+                    N == 1
+                    ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Calcula o comprimento de uma lista.
@@ -486,7 +552,6 @@ registar( prestador(IDP, No, E, IDI), Tipo ) :-
 
 	
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% CUIDADO E INSTITUICAO NÃO ESTAO TESTADOS!!!!!!!!!!!!!!!!!!!!
 
 % Conhecimento imperfeito cuidado - impreciso (Custo)
 registar( cuidado(D, IDU, IDP, De, C), Menor, Maior, Parametro ) :-
@@ -555,6 +620,10 @@ registar( instituicao(ID, N, C), Tipo ) :-
 
 
 
+registar( -Termo ) :- solucoes(Inv, +(-Termo) :: Inv, S),
+           insere(-Termo),
+           teste(S).
+
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Remove um termo da base de conhecimento
 remove(P) :- retract(P).
@@ -612,28 +681,18 @@ remover( prestador(IDP, No, E, IDI), Tipo ) :-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Conhecimento imperfeito cuidado - impreciso (Custo)
-remover( cuidado(D, IDU, IDP, De, C), Menor, Maior, Parametro ) :-
-	Parametro == custo,
+remover( cuidado(D, IDU, IDP, De, C), Menor, Maior, Tipo ) :-
+	Tipo == impreciso,
 	solucoes(Inv, -excecao(cuidado(D, IDU, IDP, De, C)) :: Inv, S),
 	remove((excecao(cuidado(D, IDU, IDP, De, Custo)) :- Custo >= Menor, Custo =< Maior)),
 	teste(S).
-
-
-% Conhecimento imperfeito cuidado - interdito (IDUtente)
-remover( cuidado(D, IDU, IDP, De, C), Tipo ) :-
-	Tipo == interdito,
-	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
-	remove(cuidado(D, IDU, IDP, De, C)),
-	teste(S),
-	retract(nulo(IDU)),
-	retract((excecao(prestador(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDU, IDPrestador, Descricao, Custo))).
 
 
 % Conhecimento imperfeito cuidado - incerto (Descrição)
 remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 	Tipo == incerto,
 	Parametro == descricao,
-	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+	solucoes(Inv, -cuidado(D, IDU, IDP, De, C) :: Inv, S),
 	remove(cuidado(D, IDU, IDP, De, C)),
 	teste(S),
 	retract((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDUtente, IDPrestador, De, Custo))).
@@ -642,7 +701,7 @@ remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 	Tipo == incerto,
 	Parametro == custo,
-	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+	solucoes(Inv, -cuidado(D, IDU, IDP, De, C) :: Inv, S),
 	remove(cuidado(D, IDU, IDP, De, C)),
 	teste(S),
 	retract((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDUtente, IDPrestador, Descricao, C))).
@@ -651,7 +710,7 @@ remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
 	Tipo == incerto,
 	Parametro == data,
-	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+	solucoes(Inv, -cuidado(D, IDU, IDP, De, C) :: Inv, S),
 	remove(cuidado(D, IDU, IDP, De, C)),
 	teste(S),
 	retract((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(D, IDUtente, IDPrestador, Descricao, Custo))).
