@@ -71,7 +71,7 @@ excecao(utente(IDU, No, I, M)) :- utente(IDU, No, nullval1, M).
 %nao permitir a insercao de utentes com informacao considerada interdita na base de Conhecimento.
 +utente(IDU, No, I, M) :: (solucoes( Is, (utente(IDU, No, Is, M), nao( nulo( Is ) ) ), S),
                          comprimento(S, N),
-                         N == 1
+                         N == 0
                          ).
 
 %nao permitir a remocao de utentes com informacao intedita.
@@ -183,7 +183,7 @@ excecao(cuidado(D, IDU, IDP, De, C)) :- cuidado(D, nullval2, IDP, De, C).
 %nao permitir a insercao de cuidados com informacao considerada interdita na base de conhecimento.
 +cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(D, IDUs, IDP, De, C), nao( nulo( IDUs ) ) ), S),
                         comprimento(S, N),
-                        N == 1
+                        N == 0
                         ).
 
 %nao permitir a remocao de cuidados com informacao interdita.
