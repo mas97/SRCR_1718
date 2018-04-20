@@ -36,6 +36,11 @@ utente( 6, bruno, 21, braga).
 utente( 7, hugo, 24, porto).
 utente( 8, luis, 35, lisboa).
 
+% Predicado que implementa a negação do predicado utente
+-utente( IDU, N, I, M ) :-
+        nao( utente( IDU, N, I, M ) ),
+        nao( excecao( utente( IDU, N, I, M ) ) ).
+
 % Representação de conhecimento negativo
 -utente( 1, carlos, 12, guimaraes).
 -utente( 2, beatriz, 18, porto).
@@ -44,11 +49,6 @@ utente( 8, luis, 35, lisboa).
 -utente( 9, antonio, 28, braganca).
 -utente( 12, leonardo, 14, paredes).
 -utente( 15, pedro, 57, braga).
-
-% Receita
--utente( IDU, N, I, M ) :-
-        nao( utente( IDU, N, I, M ) ),
-        nao( excecao( utente( IDU, N, I, M ) ) ).
 
 % Representação de conhecimento incerto 
 utente( 9, ana, 22, incert1).
@@ -68,13 +68,15 @@ utente( 13, beltrano, nullval1, guimaraes).
 nulo( nullval1 ).
 excecao(utente(IDU, No, I, M)) :- utente(IDU, No, nullval1, M).
 
-%nao permitir a insercao de utentes com informacao considerada interdita na base de Conhecimento.
+% Invariante referencial: impede a inserção de utentes com informacao 
+% 			  considerada interdita na Base de Conhecimento
 +utente(IDU, No, I, M) :: (solucoes( Is, (utente(IDU, No, Is, M), nao( nulo( Is ) ) ), S),
                          comprimento(S, N),
                          N == 1
                          ).
 
-%nao permitir a remocao de utentes com informacao intedita.
+%Invariante ... : impede a remoção de utentes com informacao intedita
+%		  na Base de Conhecimento.
 -utente(IDU, No, I, M) :: (solucoes( Is, (utente(IDU, No, Is, M), nao( nulo( Is ) ) ), S),
                          comprimento(S, N),
                          N == 0
@@ -84,7 +86,7 @@ excecao(utente(IDU, No, I, M)) :- utente(IDU, No, nullval1, M).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado prestador: IDPrestador, Nome, Especialidade, IDInst -> {V,F}
 
-% Conhecimento positivo
+% Representação de conhecimento positivo
 prestador( 1, wilson, medico, 2).
 prestador( 2, eduardo, cirurgiao, 1).
 prestador( 3, marciano, medico, 1).
@@ -93,19 +95,19 @@ prestador( 5, marcio, medico, 5).
 prestador( 6, armando, tecnicoRaioX, 3).
 prestador( 7, paulo, tecnicoRaioX, 6).
 
-%Conhecimento negativo
+% Representação de conhecimento negativo
 -prestador( 2, marco, medico, 1).
 -prestador( 4, filipe, cirurgiao, 1).
 -prestador( 5, daniel, medico, 5).
 -prestador( 7, eduardo, enfermeiro, 2).
 -prestador( 9, afonso, medico, 4).
 
-% Receita
+% Predicado que implementa a negação do predicado prestador
 -prestador( ID, No, E, I) :-
 	nao( prestador( ID, No, E, I)),
 	nao( excecao( prestador( ID, No, E, I))).
 
-% Conhecimento incerto
+% Representação de conhecimento incerto
 prestador( 8, pedro, incert3, 5).
 excecao( prestador(IDP, No, E, IDI)) :- prestador(IDP, No, incert3, IDI).
 
@@ -113,7 +115,7 @@ prestador( 9, carolina, incert4, 3).
 excecao( prestador(IDP, No, E, IDI)) :- prestador(IDP, No, incert4, IDI).
 
 
-% Conhecimento impreciso
+% Representação de conhecimento impreciso
 excecao( prestador(10, No, enfermeiro, 2)) :- No == rafael.
 excecao( prestador(10, No, enfermeiro, 2)) :- No == francisco.
 
@@ -138,7 +140,7 @@ excecao( prestador(14, No, E, 3)) :- No == maria, E == cirurgiao.
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado cuidado: Data, IDUtente, IDPrestador, Descricao, Custo -> {V,F}
 
-% Conhecimento positivo
+% Representação de conhecimento positivo
 cuidado( 2017/03/17, 1, 1, curativo, 20 ).
 cuidado( 2018/03/01, 1, 2, consulta, 25 ).
 cuidado( 2018/03/02, 7, 4, penso, 5).
@@ -152,7 +154,7 @@ cuidado( 2018/03/08, 8, 5, consulta, 20).
 cuidado( 2018/07/25, 8, 2, exame, 40).
 cuidado( 2018/10/22, 8, 1, consulta, 20).
 
-% Conhecimento negativo
+% Representação de conhecimento negativo
 -cuidado( 2018/03/02, 1, 1, consulta, 90).
 -cuidado( 2018/03/06, 3, 2, exame, 85).
 -cuidado( 2018/03/10, 5, 2, penso, 80).
@@ -160,13 +162,13 @@ cuidado( 2018/10/22, 8, 1, consulta, 20).
 -cuidado( 2018/03/13, 8, 5, raioX, 70).
 -cuidado( 2018/03/16, 10, 5, consulta, 75).
 
-% Receita
+% Predicado que implementa a negação do predicado cuidado
 -cuidado( D, IDU, IDP, De, C ) :-
         nao( cuidado( D, IDU, IDP, De, C ) ),
         nao( excecao( cuidado( D, IDU, IDP, De, C ) ) ).
 
 
-% Conhecimento incerto
+% Representação de conhecimento incerto
 cuidado( 2018/01/20, 7, 4, incert5, 25).
 excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(D, IDU, IDP, incert5, C).
 
@@ -177,18 +179,19 @@ cuidado( incert7, 5, 2, penso, 5).
 excecao( cuidado(D, IDU, IDP, De, C)) :- cuidado(incert7, IDU, IDP, De, C).
 
 
-% Conhecimento interdito
+% Representação de conhecimento interdito
 cuidado( 2018/05/05, nullval2, 3, curativo, 30).
 nulo( nullval2 ).
 excecao(cuidado(D, IDU, IDP, De, C)) :- cuidado(D, nullval2, IDP, De, C).
 
-%nao permitir a insercao de cuidados com informacao considerada interdita na base de conhecimento.
+% Invariante ... : impede a inserção de cuidados com informacao considerada
+% 		   interdita na base de conhecimento.
 +cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(D, IDUs, IDP, De, C), nao( nulo( IDUs ) ) ), S),
                         comprimento(S, N),
                         N == 1
                         ).
 
-%nao permitir a remocao de cuidados com informacao interdita.
+%Invariante ... : impede a remoção de cuidados com informacao interdita
 -cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(D, IDUs, IDP, De, C), nao( nulo( IDUs ) ) ), S),
                         comprimento(S, N),
                         N == 0
@@ -198,7 +201,7 @@ excecao(cuidado(D, IDU, IDP, De, C)) :- cuidado(D, nullval2, IDP, De, C).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado instituicao: IDInst, Nome, Cidade -> {V,F}
 
-% Conhecimento positivo
+% Representação de conhecimento positivo
 instituicao( 1, hospitalbraga, braga).
 instituicao( 2, hospitalsaojoao, porto).
 instituicao( 3, hospitalsantamaria, porto).
@@ -206,7 +209,7 @@ instituicao( 4, hospitaltrofa, porto).
 instituicao( 5, centrosaudegualtar, braga).
 instituicao( 6, hospitalaveiro, aveiro).
 
-% Conhecimento negativo
+% Representação de conhecimento negativo
 -instituicao(1, hospitalbraga, guimaraes).
 -instituicao(1, hospitalbarco, viladoconde).
 -instituicao(1, hospitalsaojoao, porto).
@@ -214,56 +217,57 @@ instituicao( 6, hospitalaveiro, aveiro).
 -instituicao(4, hospitalazurem, guimaraes).
 -instituicao(4, hospitalporto, porto).
 
-% Receita
+% Predicado que implementa a negação do predicado instituição
 -instituicao(Id, N, C) :-
         nao( instituicao(Id, N, C) ),
         nao( excecao( instituicao(Id, N, C) ) ).
 
 
-% Conhecimento incerto
+% Representação de conhecimento incerto
 instituicao( 7, incert8, guimaraes).
 excecao( instituicao(IDI, No, Ci)) :- instituicao(IDI, incert8, Ci).
 
-% Conhecimento impreciso
+% Representação de conhecimento impreciso
 excecao( instituicao(8, centrosaudeguimaraes, Ci)) :- Ci == amares.
 excecao( instituicao(8, centrosaudeguimaraes, Ci)) :- Ci == penafiel.
 excecao( instituicao(8, centrosaudeguimaraes, Ci)) :- Ci == guimaraes.
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Quantos prestadores tem uma instituicao
+% Predicado que indica quantos prestadores se encontram registados na base de conhecimento.
 quantosPrest(I, N) :- solucoes((ID, No, E, I), prestador(ID, No, E, I), S),
                    comprimento(S, N).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Identifica utentes por criterios
+% Predicado que identifica utentes pelos diversos critérios.
 consultaUtente( ID, N, I, M, S ) :- solucoes( ( ID, N, I, M ), utente( ID, N, I, M ), S ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Identifica utentes pela instituicao prestadora de cuidados
+% Predicado que identifica utentes pela instituicao prestadora de cuidados
 consultaUtente( P, E, I, R ) :- solucoes( (ID, N, Id, M), ( cuidado( _, ID, P, _, _ ) , prestador( P, _, E, I ), utente(ID, N, Id, M) ), S ), sort(S, R).
                                 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Identificar as instituições prestadoras de cuidados de saúde por criterios desde que estas tenham cuidados registados
+% Predicado que identifica as instituições prestadoras de cuidados de saúde por criterios desde que estas tenham cuidados registados
 consultaInstituicoes( Id, N, C, R ) :- solucoes( (Id, N, C), ( instituicao(Id, N, C), cuidado(_, _, IdP, _, _), prestador(IdP, _, _, Id) ), S), sort(S, R).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Determinar todas as instituições/prestadores a que um utente já recorreu
+% Predicado que determina todas as instituições/prestadores a que um utente já recorreu
 todasInstPrest( IDU,S ) :- 
   solucoes( (Ps, Id), (prestador(Ps, _, _, Id),cuidado(_, IDU, Ps, _, _)), S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Calculo das receitas de uma determinada Instituicao (extra enunciado)
+% Predicado que calcula o total das receitas de uma determinada Instituicao (extra enunciado)
 receitasInst( Inst, R ) :- solucoes( C, (cuidado(_, _, ID, _, C),prestador(ID, _, _, Inst)) , S),
                            somaL(S, R).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Identifica cuidados por criterios
+% Predicado que identifica cuidados pelos diversos critérios.
 consultaCuidados( IDI, IDU, IDP, Ci, D, S ) :- 
   solucoes( ( D, IDU, IDP, De, C ), (instituicao(IDI, _, Ci), prestador(IDP,_,_,IDI),cuidado( D, IDU, IDP, De, C )), S ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Calcula o valor total dos custos de um determinado utente
+% Predicado que calcula o valor total de despesas de um determinado utente
+
 somaL([],0).
 somaL([B|C],R) :- somaL(C,T),
                   R is T + B.
@@ -272,11 +276,12 @@ totalCuidados( U, E, P, D, R ) :- solucoes( C, (cuidado(D, U, P, _, C), prestado
                                   somaL(S,R).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Identifica todos os cuidados prestados por uma determinada instituição
+% Predicado que identifica todos os cuidados prestados por uma determinada instituição
 cuidadosInst( IDInst , S ) :- solucoes( (IDInst, Desc) , (prestador( IDPrest , _ , _, IDInst ), cuidado(_,_,IDPrest, Desc, _)), S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Cuidado de saúde mais frequente para um determinado utente
+% Predicado que identifica o cuidado com maior número de ocorrências
+% 	de um determinado utente.
 
 conta(X,[],[],0).
 conta(X, [X|L], Lr, R) :-
@@ -299,7 +304,7 @@ cuidadosUtente(IDU, Rff) :-
 	reverse(Rf,Rff).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -  - 
-% Relatório de contas de uma instituição dado o mes e o ano
+% Predicado que devolve o relatório de contas de uma instituição dado o mês e o ano
 
 calcTotal([], 0).
 calcTotal([(_, _, _, _, Cus)|L], T) :-
@@ -321,139 +326,141 @@ relatContas( A/M,IDI, Rf) :-
 % INVARIANTES -------------------- - - - - - - - - - -  -  -  -  -   -
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
+
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% nao permitir a insercao de utente com um ID que ja esta registado na base de conhecimento
+% Invariante ... :nao permitir a insercao de utente com um ID que ja esta registado na base de conhecimento
 +utente( IDU, No, I, M ) :: (solucoes( IDU,(utente( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a remocao de utentes com cuidados registados
+% Invariante ... :nao permitir a remocao de utentes com cuidados registados
 -utente(ID, _, _, _) :: (solucoes( ID,(cuidado(_, ID, _, _, _)), S),
                           comprimento(S, N),
                           N == 0
                           ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% nao permitir a insercao de prestador com um ID que ja esta registado na base de conhecimento
+% Invariante ... :nao permitir a insercao de prestador com um ID que ja esta registado na base de conhecimento
 +prestador( IDU, _, _, _ ) :: (solucoes( IDU,(prestador( IDU, _, _, _ )),S ),
                   comprimento( S,N ), 
                   N == 1
                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a remocao de prestadores com cuidados registados
+% Invariante ... :nao permitir a remocao de prestadores com cuidados registados
 -prestador(ID, _, _, _) :: (solucoes( ID,(cuidado(_, _, ID, _, _)), S),
                           comprimento(S, N),
                           N == 0
                           ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de duplicados de cuidado
+% Invariante ... :nao permitir a insercao de duplicados de cuidado
 +cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (D, IDU, IDP, Desc, C), (cuidado(D, IDU, IDP, Desc, C)), S),
                                   comprimento( S,N),
                                   N == 1
                                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de cuidados se os intervenientes nao existirem na base de conhecimento
+% Invariante ... :nao permitir a insercao de cuidados se os intervenientes nao existirem na base de conhecimento
 +cuidado(_, IDU, IDP, _, _) :: (solucoes( (IDU, IDP), (utente(IDU, _, _, _), prestador(IDP, _, _, _)), S),
                                   comprimento(S, N),
                                   N == 1
                                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de duplicados de instituicao
+% Invariante ... :nao permitir a insercao de duplicados de instituicao
 +instituicao(IDInst, _, _) :: (solucoes( IDInst ,instituicao(IDInst, _, _), S),
                                   comprimento( S,N),
                                   N == 1
                                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a remocao de instituições com prestadores dessa mesma instituição
+% Invariante ... :nao permitir a remocao de instituições com prestadores dessa mesma instituição
 -instituicao(ID, _, _) :: (solucoes( ID,(prestador(_, _, _, ID)), S),
                           comprimento(S, N),
                           N == 0
                           ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de conhecimento negativo contraditorio relativo a utentes que existem como conhecimento positivo na base de conhecimento
+% Invariante ... :nao permitir a insercao de conhecimento negativo contraditorio relativo a utentes que existem como conhecimento positivo na base de conhecimento
 +(-utente(IDU, No, I, M)) :: (solucoes(IDU, utente(IDU, No, I, M), S),
                               comprimento(S, N),
                               N == 0
                               ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de duplicados de conhecimento negativo relativo a utentes
+% Invariante ... :nao permitir a insercao de duplicados de conhecimento negativo relativo a utentes
 +(-utente(IDU, No, I, M)) :: (solucoes(IDU, -utente(IDU, No, I, M), S),
                               comprimento(S, N),
                               N == 2
                               ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de conhecimento negativo contraditorio relativo a prestadores que existem como conhecimento positivo na base de conhecimento
+% Invariante ... :nao permitir a insercao de conhecimento negativo contraditorio relativo a prestadores que existem como conhecimento positivo na base de conhecimento
 +(-prestador(IDP, No, E, I)) :: (solucoes(IDP, prestador(IDP, No, E, I), S),
                                 comprimento(S, N),
                                 N == 0
                                 ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de duplicados de conhecimento negativo relativo a prestadores
+% Invariante ... :nao permitir a insercao de duplicados de conhecimento negativo relativo a prestadores
 +(-prestador(IDP, No, E, I)) :: (solucoes(IDP, -prestador(IDP, No, E, I), S),
                                 comprimento(S, N),
                                 N == 2
                                 ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de conhecimento negativo contraditorio relativo a cuidados que existem como conhecimento positivo na base de conhecimento
+% Invariante ... :nao permitir a insercao de conhecimento negativo contraditorio relativo a cuidados que existem como conhecimento positivo na base de conhecimento
 +(-cuidado(D, IDU, IDP, De, C)) :: (solucoes((D, IDU, IDP, De, C), cuidado(D, IDU, IDP, De, C), S),
                                     comprimento(S, N),
                                     N == 0
                                     ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de duplicados de conhecimento negativo relativo a cuidados
+% Invariante ... :nao permitir a insercao de duplicados de conhecimento negativo relativo a cuidados
 +(-cuidado(D, IDU, IDP, De, C)) :: (solucoes((D, IDU, IDP, De, C), -cuidado(D, IDU, IDP, De, C), S),
                                     comprimento(S, N),
                                     N == 2
                                     ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de conhecimento negativo contraditorio relativo a instituicoes que existem como conhecimento positivo na base de conhecimento
+% Invariante ... :nao permitir a insercao de conhecimento negativo contraditorio relativo a instituicoes que existem como conhecimento positivo na base de conhecimento
 +(-instituicao(IDI, No, Ci)) :: (solucoes(IDI, instituicao(IDI, No, Ci), S),
                                   comprimento(S, N),
                                   N == 0
                                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de duplicados de conhecimento negativo relativo a instituicoes
+% Invariante ... :nao permitir a insercao de duplicados de conhecimento negativo relativo a instituicoes
 +(-instituicao(IDI, No, Ci)) :: (solucoes(IDI, -instituicao(IDI, No, Ci), S),
                                   comprimento(S, N),
                                   N == 2
                                   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de duplicados de predicados nulo
+% Invariante ... :nao permitir a insercao de duplicados de predicados nulo
 +nulo(Termo) :: (solucoes(Termo, nulo(Termo), S),
                 comprimento(S, N),
                 N == 1
                 ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%nao permitir a insercao de duplicados de predicados excecao
+% Invariante ... :nao permitir a insercao de duplicados de predicados excecao
 +excecao(Termo) :: (solucoes(Termo, excecao(Termo), S),
                     comprimento(S, N),
                     N == 1
                     ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Calcula o comprimento de uma lista.
+% Predicado que calcula o comprimento de uma lista.
 comprimento([], 0).
 comprimento([_|L], R) :- comprimento(L,T),
 	R is 1 + T.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Predicado que define o soluções como o predicado já existente findall
 solucoes(X,Y,Z) :- findall(X,Y,Z).
 
 
@@ -479,7 +486,7 @@ nao( Questao ) :-
 nao( Questao ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Regista um termo na base de conhecimento
+% Predicado que efetua o registo de um termo na base de conhecimento
 insere(P) :- assert(P).
 insere(P) :- retract(P), !, fail.
 
@@ -493,7 +500,7 @@ registar( -Termo ) :- solucoes(Inv, +(-Termo) :: Inv, S),
            teste(S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Remove um termo da base de conhecimento
+% Predicado que efetua a remoção de um termo da base de conhecimento
 remove(P) :- retract(P).
 remove(P) :- assert(P), !, fail.
 
