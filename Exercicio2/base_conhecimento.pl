@@ -441,7 +441,7 @@ registar( utente(IDU, No, I, M), Tipo ) :-
 
 % Conhecimento imperfeito utente - impreciso (Idade)
 registar( utente(IDU, No, I, M), Menor, Maior ) :-
-	solucoes(Inv, +utente(IDU, No, I, M) :: Inv, S),
+	solucoes(Inv, +excecao(utente(IDU, No, I, M)) :: Inv, S),
 	insere((excecao(utente(IDU, No, Idade, M)) :- Idade >= Menor, Idade =< Maior)),
 	teste(S).
 
@@ -492,7 +492,7 @@ registar( prestador(IDP, No, E, IDI), Tipo ) :-
 % Conhecimento imperfeito cuidado - impreciso (Custo)
 registar( cuidado(D, IDU, IDP, De, C), Menor, Maior, Parametro ) :-
 	Parametro == custo,
-	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+	solucoes(Inv, +excecao(cuidado(D, IDU, IDP, De, C)) :: Inv, S),
 	insere((excecao(cuidado(D, IDU, IDP, De, Custo)) :- Custo >= Menor, Custo =< Maior)),
 	teste(S).
 
@@ -565,6 +565,126 @@ remove(P) :- assert(P), !, fail.
 remover( Termo ) :- solucoes(Inv, -Termo :: Inv, S),
 					  remove(Termo),
 					  teste(S).
+
+% Conhecimento imperfeito utente - impreciso (Idade)
+remover( utente(IDU, No, I, M), Tipo ) :- 
+	Tipo == impreciso,
+	solucoes(Inv, -excecao(utente(IDU, No, I, M)) :: Inv, S),
+	remove(excecao(utente(IDU, No, I, M))),
+	teste(S).
+
+% Conhecimento imperfeito utente - impreciso (Idade)
+remover( utente(IDU, No, I, M), Menor, Maior ) :-
+	solucoes(Inv, -excecao(utente(IDU, No, I, M)) :: Inv, S),
+	remove((excecao(utente(IDU, No, Idade, M)) :- Idade >= Menor, Idade =< Maior)),
+	teste(S).
+
+
+% Conhecimento imperfeito utente - interdito (idade)
+remover( utente(IDU, No, I, M), Tipo ) :-
+	Tipo == interdito,
+	solucoes(Inv, -utente(IDU, No, I, M) :: Inv, S),
+	remove(utente(IDU, No, I, M)),
+	teste(S),
+	retract(nulo(I)),
+	retract((excecao(utente(IDUtente, Nome, Idade, Morada)) :- utente(IDUtente, Nome, I, Morada))).
+
+
+% Conhecimento imperfeito utente - incerto (Morada)
+remover( utente(IDU, No, I, M), Tipo ) :-
+	Tipo == incerto,
+	solucoes(Inv, -utente(IDU, No, I, M) :: Inv, S),
+	remove(utente(IDU, No, I, M)),
+	teste(S),
+	retract((excecao(utente(IDUtente, Nome, Idade, Morada)) :- utente(IDUtente, Nome, Idade, M))).
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+
+% Conhecimento imperfeito prestador - impreciso (Nome e Especialidade)
+remover( prestador(IDP, No, E, IDI), Tipo ) :- 
+	Tipo == impreciso,
+	solucoes(Inv, -excecao(prestador(IDP, No, E, IDI)) :: Inv, S),
+	remove(excecao(prestador(IDP, No, E, IDI))),
+	teste(S).
+
+
+
+% Conhecimento imperfeito prestador - incerto (Especialidade)
+remover( prestador(IDP, No, E, IDI), Tipo ) :-
+	Tipo == incerto,
+	solucoes(Inv, -prestador(IDP, No, E, IDI) :: Inv, S),
+	remove(prestador(IDP, No, E, IDI)),
+	teste(S),
+	retract((excecao(prestador(IDPrestador, Nome, Especialidade, IDInstituicao)) :- prestador(IDPrestador, Nome, E, IDInstituicao))).
+
+	
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+% Conhecimento imperfeito cuidado - impreciso (Custo)
+remover( cuidado(D, IDU, IDP, De, C), Menor, Maior, Parametro ) :-
+	Parametro == custo,
+	solucoes(Inv, -excecao(cuidado(D, IDU, IDP, De, C)) :: Inv, S),
+	remove((excecao(cuidado(D, IDU, IDP, De, Custo)) :- Custo >= Menor, Custo =< Maior)),
+	teste(S).
+
+
+% Conhecimento imperfeito cuidado - interdito (IDUtente)
+remover( cuidado(D, IDU, IDP, De, C), Tipo ) :-
+	Tipo == interdito,
+	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+	remove(cuidado(D, IDU, IDP, De, C)),
+	teste(S),
+	retract(nulo(IDU)),
+	retract((excecao(prestador(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDU, IDPrestador, Descricao, Custo))).
+
+
+% Conhecimento imperfeito cuidado - incerto (Descrição)
+remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
+	Tipo == incerto,
+	Parametro == descricao,
+	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+	remove(cuidado(D, IDU, IDP, De, C)),
+	teste(S),
+	retract((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDUtente, IDPrestador, De, Custo))).
+
+% Conhecimento imperfeito cuidado - incerto (Custo)
+remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
+	Tipo == incerto,
+	Parametro == custo,
+	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+	remove(cuidado(D, IDU, IDP, De, C)),
+	teste(S),
+	retract((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDUtente, IDPrestador, Descricao, C))).
+
+% Conhecimento imperfeito cuidado - incerto (Data)
+remover( cuidado(D, IDU, IDP, De, C), Tipo, Parametro ) :-
+	Tipo == incerto,
+	Parametro == data,
+	solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+	remove(cuidado(D, IDU, IDP, De, C)),
+	teste(S),
+	retract((excecao(cuidado(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(D, IDUtente, IDPrestador, Descricao, Custo))).
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+
+% Conhecimento imperfeito instituicao - impreciso (Cidade)
+remover( instituicao(ID, N, C), Tipo ) :- 
+	Tipo == impreciso,
+	solucoes(Inv, -excecao(instituicao(ID, N, C)) :: Inv, S),
+	remove(excecao(instituicao(ID, N, C))),
+	teste(S).
+
+% Conhecimento imperfeito prestador - incerto (Nome)
+remover( instituicao(ID, N, C), Tipo ) :- 
+	Tipo == incerto,
+	solucoes(Inv, -instituicao(ID, N, C) :: Inv, S),
+	remove(instituicao(ID, N, C)),
+	teste(S),
+	retract((excecao(instituicao(Identificador, Nome, Cidade)) :- instituicao(Identificador, N, Cidade))).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
