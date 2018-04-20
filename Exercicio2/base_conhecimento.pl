@@ -475,7 +475,6 @@ relatContas( A/M,IDI, Rf) :-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Predicado que calcula o comprimento de uma lista.
->>>>>>> master
 comprimento([], 0).
 comprimento([_|L], R) :- comprimento(L,T),
 	R is 1 + T.
