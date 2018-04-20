@@ -28,7 +28,7 @@ A elaboração do caso prático deverá ser de molde a respeitar as necessidades
 - Impreciso (preço do Maserati)
 	- Utente: Idade
 	- Prestador: Nome, Especialidade
-	- Cuidado: Custo, Data
+	- Cuidado: Custo
 	- Instituição: Cidade
 
 - Interdito (não se pode saber/inserir)
