@@ -72,7 +72,7 @@ excecao(utente(IDU, No, I, M)) :- utente(IDU, No, nullval1, M).
 % 			  			  considerada interdita na Base de Conhecimento
 +utente(IDU, No, I, M) :: (solucoes( Is, (utente(IDU, No, Is, M), nao( nulo( Is ) ) ), S),
                          comprimento(S, N),
-                         N == 1
+                         N == 0
                          ).
 
 %Invariante referencial : impede a remoção de utentes com informacao intedita
@@ -187,7 +187,7 @@ excecao(cuidado(D, IDU, IDP, De, C)) :- cuidado(D, nullval2, IDP, De, C).
 % 		   interdita na base de conhecimento.
 +cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(D, IDUs, IDP, De, C), nao( nulo( IDUs ) ) ), S),
                         comprimento(S, N),
-                        N == 1
+                        N == 0
                         ).
 
 %Invariante ... : impede a remoção de cuidados com informacao interdita
