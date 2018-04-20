@@ -22,7 +22,7 @@ A elaboração do caso prático deverá ser de molde a respeitar as necessidades
 - Incerto (não se sabe quem é o pai)
 	- Utente: Morada
 	- Prestador: Especialidade
-	- Cuidado: Descrição, Custo (~), Data (~)
+	- Cuidado: Descrição
 	- Instituição: Nome (~)
 
 - Impreciso (preço do Maserati)
