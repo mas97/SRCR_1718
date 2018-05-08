@@ -1,0 +1,683 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{a4wide}
+\usepackage[pdftex]{hyperref}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{listings} 
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{white}{rgb}{1,1,1}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\begin{document}
+
+
+
+\vfill
+\begin{center}
+    \Huge\bfseries
+    Universidade do Minho \\
+    \vspace{10mm}
+    \includegraphics[width=0.2\textwidth]{logo.jpg}\\[0.5cm]
+    \vspace{30mm}
+    \LARGE\bfseries
+   		Prestação de cuidados de saúde \\
+    \vspace{30mm}
+    \large\bfseries
+    Mestrado Integrado em Engenharia Informática \\
+    \vspace{20mm}
+    Sistemas de Representação de Conhecimento e Raciocínio \\
+    (2º Semestre - 17/18)
+\end{center}
+
+\vfill
+
+\begin{flushleft}
+A77531 \hspace{3mm} Daniel Fernandes Veiga Maia \\
+A78034 \hspace{3mm} Diogo Afonso Silva Costa \\
+A73909 \hspace{3mm} Francisco Lira Pereira \\
+A79607 \hspace{3mm} Marco António Rodrigues Oliveira Silva \\
+\end{flushleft}
+
+\vspace{10mm}
+
+\begin{flushright}
+Braga \\
+2018 Abril
+\end{flushright}
+
+\thispagestyle{empty}
+
+\newpage
+
+\begin{abstract}
+
+\hspace{3mm} Neste documento será apresentado o segundo trabalho desenvolvido no âmbito da Unidade Curricular de Sistemas de Representação de Conhecimento e Raciocínio do 3º ano do Mestrado Integrado em Engenharia Informática. Foi proposta a implementação de uma base de conhecimento na área da saúde, que permitisse o registo de utentes, cuidados, prestadores e o respetivo local. Serão explicitados os predicados para navegar na base de conhecimento bem como os respetivos invariantes responsáveis por manter a consistência da mesma. 
+
+Nesta segunda iteração foi adicionado o conhecimento imperfeito e consequentemente abandonado o Pressuposto do Mundo Fechado. Deste modo, surgirá um novo tipo de conhecimento, o \emph{desconhecido}. Deste modo, a base de conhecimento poderá aproximar-se muito mais a um contexto real, uma vez que é agora possível declarar um ou mais factos como conhecimento desconhecido.
+
+
+\end{abstract}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+% ===================================================
+% ===================================================
+\section{Introdução}
+
+\hspace{3mm} O sistema de representação de conhecimento e raciocínio, representado neste projeto, baseia-se na área de prestação de cuidados de saúde. Este tem como objetivo permitir a construção e evolução de uma base de conhecimento que possa retratar as principais componentes no que toca à saúde, nomeadamente, o utente, o prestador do cuidado de saúde, o cuidado propriamente dito e as instituições em que este pode ser realizado. Podemos inserir conhecimento perfeito, impreciso, incerto e interdito. Assim podemos evoluir a nossa base de conhecimento, em direção a um conhecimento cada vez mais perfeito.
+
+Para tal, é usada a linguagem de programação em lógica, PROLOG. Esta permite através de um conjunto de predicados, invariantes e estruturas lógicas orquestrar uma base de conhecimento consistente e, acima de tudo, evolutiva, com a informação mais avançada que podemos obter.
+
+% ===================================================
+% ===================================================
+\section{Preliminares}
+
+\hspace{3mm} O PROLOG é uma linguagem de programação em lógica que contém um pequeno conjunto de mecanismos básicos, nomeadamente, unificações, estruturas em árvore e \textit{backtracking} automático. Neste relatório muitos destes mecanismos encontram-se subjacentes e são deveras importantes para a compreensão do mesmo. \cite{Bratko:1990:PPA:533072}
+
+Além disso, são explicados de forma extensiva os diferentes predicados que compõem a base de conhecimento. Estes seguem o clausulado de \textit{Horn}, que diz que apenas existe um termo positivo (conclusão) e que todos os predicados estão quantificados universalmente. Efetivamente, estes são fórmulas fechadas visto que todas as variáveis têm significado, não importa o seu valor.
+
+Importa ainda notar que o algoritmo de resolução adotado pelo PROLOG segue o conceito \textit{modus ponens}, que permite derivar como verdadeiro uma conclusão de uma cláusula, e o \textit{modus tollens}, que permite dirigir a prova para um ponto em particular. É a conjunção de este e outros mecanismos que permite que o PROLOG para ser usado para a representação de conhecimento e raciocínio e, consequentemente, neste projeto.
+
+Com a realização do primeiro trabalho prático ficamos a conhecer melhor e a saber manipular a linguagem utilizada também para a realização deste segundo trabalho.
+
+% ===================================================
+% ===================================================
+\section{Descrição do Trabalho e Análise dos Resultados}
+
+\subsection{Conhecimento Perfeito}
+
+% Conhecimento positivo [?] (LIRA)
+% Conhecimento negativo [?] (LIRA)
+% Invariantes           [?] (DANIEL)
+% Evolução/Inevolução   [?] (LIRA)
+
+A semelhança do trabalho prático já terminado, o objetivo principal foi desenvolver um sistema de representação de raciocínio sobre a prestação de cuidados de saúde. Nesta fase foi inserido um tipo de conhecimento com o qual ainda não tínhamos lidado, o desconhecido, que foi assim acrescentado ao verdadeiro e falso com que já tínhamos lidado. Este tipo de conhecimento trouxe um novo conjunto de desafios que fomos resolvendo ao longo do trabalho. Utilizamos a mesma fora de inserção de conhecimento positivo já adotada na primeira fase, deste modo os quatro predicados fundamentais são:
+
+\begin{itemize}
+    \item \textbf{utente}: \#IdUt, Nome, Idade, Morada \( \rightarrow \) \{ V,D,F \}
+    \item \textbf{prestador}: \#IdPrest, Nome, Especialidade, \#IdInst \( \rightarrow \) \{ V,D,F \}
+    \item \textbf{cuidado}: Data, \#IdUt, \#IdPrest, Descrição, Custo \( \rightarrow \) \{ V,D,F \}
+    \item \textbf{instituicao}: \#IdInst, Nome, Cidade \( \rightarrow \) \{ V,D,F \}
+\end{itemize}
+
+O último predicado surgiu da necessidade de identificar os cuidados de saúde prestados numa determinada cidade. No entanto, o único conhecimento disponível era a morada do cliente. Não foi do agrado da equipa utilizar esta como forma de unificar o conhecimento para concluir quais os cuidados de saúde prestados numa determinada cidade, visto que os utentes poderiam realizar consultas fora do seu local de residência. Assim sendo, foi estendida a informação referente à instituição de forma a obter uma base de conhecimento mais robusta.
+
+Os exemplos apresentados em cima referem-se a conhecimento perfeito, e comparando com o trabalho prático anterior apenas diferem no contra-domínio, uma vez que agora existe o terceiro valor de verdade \emph{desconhecido}.
+
+Para a inserção de conhecimento positivo na base de conhecimento é utilizado o mesmo método do trabalho anterior:
+
+\begin{lstlisting}
+utente( 2, afonso, 30, braga).
+utente( 3, daniel, 20, braga).
+
+prestador( 3, marciano, medico, 1).
+prestador( 4, silvio, enfermeiro, 4).
+
+cuidado( 2018/03/03, 2, 5, consulta, 18).
+cuidado( 2018/03/04, 5, 4, penso, 8).
+
+instituicao( 2, hospitalsaojoao, porto).
+instituicao( 3, hospitalsantamaria, porto).
+\end{lstlisting}
+
+Para além deste, neste trabalho prático um dos objetivos é também a inserção de conhecimento perfeito negativo. Deste modo inserimos conhecimento perfeito negativo na nossa base de conhecimento do seguinte modo: 
+
+\begin{lstlisting}[language=Prolog, caption=Factos negativos relativos ao utente.]
+-utente( 1, carlos, 12, guimaraes).
+-utente( 2, beatriz, 18, porto).
+
+-prestador( 4, filipe, cirurgiao, 1).
+-prestador( 5, daniel, medico, 5).
+
+-cuidado( 2018/03/10, 5, 2, penso, 80).
+-cuidado( 2018/03/12, 6, 3, consulta, 75).
+
+-instituicao(1, hospitalbarco, viladoconde).
+-instituicao(1, hospitalsaojoao, porto).
+\end{lstlisting}
+
+Como se pode ver, o método de inserção do conhecimento perfeito positivo é o mesmo mas precedido do caracter \emph{-}.
+
+Assim sendo, são estas as ferramentas iniciais que possibilitam a criação de uma base de conhecimento perfeito ligada à prestação de cuidados de saúde, com possibilidade de evolução do próprio conhecimento.
+
+
+%INVARIANTES
+\par Tendo definido os tipos de conhecimento perfeito existentes na base de conhecimento, procedeu-se ao desenvolvimento das regras sobre as quais a sua evolução e involução operaria. 
+
+\par Primeiramente, impôs-se que o número identificador dos utentes, prestadores e instituições seria único a si entre os predicados homólogos. Como tal, para cada um destes, foi criado um invariante estrutural no seguinte estilo, que estipula que, após a inserção de um destes predicados, deverá ser encontrada apenas uma instância do seu ID:
+
+\begin{lstlisting}[language=Prolog, caption=Invariante estrutural : não permitir a inserção de utente com um ID que já está registado na base de conhecimento.]
++utente( IDU, _, _, _ ) :: (solucoes( IDU,(utente( IDU, _, _, _ )),S ),
+                  comprimento( S,N ), 
+                  N == 1
+                  ).
+\end{lstlisting}
+
+\par O predicado cuidado é uma exceção a esta regra, sendo que não contém um parâmetro identificador. Como tal, testa-se a existência de cópias exatas no sistema:
+
+\begin{lstlisting}[language=Prolog, caption=Invariante estrutural : não permitir a inserção de duplicados de cuidado.]
++cuidado(D, IDU, IDP, Desc, C) :: (solucoes( (D, IDU, IDP, Desc, C), (cuidado(D, IDU, IDP, Desc, C)), S),
+                                  comprimento( S,N),
+                                  N == 1
+                                  ).
+\end{lstlisting}
+
+\par Além do mais, um cuidado poderá ser adicionado à base de conhecimento apenas caso os identificadores do utente e prestador utilizados na sua criação estejam em uso. Como tal:
+
+\begin{lstlisting}[language=Prolog, caption=Invariante referencial : não permitir a inserção de cuidados se os intervenientes não existirem na base de conhecimento.]
++cuidado(_, IDU, IDP, _, _) :: (solucoes( (IDU, IDP), (utente(IDU, _, _, _), prestador(IDP, _, _, _)), S),
+                                  comprimento(S, N),
+                                  N == 1
+                                  ).
+\end{lstlisting}
+
+\par Adicionalmente, não serão permitidas inserções de duplicados de termos de conhecimento negativo:
+
+
+\begin{lstlisting}[language=Prolog, caption=Invariante estrutural : nao permitir a insercao de duplicados de conhecimento negativo relativo a utentes.]
++(-utente(IDU, No, I, M)) :: (solucoes(IDU, -utente(IDU, No, I, M), S),
+                              comprimento(S, N),
+                              N == 2
+                              ).
+\end{lstlisting}
+
+\par Algo de notar é que se testa a ocorrência de duas instâncias do termo que se pretende inserir. Isto deve-se ao modo no qual o Prolog opera. Após a inserção do predicado negativo em questão, testa-se os seus invariantes para certificar que não existe já um predicado igual. Ao fazê-lo, testa o predicado receita, ( não(predicado), nao(excecao(predicado)  ) ), que é dado como verdadeiro. Como, no contexto desta implementação, excecao(-predicado) nunca ocorre dentro da base de conhecimento e apenas ocorre qunado é efetuada esta questão, será necessário ter em conta o caso extra somado à lista quando testando o seu comprimento. Assim, testa-se N == 2. Se diferente, existe já um predicado igual e a inserção é rejeitada.
+
+\par Com as normas de inserção de conhecimento explicitadas, passou-se ao desenvolvimento dos respetivos invariantes de remoção de conhecimento. Definiu-se, portanto, que a remoção de um utente será aceite apenas quando não houverem cuidados associados ao mesmo. Ainda mais, aplicou-se a mesma diretriz ao predicado prestador:
+
+\begin{lstlisting}[language=Prolog, caption=Invariante referencial : não permitir a remoção de utentes com cuidados registados.]
+-utente(ID, _, _, _) :: (solucoes( ID,(cuidado(_, ID, _, _, _)), S),
+                          comprimento(S, N),
+                          N == 0
+                          ).
+\end{lstlisting}
+
+\par Semelhante ao ponto anterior, propôs-se que uma instituição poderá ser removida só se não for referido em nenhum prestador o seu identificador:
+
+\begin{lstlisting}[language=Prolog, caption=Invariante referencial : não permitir a remoção de instituições com prestadores dessa mesma instituição.]
+-instituicao(ID, _, _) :: (solucoes( ID,(prestador(_, _, _, ID)), S),
+                          comprimento(S, N),
+                          N == 0
+                          ).
+\end{lstlisting}
+
+\par Por fim, declarou-se que não seriam permitidas quaisquer instâncias de conhecimento positivo caso já existisse conhecimento negativo que contradiga tal predicado, e vice versa. É de notar que estes serão relevantes também na manipulação de conhecimento imperfeito, razão pela qual se recorre ao predicado excecao:
+
+\begin{lstlisting}[language=Prolog, caption=Não permitir a inserção de utente com um ID que já esta registado na base de conhecimento como conhecimento imperfeito.]
++utente( IDU, _, _, _ ) :: (solucoes( IDU, excecao(utente( IDU, _, _, _ )),S ),
+                  comprimento( S,N ), 
+                  N == 1
+                  ).
+\end{lstlisting}
+
+\begin{lstlisting}[language=Prolog, caption=Invariante estrutural : Não permitir a inserção de conhecimento negativo contraditório relativo a utentes que existem como conhecimento positivo na base de conhecimento.]
++(-utente(IDU, No, I, M)) :: (solucoes(IDU, utente(IDU, No, I, M), S),
+                              comprimento(S, N),
+                              N == 0
+                              ).
+\end{lstlisting}
+
+\par Deste modo, nota-se que o cuidado é o predicado de mais elevado nível. Caso se queira remover qualquer dos outros conhecimentos, será necessário remover primeiro todos os cuidados associados aos mesmos. Como tal, não existem quaisquer invariantes sobre a sua remoção.
+
+%% EVOLUÇAO/INVOLUÇÃO
+
+
+Para fazer então inserção de conhecimento positivo foi criado o predicado registar para que haja \emph{evolução} da base de conhecimento, sendo esta a sua forma final. Este predicado testa o invariante relacionado com a inserção de conhecimento perfeito.
+
+\begin{lstlisting}[language=Prolog, caption=Predicado que permite a inserção de conhecimento perfeito.]
+registar( Termo ) :- 
+	solucoes(Inv, +Termo :: Inv, S),
+	insere(Termo),
+	teste(S).
+\end{lstlisting}
+
+Como é possível evoluir, também é necessário que seja possível acontecer o contrário, para que haja \emph{involução} da base de conhecimento foi criado o predicado \texttt{remover}. 
+
+\begin{lstlisting}[language=Prolog, caption=Predicado que permite a remoção de conhecimento perfeito.]
+remover( Termo ) :- solucoes(Inv, -Termo :: Inv, S),
+					  remove(Termo),
+					  teste(S).
+\end{lstlisting}
+
+
+\subsection{Conhecimento Imperfeito}
+
+% Receitas                          [X] (AFONSO)
+% Conhecimento imperfeito incerto   [X] (AFONSO)
+% Conhecimento imperfeito impreciso [X] (AFONSO)
+% Conhecimento imperfeito interdito [X] (AFONSO)
+% Invariantes                       [?] (DANIEL)
+% Evolução/Inevolução               [ ] (AFONSO)
+
+\hspace{3mm} A programação em lógica através da linguagem Prolog por si só impõe algumas restrições que impossibilitam a extensão do conhecimento em diferentes vertentes. Por exemplo, devido ao pressuposto do mundo fechado(PMF), que afirma que toda a informação que não é mencionada na base de conhecimento é falsa, a existência de conhecimento imperfeito torna-se impossível. Assim sendo, foi necessário abandonar este conceito do PMF e implementar mecanismos de raciocínio sobre algo do qual não temos conhecimento. De facto, o conhecimento imperfeito pode tomar diferentes vertentes, isto é, pode ser do tipo incerto, impreciso ou mesmo interdito.
+
+O conhecimento imperfeito do tipo incerto é caracterizado por um desconhecimento total do valor de um determinado predicado. Efetivamente, quando questionada a base de conhecimento a seu respeito esta deve responder com o valor "desconhecido". A título exemplificativo, tem-se o caso da utente Ana da qual não se conhece a morada.
+
+\begin{lstlisting}[language=Prolog, caption=Exemplo de conhecimento imperfeito do tipo incerto.]
+utente( 9, ana, 22, incert1).
+excecao( utente(IDU, No, I, M)) :- utente(IDU, No, I, incert1).
+\end{lstlisting}
+
+A incerteza é conseguida através do valor incert1 e do predicado:
+
+\begin{lstlisting}[language=Prolog, caption=Negaçao forte relacionada com o predicado utente.]
+-utente( IDU, N, I, M ) :-
+        nao( utente( IDU, N, I, M ) ),
+        nao( excecao( utente( IDU, N, I, M ) ) ).
+\end{lstlisting}
+
+Deste modo, quando é realizado o \textbf{demo} da utente Ana é avaliado o predicado referente à negação forte do utente apresentado acima. Como existe uma exceção associada ao valor \texttt{incert1}, a negação forte devolve "falso" e, consequentemente, é apresentado o valor \texttt{desconhecido} pelo \texttt{demo}. Desta forma, através da conjugação do valor \texttt{incert1}, da exceção, da negação forte e do demonstrador é possível introduzir conhecimento imperfeito do tipo incerto. De realçar que a morada como conhecimento incerto representa apenas um exemplo dos campos implementados como tal. De facto, também o prestador contempla incerteza na sua especialidade, o cuidado na sua descrição, ou mesmo, a instituição no seu nome. O processo de representação de conhecimento nestes casos é análogo ao explicado anteriormente.
+
+Mais ainda, foi introduzido na base de conhecimento o conhecimento imperfeito do tipo impreciso. Este caracterizado por um intervalo discreto ou contínuo, dentro do qual o conhecimento é imperfeito. Por consequência, o conhecimento representado fora do intervalo é tido como falso.
+
+\begin{lstlisting}[language=Prolog, caption=Exemplo de conhecimento imperfeito do tipo impreciso num intervalo discreto.]
+excecao( prestador(12, icaro, cirurgiao, 3)).
+excecao( prestador(12, icaro, medico, 3)).
+\end{lstlisting}
+
+No exemplo anterior é possível observar que existe imprecisão na especialidade que o prestador Ícaro pratica. Deste modo, quando executado o demonstrador \texttt{demo} com a especialidade \texttt{cirurgiao} é apresentado a resposta como \texttt{desconhecido} visto que \texttt{cirurgiao} pertence ao intervalo de desconhecimento. No entanto, quando questionado se o Ícaro é um enfermeiro, a base de conhecimento não tem dúvidas e responde prontamente, falso.
+
+\begin{lstlisting}[language=Prolog, caption=Exemplo de conhecimento imperfeito do tipo impreciso num intervalo contínuo.]
+excecao(cuidado(2018/02/02, 2, 6, exame, C)) :- C >= 20, C =< 30.
+\end{lstlisting}
+
+O exemplo acima aplica conhecimento impreciso mas na forma de intervalo contínuo. Do mesmo modo, quando questionado se o cuidado em questão teve um custo de 25 unidades monetárias, a resposta deve ser \texttt{desconhecido}. No entanto, para o valor 50 a resposta é falsa.
+
+Assim sendo, para representar conhecimento imperfeito do tipo impreciso apenas foi introduzido as devidas exceções na base de conhecimento.
+
+Por fim, tem-se o conhecimento imperfeito do tipo interdito. Este difere do conhecimento incerto e impreciso pelo facto de ser caracterizado como dinâmico, enquanto que os dois primeiros são estáticos. Este é assim caracterizado pois, além de introduzir desconhecimento na base de conhecimento, impede que este seja inserido posteriormente.
+
+\begin{lstlisting}[language=Prolog, caption=Exemplo de conhecimento imperfeito do tipo interdito.]
+cuidado( 2018/05/05, nullval2, 3, curativo, 30).
+
+nulo( nullval2 ).
+
+excecao(cuidado(D, IDU, IDP, De, C)) :- cuidado(D, nullval2, IDP, De, C).
+
+%nao permitir a insercao de cuidados com informacao considerada interdita na base de conhecimento.
++cuidado(D, IDU, IDP, De, C) :: (solucoes( IDUs, (cuidado(D, IDUs, IDP, De, C), nao( nulo( IDUs ) ) ), S),
+                        comprimento(S, N),
+                        N == 0
+                        ).
+\end{lstlisting}
+
+O conjunto destes predicados permitem que, quando questionada, através do demonstrador \texttt{demo}, a base de conhecimento sobre qual o utente que recebeu o cuidado especificado, a resposta é \texttt{desconhecido}. Até este ponto o procedimento parece em tudo igual ao caso do conhecimento imperfeito do tipo incerto. No entanto o valor \texttt{nullval2} associado ao cuidado encontra-se declarado factualmente como nulo. Além disso, é adicionado um invariante que proíbe a inserção de predicados \texttt{cuidado} que tenha um valor nulo associado, ou seja, que não permite que o número de cuidados que tenha o identificador do utente diferente de nulo seja maior que zero.
+
+Desta forma, quando existe uma tentativa de inserir conhecimento relacionado com o utente que atendeu ao cuidado especificado, esta tentativa falha tornando o conhecimento interdito. Esta forma de representação de conhecimento é conseguida através da conjugação do predicado nulo e do seu valor associado, da exceção e do invariante.
+
+Além disso, foi também introduzido conhecimento imperfeito do tipo interdito relacionado com a idade do utente Beltrano, como demonstração deste tipo de conhecimento noutros predicados.
+
+
+
+
+
+
+%INVARIANTES
+\par Tendo definido a natureza de todos os tipos de conhecimento imperfeito, será necessário definir as regras pelas quais a sua inserção e remoção terão de ser reguladas. Primeiramente, para assegurar a segurança do conhecimento interdito, supõe-se que nenhum dos parâmetros de um dado predicado são nulos quando é feita a sua inserção ou remoção.:
+
+\begin{lstlisting}[language=Prolog, caption=É permitida apenas uma instância de um parâmetro para o qual nulo(parâmetro) seja verdadeiro na base de conhecimento.]
+% Invariante referencial: impede a insercao de utentes com informacao 
+% 			  			  considerada interdita na Base de Conhecimento
++utente(IDU, No, I, M) :: (solucoes( Is, (utente(IDU, No, Is, M), nao( nulo( Is ) ) ), S),
+                         comprimento(S, N),
+                         N == 0
+                         ).
+
+%Invariante referencial : impede a remocao de utentes com informacao intedita
+%		  	   			  na Base de Conhecimento.
+-utente(IDU, No, I, M) :: (solucoes( Is, (utente(IDU, No, Is, M), nao( nulo( Is ) ) ), S),
+                         comprimento(S, N),
+                         N == 0
+                         ).
+\end{lstlisting}
+
+Adicionalmente, é permitida apenas a existência de uma instância de nulo de um dado termo:
+
+\begin{lstlisting}[language=Prolog, caption=Invariante estrutural : Não permitir a inserção de duplicados de predicados nulo. ]
++nulo(Termo) :: (solucoes(Termo, nulo(Termo), S),
+                comprimento(S, N),
+                N == 1
+                ).
+\end{lstlisting}
+
+\par A seguir, propõe-se que não será permitida a inserção de predicados exceção caso esta exista já na base de conhecimento, de modo a evitar redundância no conhecimento incerto e no conhecimento impreciso:
+
+\begin{lstlisting}[language=Prolog, caption=Invariante estrutural : Não permitir a inserção de duplicados do predicado excecao. ]
++excecao(Termo) :: (solucoes(Termo, excecao(Termo), S),
+                    comprimento(S, N),
+                    N == 1
+                    ).
+\end{lstlisting}
+
+\par Por fim, é necessário definir como lidar com a eventualidade da inserção de conhecimento perfeito numa base que contém conhecimento imperfeito relativo ao mesmo predicado, e vice versa. No final, decidiu-se que, caso uma existisse, a outra não seria inserida na base. Como tal, caso se pretenda substituir uma instância de conhecimento perfeito por imperfeito, ou vice versa, será necessário primeiro remover manualmente a antiga instância antes de inserir a nova. Assim, definiu-se a gama de invariantes:
+
+\begin{lstlisting}[language=Prolog, caption=Não permitir a inserção de utente com um ID que já está registado na base de conhecimento como conhecimento imperfeito. ]
++utente( IDU, _, _, _ ) :: (solucoes( IDU, excecao(utente( IDU, _, _, _ )),S ),
+                  comprimento( S,N ), 
+                  N == 1
+                  ).
+\end{lstlisting}
+
+
+
+Todas estas representações de conhecimento tornam a base de conhecimento muito mais próxima daquilo que é a realidade que está a ser retratada. Um outro aspeto que é inerente a praticamente todos os contextos que possam ser retratados numa base de conhecimento, como é o caso específico dos cuidados de saúde aqui representados, é a evolução do conhecimento. Isto é, existe a necessidade de inseri-lo assim como retira-lo do sistema.
+
+Por um lado, existe a inserção do conhecimento perfeito que é realizado através do predicado \texttt{registar}.
+
+\begin{lstlisting}[language=Prolog, caption=Predicado que permite a evolução da base de conhecimento. ]
+registar( Termo ) :-
+        solucoes(Inv, +Termo :: Inv, S),
+        insere(Termo),
+        teste(S).
+\end{lstlisting}
+
+Este predicado testa todos os invariantes relacionados com a inserção de conhecimento para o predicado especifico que está a ser introduzido. Caso os testes não se verifiquem então o predicado inserido é retirado e a base de conhecimento volta ao estado inicial. Dado que a base de conhecimento representa uma extensão à programação em lógica, esta permite a inserção de conhecimento negativo. Este pode ser acrescentado através do predicado \texttt{registar}, apenas sendo necessário colocar o sinal "-" antes do predicado.
+
+\begin{lstlisting}[language=Prolog, caption=Primitiva que autoriza a inserção de negações fortes. ]
+:- dynamic (-)/1.
+\end{lstlisting}
+
+Esta declaração permite que seja realizado o \texttt{assert} de predicados de negação forte e não ocorra erros durante o processo.
+
+Por outro lado, é possível inserir conhecimento imperfeito. Caso este seja do tipo impreciso o seu registo apenas envolve a inserção da exceção respetiva e o teste dos invariantes relacionados com as exceções do termo especificado.
+
+\begin{lstlisting}[language=Prolog, caption=Predicado que permite a inserção de conhecimento imperfeito do tipo impreciso no utente. ]
+registar( utente(IDU, No, I, M), Tipo ) :-
+        Tipo == impreciso,
+        solucoes(Inv, +excecao(utente(IDU, No, I, M)) :: Inv, S),
+        insere(excecao(utente(IDU, No, I, M))),
+        teste(S).
+\end{lstlisting}
+
+\begin{lstlisting}[language=Prolog, caption=Predicado que permite a inserção de conhecimento imperfeito do tipo impreciso no utente na forma de intervalo. ]
+registar( utente(IDU, No, I, M), Menor, Maior ) :-
+        solucoes(Inv, +excecao(utente(IDU, No, I, M)) :: Inv, S),
+        insere((excecao(utente(IDU, No, Idade, M)) :- Idade >= Menor, Idade =< Maior)),
+        teste(S).
+\end{lstlisting}
+
+No entanto, caso seja necessário inserir conhecimento imperfeito do tipo incerto é necessário introduzir o termo desejado e ainda associar uma exceção ao mesmo. No campo em que o conhecimento é incerto deve aparecer uma variável na forma incertX (sendo X um número natural).
+
+\begin{lstlisting}[language=Prolog, caption=Predicado que permite a inserção de conhecimento imperfeito do tipo incerto relativamente ao nome de uma instituição. ]
+registar( instituicao(ID, N, C), Tipo ) :-
+        Tipo == incerto,
+        solucoes(Inv, +instituicao(ID, N, C) :: Inv, S),
+        insere(instituicao(ID, N, C)),
+        teste(S),
+        insere((excecao(instituicao(Identificador, Nome, Cidade)) :- instituicao(Identificador, N, Cidade))).
+\end{lstlisting}
+
+Por fim, existe o caso da inserção do conhecimento imperfeito do tipo interdito. Este não permite introduzir o invariante que estaria associado ao predicado em questão. No entanto, todos os campos que podem ser do tipo interdito já têm um invariante associado por forma não ser necessário a sua inserção. Desta forma, resta inserir o predicado, declarar a variável nula como tal e acrescentar a exceção da variável no contexto em questão.
+
+\begin{lstlisting}[language=Prolog, caption=Predicado que permite a inserção de conhecimento imperfeito do tipo interdito relativamente ao identificador de utente num cuidado. ]
+registar( cuidado(D, IDU, IDP, De, C), Tipo ) :-
+        Tipo == interdito,
+        solucoes(Inv, +cuidado(D, IDU, IDP, De, C) :: Inv, S),
+        insere(cuidado(D, IDU, IDP, De, C)),
+        teste(S),
+        insere(nulo(IDU)),
+        insere((excecao(prestador(Data, IDUtente, IDPrestador, Descricao, Custo)) :- cuidado(Data, IDU, IDPrestador, Descricao, Custo))).
+\end{lstlisting}
+
+Sendo possível a evolução da base de conhecimento através da inserção de novo conhecimento, é também possível realizar a remoção do mesmo. Quando se trata de conhecimento perfeito é usado o predicado genérico \texttt{remover}. Este procede à remoção do predicado em questão, testando, consequentemente, se esta ação violou alguma invariante. Caso o teste dê positivo é feito backtrack da ação e o termo é inserido novamente, deixando a base de conhecimento inalterada.
+
+\begin{lstlisting}[language=Prolog, caption=Predicado que permite a inevolução da base de conhecimento. ]
+remover( Termo ) :- 
+	solucoes(Inv, -Termo :: Inv, S),
+ 	remove(Termo),
+        teste(S).
+\end{lstlisting}
+
+ Do mesmo modo, que é inserido o conhecimento imperfeito é realizada a ação oposta para o retirar da base de conhecimento.
+
+\begin{lstlisting}[language=Prolog, caption=Predicado que permite a remoção de conhecimento imperfeito do tipo impreciso de um utente.]
+remover( utente(IDU, No, I, M), Tipo ) :-
+        Tipo == impreciso,
+        solucoes(Inv, -excecao(utente(IDU, No, I, M)) :: Inv, S),
+        remove(excecao(utente(IDU, No, I, M))),
+        teste(S).
+\end{lstlisting}
+
+\begin{lstlisting}[language=Prolog, caption=Predicado que permite a remoção de conhecimento imperfeito do tipo impreciso de um utente referente a um intervalo.]
+remover( utente(IDU, No, I, M), Menor, Maior ) :-
+        solucoes(Inv, -excecao(utente(IDU, No, I, M)) :: Inv, S),
+        remove((excecao(utente(IDU, No, Idade, M)) :- Idade >= Menor, Idade =< Maior)),
+        teste(S).
+\end{lstlisting}
+
+O mesmo precedimento é utilizado na remoção de conhecimento imperfeito do tipo incerto.
+
+\begin{lstlisting}[language=Prolog, caption=Predicado que permite a remoção de conhecimento imperfeito do tipo incerto relativo ao nome de uma instituição.]
+remover( instituicao(ID, N, C), Tipo ) :-
+        Tipo == incerto,
+        solucoes(Inv, -instituicao(ID, N, C) :: Inv, S),
+        remove(instituicao(ID, N, C)),
+        teste(S),
+        retract((excecao(instituicao(Identificador, Nome, Cidade)) :- instituicao(Identificador, N, Cidade))).
+\end{lstlisting}
+
+Por último, o conhecimento imperfeito do tipo interdito não contém nenhum predicado capaz de o remover da base de conhecimento. Esta decisão foi tomada, pois a remoção deste predicado permitiria a futura inserção de conhecimento, o que violaria o propósito do conhecimento interdito.
+
+
+
+\subsection{Demonstradores}
+
+\hspace{3mm} Uma vez abandonado o Pressuposto do Mundo Fechado, não será possível continuar a utilizar diretamente o PROLOG para colocar questões à base de conhecimento. Durante as aulas práticas foi utilizado o seguinte predicado e seus auxiliares para as demonstrações necessárias.
+
+\begin{lstlisting}[language=Prolog, caption=Demonstrador básico resultante da Extensão à Programação em Lógica. ]
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do meta-predicado nao: Questao -> {V,F}
+
+nao( Questao ) :-
+    Questao, !, fail.
+nao( Questao ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do meta-predicado demo: Questao,Resposta -> {V,F,D}
+
+demo( Questao,verdadeiro ) :-
+    Questao.
+demo( Questao,falso ) :-
+    -Questao.
+demo( Questao,desconhecido ) :-
+    nao( Questao ),
+    nao( -Questao ).
+    
+\end{lstlisting}
+
+Deste modo, é agora possível obter uma nova resposta da base de conhecimento, o \emph{desconhecido}. Analisando mais em detalhe os predicados acima, podemos ver definido o novo tipo de conhecimento na terceira cláusula do predicado \textbf{demo}. Deste modo, o conhecimento será declarado como \emph{verdadeiro} apenas nos casos em que a questão colocada se encontra declarada diretamente na base de conhecimento, tal como já acontecia anteriormente. Anteriormente, tendo como base o Pressuposto do Mundo Fechado, qualquer questão que não estivesse declarada na base de conhecimento seria considerada falsa mas, neste novo pressuposto, é seguida uma metodologia diferente. Como podemos verificar pela segunda clausula do predicado acima, o conhecimento é considerado falso apenas no caso em que a questão colocada se encontra declarada explicitamente como negativa, através da notação \textit{"-"}. Finalmente, declara-se o conhecimento como \emph{desconhecido} no caso em que a questão colocada não se encontra declarada de forma positiva ou negativa.
+
+Deste modo, qualquer questão que seja colocada à base de conhecimento deverá ser feita utilizando o predicado \textbf{demo}, uma vez que o PROLOG implementa naturalmente o Pressuposto do Mundo Fechado.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{demo_exemplo.png}
+    \caption{Demonstração do predicado \textbf{demo}.}
+    \label{fig:demo1}
+\end{figure}
+
+Uma vez interiorizado o novo contexto em que nos encontramos inseridos, na sequência do trabalho prático a desenvolver, construiram-se também variações deste predicado \textbf{demo} como forma a adicionar funcionalidades extra ao sistema de inferência.
+
+Uma vez que se tem um novo tipo de conhecimento, foi necessário definir qual o tipo de conhecimento resultante no caso das operações de conjunção e disjunção. De seguida, podemos ver então a declaração dos predicados \textit{conjuncao} e \emph{disjuncao}.
+
+\begin{lstlisting}[language=Prolog, caption=Predicado conjuncao.]
+
+% Predicado conjuncao responsavel pelo calculo de predicados
+% 	tomando agora o novo tipo de conhecimento, desconhecido
+conjuncao( A, B, verdadeiro ) :-
+	A == verdadeiro, B == verdadeiro.
+conjuncao( A, B, falso ) :-
+	A == falso, B == falso.
+conjuncao( A, B, falso ) :-
+	A == verdadeiro, B == falso.
+conjuncao( A, B, falso ) :-
+	A == falso, B == verdadeiro.
+conjuncao( A, B, falso ) :-
+	A == falso, B == desconhecido.
+conjuncao( A, B, falso ) :-
+	A == desconhecido, B == falso.
+conjuncao( A, B, desconhecido ) :-
+	A == desconhecido, B == desconhecido.
+conjuncao( A, B, desconhecido ) :-
+	A == desconhecido, B == verdadeiro.
+conjuncao( A, B, desconhecido ) :-
+	A == verdadeiro, B == desconhecido.
+	
+\end{lstlisting}
+
+Deste modo, encontram-se declaradas todas as respostas possíveis que a base de conhecimento pode responder para o predicado \textbf{conjuncao}.
+
+\begin{lstlisting}[language=Prolog, caption=Predicado \textbf{conjuncao}.]
+
+% Predicado disjuncao responsavel pelo calculo de predicados
+% 	tomando agora o novo tipo de conhecimento, desconhecido
+disjuncao( A, B, verdadeiro ) :-
+	A == verdadeiro, B == verdadeiro.
+disjuncao( A, B, falso ) :-
+	A == falso, B == falso.
+disjuncao( A, B, verdadeiro ) :-
+	A == verdadeiro, B == falso.
+disjuncao( A, B, verdadeiro ) :-
+	A == falso, B == verdadeiro.
+disjuncao( A, B, desconhecido ) :-
+	A == falso, B == desconhecido.
+disjuncao( A, B, desconhecido ) :-
+	A == desconhecido, B == falso.
+disjuncao( A, B, desconhecido ) :-
+	A == desconhecido, B == desconhecido.
+disjuncao( A, B, verdadeiro ) :-
+	A == desconhecido, B == verdadeiro.
+disjuncao( A, B, verdadeiro ) :-
+	A == verdadeiro, B == desconhecido.
+	
+\end{lstlisting}
+
+De uma forma análoga, foram definidas também as respostas possíveis mas agora relativamente à operação de \textbf{disjuncao}.
+
+Uma vez completamente familiarizados com o novo contexto de conhecimento, pretendia-se desenvolver um método de teste para várias questões reunidas numa lista, uma vez que seria mais cómodo para um possível utilizador no futuro. Construiu-se então o predicado \textbf{demoListaC}, responsável por testar cada uma das questões presentes na lista e apresentar o resultado total da conjunção.
+
+\begin{lstlisting}[language=Prolog, caption=Predicado \textbf{DemoListaC}.]
+
+% Predicado que possibilita a demonstracao de uma lista de questoes
+% 	apenas constituida por conjuncoes
+demoListaC( [], verdadeiro ).
+demoListaC( [ Q ], R ) :- demo( Q, R ).
+demoListaC( [ Q | LQ ], R ) :-
+	demo( Q, RQ ),
+	demoListaC( LQ, RL ),
+	conjuncao( RQ, RL, R ).
+	
+\end{lstlisting}
+
+Visto que já se encontrava construida a definição que tratava da operação de \textbf{disjunção}, procedeu-se à adaptação da solução anterior para que neste caso efetua-se fossem testadas todas as questões na base de conhecimento mas agora fosse apresentado o resultado da \textbf{disjunçao} de todas as demonstrações.
+
+\begin{lstlisting}[language=Prolog, caption=Predicado \textbf{DemoListaC}.]
+
+% Predicado que possibilita a demonstracao de uma lista de questoes
+% 	apenas constituida por disjuncoes
+demoListaD( [], verdadeiro ).
+demoListaD( [ Q ], R ) :- demo( Q, R ).
+demoListaD( [ Q | LQ ], R ) :-
+	demo( Q, RQ ),
+	demoListaD( LQ, RL ),
+	disjuncao( RQ, RL, R ).
+	
+\end{lstlisting}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=1\linewidth]{demoLista_exemplo.png}
+    \caption{Demonstração dos predicados \textbf{demoListaC} e \textbf{demoListaD}.}
+    \label{fig:demo2}
+\end{figure}
+
+Numa fase final do projeto, uma vez que tinham já sido desenvolvidas as soluções para o tratamento tanto do caso da conjunção como da disjunção das demonstrações, surgiu a ideia de desenhar um predicado através do qual o utilizador pudesse construir uma expressão lógica constituída tanto por conjunções como disjunções, surgindo a seguinte solução.
+
+\begin{lstlisting}[language=Prolog, caption=Predicado \textbf{DemoComp}.]
+
+% Predicado que possibilita a demonstracao de uma lista de questoes,
+% 	sendo esta constituida por conjuncoes e disjuncoes
+demoComp( [ Q ], R ) :- 
+	demo( Q , RQ ),
+	conjuncao( RQ, verdadeiro, R ).
+demoComp( [ Q ], R ) :- 
+	demo( Q, RQ ),
+	disjuncao( RQ, falso, R ).
+demoComp( [(Q , e) | LQ], R ) :-
+	demo( Q, RQ ),
+	demoComp( LQ, RL ),
+	conjuncao( RQ, RL, R).
+demoComp( [(Q , ou) | LQ], R ) :-
+	demo( Q, RQ ),
+	demoComp( LQ, RL ),
+	disjuncao( RQ, RL, R).
+	
+\end{lstlisting}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=1\linewidth]{demoComp_exemplo.png}
+    \caption{Demonstração do predicado \textbf{demoComp}.}
+    \label{fig:demo3}
+\end{figure}
+
+\newpage
+
+% ===================================================
+% ===================================================
+\section{Conclusões e Sugestões}
+
+\hspace{3mm} Com a elaboração desta segunda fase do trabalho prático, foi possível entender melhor o comportamento da base de conhecimento não seguindo agora os princípios do Pressuposto do Mundo Fechado (PMF).
+
+Tendo em conta a inserção do novo tipo de conhecimento, o \emph{desconhecido}, a base de conhecimento tem uma maior capacidade de representação de situações próximas da realidade. Pode também chamar-se a esta mudança de paradigma como \emph{Extensão à Programação em Lógica}. Este novo conceito de conhecimento têm como principais diferenças em relação ao paradigma anterior o abandono do Principio do Mundo Fechado bem como a introdução da negação forte. Desta forma, obtém-se um sistema de inferência bastante mais completo em relação ao anterior, oferecendo ao utilizador bastante mais funcionalidade no que diz respeito à representação de conhecimento bem como na consulta da própria base de conhecimento.
+
+Ainda assim, este projeto poderá ser melhorado, adicionando para além da data de prestação do cuidado, a hora de prestação do mesmo, uma vez que, deste modo, seria possível reconhecer com maior precisão cada um dos cuidados registados na base de conhecimento. Para além disso, permitiria reconhecer mais facilmente a consistência da informação. Tendo em conta que podem ser prestados vários cuidados na mesma data a um determinado utente, neste ponto não é possível saber se estes resultam de um erro na introdução da informação ou se são efetivamente dois cuidados prestados em momentos distintos.
+
+Deste modo, conclui-se que o projeto foi um sucesso, tendo sido representados todos os tipos de conhecimento idealizados inicialmente, bem como acrescentadas algumas funcionalidades adicionais de modo a facilitar a interação do utilizador com a base de conhecimento.
+
+% Falar qualquer coisa sobre como não é possível ter vários argumentos incertos num predicado e como se poderia num trabalho futuro implementar algo ou cenas
+% Data poderia ter sido ID de cuidado.
+\newpage
+\bibliography{mybib}{}
+\bibliographystyle{acm}
+
+\end{document}
+
