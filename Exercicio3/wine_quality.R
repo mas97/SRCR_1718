@@ -20,7 +20,7 @@ dados$density <- dados$density/maiores[8]
 dados$pH <- dados$pH/maiores[9]
 dados$sulphates <- dados$sulphates/maiores[10]
 dados$alcohol <- dados$alcohol/maiores[11]
-#dados$quality <- dados$quality/maiores[12]
+dados$quality <- dados$quality/maiores[12]
 
 treino <- dados[1:3673, ]
 teste <- dados[3674:4898, ]
@@ -33,7 +33,7 @@ formula <- quality ~ alcohol + sulphates + chlorides + volatile.acidity
 
 # discretize aqui
 
-rnawine <- neuralnet(formula, teste, hidden = c(3,2), lifesign = "full", linear.output = TRUE, threshold = 0.1)
+rnawine <- neuralnet(formula, teste, hidden = c(20,10), lifesign = "full", linear.output = FALSE, threshold = 0.1)
 
 plot(rnawine, rep = "best")
 
@@ -47,7 +47,7 @@ rnawine.resultados <- compute(rnawine, teste.01)
 resultados <- data.frame(atual = teste$quality, previsao=rnawine.resultados$net.result)
 
 # imprimir resultados arredondados
-resultados$previsao <- round(resultados$previsao, digits = 0)
+#resultados$previsao <- round(resultados$previsao, digits = 0)
 View(resultados)
 
 #calcular o RMSE
