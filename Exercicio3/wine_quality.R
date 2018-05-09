@@ -29,16 +29,16 @@ funcao <- quality ~ fixed.acidity + volatile.acidity + citric.acid + residual.su
 selecao <- regsubsets(funcao,dados,nvmax = 5)
 summary(selecao)
 
-formula <- quality ~ alcohol + sulphates + chlorides + volatile.acidity
+formula <- quality ~ alcohol + free.sulfur.dioxide  + residual.sugar + volatile.acidity + density + pH
 
 # discretize aqui
 
-rnawine <- neuralnet(formula, teste, hidden = c(20,10), lifesign = "full", linear.output = FALSE, threshold = 0.1)
+rnawine <- neuralnet(formula, treino, hidden = c(3,2), lifesign = "full", linear.output = FALSE, threshold = 0.01)
 
 plot(rnawine, rep = "best")
 
 # definir variaveis de input para teste
-teste.01 <- subset(teste, select = c("alcohol", "sulphates", "chlorides", "volatile.acidity"))
+teste.01 <- subset(teste, select = c("alcohol", "free.sulfur.dioxide", "residual.sugar", "volatile.acidity", "density", "pH"))
 
 # testar a rede com os novos casos
 rnawine.resultados <- compute(rnawine, teste.01)
