@@ -20,10 +20,12 @@ dados$density <- dados$density/maiores[8]
 dados$pH <- dados$pH/maiores[9]
 dados$sulphates <- dados$sulphates/maiores[10]
 dados$alcohol <- dados$alcohol/maiores[11]
-dados$quality <- dados$quality/maiores[12]
+#dados$quality <- dados$quality/maiores[12]
 
 treino <- dados[1:3673, ]
 teste <- dados[3674:4898, ]
+#treino <- dados[1:534, ]
+#teste <- dados[535:1600, ]
 
 funcao <- quality ~ fixed.acidity + volatile.acidity + citric.acid + residual.sugar + chlorides + free.sulfur.dioxide +	total.sulfur.dioxide + density +	pH	+ sulphates +	alcohol
 selecao <- regsubsets(funcao,dados,nvmax = 5)
@@ -33,7 +35,7 @@ formula <- quality ~ alcohol + free.sulfur.dioxide  + residual.sugar + volatile.
 
 # discretize aqui
 
-rnawine <- neuralnet(formula, treino, hidden = c(3,2), lifesign = "full", linear.output = FALSE, threshold = 0.01)
+rnawine <- neuralnet(formula, treino, hidden = c(3,2), lifesign = "full", linear.output = FALSE, threshold = 0.01, algorithm = "rprop+")
 
 plot(rnawine, rep = "best")
 
