@@ -5,9 +5,9 @@ library(leaps)
 library(arules)
 
 # Carrega o dataset do ficheiro csv
-dados <- read.csv("C:\\Users\\DiogoAfonsoSilvaCost\\Desktop\\Repos\\SRCR_1718\\Exercicio3\\winequality-red.csv",header=TRUE,sep=";",dec=".")
+dados <- read.csv("/Users/MarcoSilva/Dropbox/UNIVERSIDADE/3º Ano/2º Semestre/Sistemas de Representação de Conhecimento e Raciocínio/Trabalho de Grupo/winequality-red.csv",header=TRUE,sep=";",dec=".")
 
-# Retorna os m?ximos de todas as colunas
+# Retorna os máximos de todas as colunas
 colMax <- function(data) sapply(data,max,na.rm=TRUE)
 
 # Função que transforma os dados para alimentar as RNA's
@@ -37,7 +37,7 @@ rede_neuronal <- function(formula, treino, hidden, teste_vars, teste) {
   
   rna_wine <- neuralnet(formula, treino, hidden, lifesign = "full", linear.output = TRUE, threshold = 0.01)
   
-  # Computa??o da rede com casos de teste
+  # Computação da rede com casos de teste
   rna_wine$resultados <- compute(rna_wine, teste_vars)
   
   rna_wine$resultados_comp <- data.frame(atual = teste$quality, previsao = rna_wine$resultados$net.result)
@@ -45,7 +45,7 @@ rede_neuronal <- function(formula, treino, hidden, teste_vars, teste) {
   # previsao <- round(rna_wine$resultados_comp$previsao, digits = 1)
   # rna_wine$resultados_comp_round <- data.frame(atual = atual, previsao = previsao)
   
-  # C?lculo do RMSE
+  # Cálculo do RMSE
   rna_wine$rmse <- rmse(c(teste$quality),c(rna_wine$resultados_comp$previsao))
   
   return(rna_wine)
@@ -57,30 +57,31 @@ rede_neuronal <- function(formula, treino, hidden, teste_vars, teste) {
 dados <- convert(dados)
 
 # Cria um conjunto com os dados de treino
-treino <- dados[1:534, ]
+treino <- dados[1:1068, ]
 
 # Cria um conjunto com os dados de teste
-teste <- dados[535:1600, ]
+teste <- dados[1069:1600, ]
 
-# Sele??o das componentes mais significativas
+# Seleção das componentes mais significativas
 funcao <- quality ~ fixed.acidity + volatile.acidity + citric.acid + residual.sugar + chlorides + free.sulfur.dioxide +	total.sulfur.dioxide + density +	pH	+ sulphates +	alcohol
-# selecao <- regsubsets(funcao,dados,nvmax = 5)
-# summary(selecao)
 
-formula <- quality ~ alcohol + free.sulfur.dioxide  + residual.sugar + volatile.acidity + density + pH
+selecao <- regsubsets(funcao,dados,nvmax = 5)
+summary(selecao)
+
+formula <- quality ~ alcohol + volatile.acidity + sulphates + total.sulfur.dioxide + chlorides
 
 # definir variaveis de input para teste
-teste.01 <- subset(teste, select = c("alcohol", "free.sulfur.dioxide", "residual.sugar", "volatile.acidity", "density", "pH"))
+teste.01 <- subset(teste, select = c("alcohol", "volatile.acidity", "sulphates", "total.sulfur.dioxide", "chlorides"))
 
-# Topologia das camadas interm?dias
-hidden <- c(3,2)
+# Topologia das camadas intermédias
+hidden <- c(2,4)
 
 rna_wine_output <- rede_neuronal(formula, treino, hidden, teste.01, teste)
 
-# Visualiza??o gr?fica da rede neuronal
+# Visualização gráfica da rede neuronal
 plot(rna_wine_output, rep = "best")
 
-# Visualiza??o do valor RMSE
+# Visualização do valor RMSE
 View(rna_wine_output$rmse)
 View(rna_wine_output$resultados_comp)
 
