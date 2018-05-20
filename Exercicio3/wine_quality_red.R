@@ -57,10 +57,10 @@ rede_neuronal <- function(formula, treino, hidden, teste_vars, teste) {
 dados <- convert(dados)
 
 # Cria um conjunto com os dados de treino
-treino <- dados[1:534, ]
+treino <- dados[1:1068, ]
 
 # Cria um conjunto com os dados de teste
-teste <- dados[535:1600, ]
+teste <- dados[1069:1600, ]
 
 # Seleção das componentes mais significativas
 funcao <- quality ~ fixed.acidity + volatile.acidity + citric.acid + residual.sugar + chlorides + free.sulfur.dioxide +	total.sulfur.dioxide + density +	pH	+ sulphates +	alcohol
